@@ -10,5 +10,13 @@
   <%= @problem.statement %>
 </p>
 
+<p>Run the following command to submit your exploit</p>
+<pre>
+$ docker login localhost:5000
+> Username: your team email
+> Password: your team password
+$ docker push localhost:5000/<%= @problem.title %>
+</pre>
+
 <%= link_to 'Edit', edit_problem_path(@problem) %> |
 <%= link_to 'Back', problems_path %>
