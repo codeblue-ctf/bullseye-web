@@ -12,10 +12,10 @@
 
 <p>Run the following command to submit your exploit</p>
 <pre>
-$ docker login localhost:5000
+$ docker login docker.codeblue.jp
 > Username: your team email
 > Password: your team password
-$ docker push localhost:5000/<%= @problem.title %>
+$ docker push docker.codeblue.jp/<%= @problem.title %>
 </pre>
 
 <%= link_to 'Edit', edit_problem_path(@problem) %> |
