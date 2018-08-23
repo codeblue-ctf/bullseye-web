@@ -22,5 +22,5 @@ Things you may want to cover:
 * Deployment instructions
 
 ```sh
-$ docker run -p 5000:5000 --rm -e REGISTRY_AUTH=htpasswd -e REGISTRY_AUTH_HTPASSWD_REALM=realm -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd -v "$(pwd)/auth:/auth" --name registry registry:2
+$ docker run -p 5000:5000 --rm -e REGISTRY_AUTH=htpasswd -e REGISTRY_AUTH_HTPASSWD_REALM=realm -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd -v "$(pwd)/db/auth:/auth" --name registry registry:2
 ```
