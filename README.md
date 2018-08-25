@@ -26,6 +26,13 @@ Do it after create the teams
 $ rake generate_htpasswd:from_teams
 ```
 
+### Generate server certificate for Docker Registry Auth
+
+```sh
+$ openssl req -nodes -newkey rsa:4096 -keyout config/certs/server.key -out config/certs/server.csr -subj "/CN=dockerauth"
+$ openssl x509 -in config/certs/server.csr -out config/certs/server.crt -req -signkey config/certs/server.key -days 3650
+```
+
 ## How to run the test suite
 
 No test suites...
@@ -44,8 +51,8 @@ No test suites...
 $ rails start
 ```
 
-### Docker Registry
+### Docker Registry & Docker Registry Auth
 
 ```sh
-$ docker run -p 5000:5000 --rm -e REGISTRY_AUTH=htpasswd -e REGISTRY_AUTH_HTPASSWD_REALM=realm -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd -v "$(pwd)/db/auth:/auth" --name registry registry:2
+$ dcoker-compose up
 ```
