@@ -11,4 +11,9 @@ class ProblemsController < ApplicationController
   # GET /problems/1.json
   def show
   end
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_problem
+      @problem = Problem.find(params[:id])
+    end
 end
