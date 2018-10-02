@@ -7,7 +7,7 @@
     <tr>
       <th>Title</th>
       <th>Statement</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -17,13 +17,9 @@
         <td><%= problem.title %></td>
         <td><%= problem.statement %></td>
         <td><%= link_to 'Show', problem %></td>
-        <td><%= link_to 'Edit', edit_problem_path(problem) %></td>
-        <td><%= link_to 'Destroy', problem, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Problem', new_problem_path %>
