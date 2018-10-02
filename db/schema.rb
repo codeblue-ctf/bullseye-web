@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_26_072111) do
+ActiveRecord::Schema.define(version: 2018_10_02_143131) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -36,6 +36,9 @@ ActiveRecord::Schema.define(version: 2018_08_26_072111) do
     t.integer "score"
     t.integer "exploit_timeout"
     t.integer "exploit_trial_count"
+    t.text "docker_compose"
+    t.string "exploit_container_name"
+    t.string "problem_container_name"
   end
 
   create_table "teams", force: :cascade do |t|
