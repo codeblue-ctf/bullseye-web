@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Title:</strong>
   <%= @problem.title %>
@@ -12,7 +10,7 @@
 
 <p>Run the following command to submit your exploit</p>
 <pre>
-$ docker login docker.codeblue.jp
+$ docker login docker.ctf.codeblue.jp
 > Username: your team email
 > Password: your team password
 $ docker push docker.codeblue.jp/<%= @problem.title %>
