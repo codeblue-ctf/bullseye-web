@@ -1,4 +1,5 @@
 class ProblemsController < ApplicationController
+  before_action :authenticate_team!
   before_action :set_problem, only: [:show]
 
   # GET /problems
