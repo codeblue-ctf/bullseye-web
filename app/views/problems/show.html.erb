@@ -10,10 +10,10 @@
 
 <p>Run the following command to submit your exploit</p>
 <pre>
-$ docker login docker.ctf.codeblue.jp
-> Username: your team email
-> Password: your team password
-$ docker push docker.codeblue.jp/<%= @problem.title %>
+$ docker login <%= Rails.application.config.bullseye[:docker_registry_host] %>
+> Username: <%= current_team.name %>
+> Password: <%= current_team.docker_registry_token %>
+$ docker push <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%= current_team.name %>/<%= @problem.title %>
 </pre>
 
 <%= link_to 'Back', problems_path %>
