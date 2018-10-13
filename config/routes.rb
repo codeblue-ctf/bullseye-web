@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   resource :auth
   get 'home/index'
   root to: 'home#index'
+
+  get 'logs/submit_log'
 end

@@ -1,0 +1,15 @@
+<% @problems.each_with_index do |problem, i| %>
+  <% info = @infos[i] %>
+  <div>
+    <p>problem: <%= problem.title %></p>
+    <p>container name: <%= info['name'] %></p>
+    <% info['fsLayers'].each do |fsLayer| %>
+      <p>fsLayer: <%= fsLayer['blobSum'] %></p>
+    <% end %>
+    <% history = JSON.parse(info['history'][0]['v1Compatibility']) %>
+    <% unless history.nil? then %>
+      <p>updated: <%= history['created'] %></p>
+    <% end %>
+  </div>
+  <hr>
+<% end %>
