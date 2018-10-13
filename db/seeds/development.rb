@@ -6,7 +6,7 @@ Team.create(
   email: 'team1@localhost',
   password: 'password',
   name: 'team1',
-  reset_password_token: 'token'
+  docker_registry_token: 'token'
 )
 Problem.create(
   title: 'sanity-check',
