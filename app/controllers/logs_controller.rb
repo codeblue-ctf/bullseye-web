@@ -7,5 +7,6 @@ class LogsController < ApplicationController
     @infos = problems.map do |problem|
       DockerRegistry::get_latest_info(current_team.name, problem.exploit_container_name)
     end
+    render json: { result: @infos }
   end
 end
