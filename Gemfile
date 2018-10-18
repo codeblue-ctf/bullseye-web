@@ -66,3 +66,5 @@ gem 'rails_admin'
 gem 'bcrypt'
 
 gem 'sidekiq'
+gem 'redis-namespace'
+gem 'sinatra', require: false

@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   devise_for :teams
   devise_for :admins
@@ -8,4 +10,9 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   get 'logs/submit_log'
+
+  # sidekiq web interface
+  authenticate :admin do
+    mount Sidekiq::Web, at: "/sidekiq"
+  end
 end
