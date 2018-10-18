@@ -1,4 +1,4 @@
-class ScheduleResultController < ApplicationController
+class ScheduleResultsController < ApplicationController
   before_action :authenticate_runner
 
   def submit
