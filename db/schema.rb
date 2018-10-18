@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_02_143131) do
+ActiveRecord::Schema.define(version: 2018_10_18_144708) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -39,6 +39,12 @@ ActiveRecord::Schema.define(version: 2018_10_02_143131) do
     t.text "docker_compose"
     t.string "exploit_container_name"
     t.string "problem_container_name"
+  end
+
+  create_table "schedule_results", force: :cascade do |t|
+    t.integer "schedule_id"
+    t.integer "score"
+    t.text "error"
   end
 
   create_table "teams", force: :cascade do |t|
