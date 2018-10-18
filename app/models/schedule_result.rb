@@ -1,0 +1,2 @@
+class ScheduleResult < ApplicationRecord
+end

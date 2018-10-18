@@ -1,5 +1,6 @@
 class ScheduleResultsController < ApplicationController
   before_action :authenticate_runner
+  protect_from_forgery except: [:submit]
 
   def submit
     # Register score
