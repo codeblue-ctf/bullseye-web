@@ -6,5 +6,9 @@ Rails.application.routes.draw do
   get 'home/index'
   root to: 'home#index'
 
-  post 'webhook/submit_score', to: 'schedule_results#submit'
+  namespace :api, { format: :json } do
+    namespace :v1 do
+      post 'submit_score', to: 'schedule_results#submit'
+    end
+  end
 end
