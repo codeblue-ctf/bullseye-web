@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :problems, only: [:index, :show]
   get 'home/index'
   root to: 'home#index'
+  get 'logs/submit_log'
 
   namespace :api, { format: :json } do
     namespace :v1 do
