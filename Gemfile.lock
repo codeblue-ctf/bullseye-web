@@ -80,6 +80,10 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
+    dotenv (2.5.0)
+    dotenv-rails (2.5.0)
+      dotenv (= 2.5.0)
+      railties (>= 3.2, < 6.0)
     erubi (1.7.1)
     execjs (2.7.0)
     ffi (1.9.25)
@@ -257,6 +261,7 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 4.2)
   devise
+  dotenv-rails
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   mini_racer
@@ -277,4 +282,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.6
