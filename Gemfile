@@ -64,5 +64,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 gem 'rails_admin'
 gem 'bcrypt'
+
+gem 'sidekiq'
+gem 'redis-namespace'
+gem 'sinatra', require: false
 gem 'dotenv-rails'
 gem 'mysql2'

@@ -34,11 +34,23 @@ ActiveRecord::Schema.define(version: 2018_10_20_073425) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "score"
-    t.integer "exploit_timeout"
-    t.integer "exploit_trial_count"
+    t.integer "timeout"
+    t.integer "ntrials"
     t.text "docker_compose"
     t.string "exploit_container_name"
     t.string "problem_container_name"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.integer "team_id"
+    t.integer "problem_id"
+    t.datetime "start_at", null: false
+    t.datetime "finish_at", null: false
+    t.integer "interval", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["problem_id"], name: "index_schedules_on_problem_id"
+    t.index ["team_id"], name: "index_schedules_on_team_id"
   end
 
   create_table "schedule_results", force: :cascade do |t|
