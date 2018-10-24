@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_18_112015) do
+ActiveRecord::Schema.define(version: 2018_10_20_073425) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -51,6 +51,16 @@ ActiveRecord::Schema.define(version: 2018_10_18_112015) do
     t.datetime "updated_at", null: false
     t.index ["problem_id"], name: "index_schedules_on_problem_id"
     t.index ["team_id"], name: "index_schedules_on_team_id"
+  end
+
+  create_table "schedule_results", force: :cascade do |t|
+    t.integer "schedule_id"
+    t.integer "score"
+    t.text "error"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "start_at"
+    t.datetime "finished_at"
   end
 
   create_table "teams", force: :cascade do |t|

@@ -68,3 +68,5 @@ gem 'bcrypt'
 gem 'sidekiq'
 gem 'redis-namespace'
 gem 'sinatra', require: false
+gem 'dotenv-rails'
+gem 'mysql2'

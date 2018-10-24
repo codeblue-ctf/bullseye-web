@@ -31,3 +31,4 @@
 
 /vendor/bundle
 /db/auth
+/.env
