@@ -1,4 +1,7 @@
 require 'securerandom'
+require 'net/https'
+require 'uri'
+require 'json'
 
 class ScheduleWorker
   include Sidekiq::Worker
@@ -30,6 +33,7 @@ class ScheduleWorker
     # TODO: perform when the job did not perform for this turn
 
     # TODO: build docker_compose with team information
+
     data = {
       :id => SecureRandom.uuid,
       :trials => schedule.problem.ntrials,
@@ -38,6 +42,20 @@ class ScheduleWorker
     }
     puts data
 
-    # record submit log
+    # submit to bullseye runner
+    result = submit_to_runner(data)
+
+    # TODO: record submit log
+  end
+
+  def submit_to_runner(data)
+    bullseye_config = Rails.application.config.bullseye
+    uri = URI("http://#{bullseye_config[:runner_start_endpoint]}")
+    res = Net::HTTP.start(uri.host, uri.port) { |http|
+      req = Net::HTTP::POST.new(uri, 'Content-Type' => 'application/json')
+      req.body = data.to_json
+      http.request(req)
+    }
+    JSON.parse(res.body)
   end
 end
