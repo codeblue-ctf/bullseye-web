@@ -27,13 +27,16 @@ class ScheduleWorker
       ScheduleWorker.perform_in (interval - (now.to_time - start_at.to_time) % interval), schedule_id
     end
 
+    # TODO: perform when the job did not perform for this turn
+
+    # TODO: build docker_compose with team information
     data = {
       :id => SecureRandom.uuid,
       :trials => schedule.problem.ntrials,
       :timeout => schedule.problem.timeout,
       :docker_compose => schedule.problem.docker_compose,
     }
-    p data
+    puts data
 
     # record submit log
   end
