@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   namespace :internal_api, { format: :json } do
     namespace :v1 do
       post 'submit_score', to: 'schedule_results#submit'
+      post 'login', to: 'authorization#login'
     end
   end
 end
