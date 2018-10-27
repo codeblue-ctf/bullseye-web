@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     mount Sidekiq::Web, at: "/sidekiq"
   end
 
-  namespace :api, { format: :json } do
+  namespace :internal_api, { format: :json } do
     namespace :v1 do
       post 'submit_score', to: 'schedule_results#submit'
     end
