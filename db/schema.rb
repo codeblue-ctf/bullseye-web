@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_27_161756) do
+ActiveRecord::Schema.define(version: 2018_10_27_163044) do
 
   create_table "admins", force: :cascade do |t|
-    t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
@@ -26,7 +25,6 @@ ActiveRecord::Schema.define(version: 2018_10_27_161756) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "login_name"
-    t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["login_name"], name: "index_admins_on_login_name", unique: true
   end
 
