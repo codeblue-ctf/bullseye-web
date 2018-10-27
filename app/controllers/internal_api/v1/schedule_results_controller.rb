@@ -1,4 +1,4 @@
-class Api::V1::ScheduleResultsController < ApiController
+class InternalApi::V1::ScheduleResultsController < InternalApiController
   def submit
     # Register score
     ScheduleResult.create(schedule_result_params)

@@ -1,6 +1,6 @@
-class ApiController < ActionController::API
+class InternalApiController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
-  # XXX: only internal API is required, so we authenticate the request
+  # authenticate the request for internal API
   before_action :authenticate
 
   private
