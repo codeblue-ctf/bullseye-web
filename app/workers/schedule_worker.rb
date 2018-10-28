@@ -35,10 +35,16 @@ class ScheduleWorker
     # TODO: build docker_compose with team information
 
     data = {
-      :id => SecureRandom.uuid,
-      :trials => schedule.problem.ntrials,
-      :timeout => schedule.problem.timeout,
-      :docker_compose => schedule.problem.docker_compose,
+      id: SecureRandom.uuid,
+      trials_count: schedule.problem.ntrials,
+      timeout: schedule.problem.timeout,
+      docker_compose: schedule.problem.docker_compose,
+      callback_url: '', # TODO: write
+      callback_authorization_token: '', # TODO: write,
+      registry_host: '', # TODO: write
+      admin_username: '', # TODO: write
+      admin_password: '', # TODO: write
+      flag_template: 'CBCTF{{{flag}}}' # XXX: hardcoded...
     }
     puts data
 
