@@ -58,7 +58,7 @@ class ScheduleWorker
     bullseye_config = Rails.application.config.bullseye
     uri = URI("http://#{bullseye_config[:runner_start_endpoint]}")
     res = Net::HTTP.start(uri.host, uri.port) { |http|
-      req = Net::HTTP::POST.new(uri, 'Content-Type' => 'application/json')
+      req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
       req.body = data.to_json
       http.request(req)
     }
