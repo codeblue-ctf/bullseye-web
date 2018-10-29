@@ -1,14 +1,13 @@
-Admin.find_or_create_by(email: 'admin@localhost') do |admin|
+Admin.find_or_create_by(login_name: 'admin') do |admin|
   admin.update(
     password: 'password'
   )
 end
 
-Team.find_or_create_by(email: 'team1@localhost') do |team|
+Team.find_or_create_by(login_name: 'team01') do |team|
   team.update(
     password: 'password',
-    name: 'team1',
-    docker_registry_token: 'token'
+    name: 'team1'
   )
 end
 
