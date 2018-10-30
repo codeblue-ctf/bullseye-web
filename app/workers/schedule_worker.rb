@@ -64,7 +64,7 @@ class ScheduleWorker
 
     # record result
     ScheduleResult.create(
-      schedule_id: schedule.id,
+      schedule_id: schedule_id,
       schedule_uuid: data[:id]
     )
 
