@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2018_10_30_084152) do
     t.text "docker_compose"
     t.string "exploit_container_name"
     t.string "problem_container_name"
-    t.text "calc_formula", default: "# available variables: succeeded, failed, started_at, finished_at\n1000*succeeded/(succeeded + failed)", null: false
+    t.text "calc_formula", null: false
   end
 
   create_table "schedule_results", force: :cascade do |t|
