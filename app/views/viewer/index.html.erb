@@ -1,0 +1,140 @@
+<header>
+    <div class="pull-left"><h1><a href="/">Bull's Eye</a></h1></div>
+    <div class="pull-right"><div id="bullseye-problems"></div></div>
+</header>
+<div id="bullseye-teams"></div>
+<div id="bullseye-nowexploiting">
+    <div class="message">
+        Next exploit<br>
+        <input type="time">
+    </div>
+</div>
+
+<script type="text/x-jsrender" id="bullseye-template-problems">
+    <div id="bullseye-problems-selected" data-problem-id="0">Select problem</div>
+    <div id="bullseye-problems-panel">
+        {{for problems}}
+            <div class="problems-container">
+                <div class="problems" data-problem-id="{{>problem_id}}">
+                    <div class="name">{{>name}}</div>
+                </div>
+            </div>
+        {{/for}}
+        <div class="problems-container">
+            <div class="problems" data-problem-id="0" id="bullseye-nowexploiting-trigger">
+                <div class="name">Now exploting...</div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-jsrender" id="bullseye-template-teams">
+    {{for teams}}
+        <div class="teams-container">
+            <div class="teams" data-team-id="{{>team_id}}">
+                <div class="name">{{>name}}</div>
+                <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
+                <div class="score">{{>score}}pt</div>
+            </div>
+        </div>
+    {{/for}}
+</script>
+
+<script>
+$(() => {
+    let setPlayed = (team_id, problem_id) => {
+        let played = JSON.parse(localStorage.played || '{}')
+        played[team_id] = played[team_id] || []
+        if (played[team_id].includes(problem_id) === false) {
+            played[team_id].push(problem_id)
+        }
+        localStorage.played = JSON.stringify(played)
+    }
+
+    let getPlayed = (team_id) => {
+        let played = JSON.parse(localStorage.played || '{}')
+        return played[team_id] || []
+    }
+
+    let getTeamIdByPlayed = (problem_id) => {
+        let teamIds = []
+        let played = JSON.parse(localStorage.played || '{}')
+        for (team_id in played) {
+            if (played[team_id].includes(problem_id)) {
+                teamIds.push(team_id)
+            }
+        }
+        return teamIds
+    }
+
+    let selectProblem = (problem_id, name) => {
+        localStorage.currentProblemId = problem_id
+        localStorage.currentProblemName = name
+        $('#bullseye-problems-selected')
+            .data('problem-id', problem_id)
+            .text(name)
+
+        console.log(getTeamIdByPlayed(problem_id))
+    }
+
+    $.getJSON(CONFIG.API_BASE + '/problems.json', (r) => {
+        $('#bullseye-problems').append($('#bullseye-template-problems').render({'problems': r}))
+        $('.problems').click((e) => {
+            let self = $(e.currentTarget)
+            selectProblem(self.data('problem-id'), self.find('.name').text())
+            $('#bullseye-problems-panel').hide()
+        })
+        $('.problems#bullseye-nowexploiting-trigger').click((e) => {
+            $('#bullseye-nowexploiting').fadeIn(200)
+        })
+        $('#bullseye-nowexploiting').click((e) => {
+            $('#bullseye-nowexploiting').fadeOut(200)
+        })
+        $('#bullseye-nowexploiting input').click((e) => {
+            e.stopPropagation()
+        })
+
+        $('#bullseye-problems-selected').click((e) => {
+            $('#bullseye-problems-panel').fadeToggle(200)
+        })
+        
+        if (localStorage.currentProblemId !== null) {
+            selectProblem(localStorage.currentProblemId, localStorage.currentProblemName)
+        }
+    })
+
+    $.getJSON(CONFIG.API_BASE + '/teams.json', (r) => {
+        let teams = []
+        for (let team of r) {
+            let score = 0
+            for (played_id of getPlayed(team['team_id'])) {
+                score += team['score'][played_id - 1] || 0
+            }
+            team['score'] = score
+            teams.push(team)
+        }
+        teams.sort((a, b) => {
+            if (a['score'] < b['score']) {
+                return 1
+            }
+            if (a['score'] > b['score']) {
+                return -1
+            }
+            return 0
+        })
+        $('#bullseye-teams').append($('#bullseye-template-teams').render({'teams': teams}))
+        $('.teams').click((e) => {
+            let self = $(e.currentTarget)
+            let problem_id = localStorage.currentProblemId
+            if (problem_id === 0) {
+                alert('Select problem')
+                return
+            }
+
+            setPlayed(self.data('team-id'), problem_id)
+            let param = '#' + problem_id + '/' + self.data('team-id')
+            location.href = "<%= url_for :action => 'play' %>" + param
+        })
+    })
+})
+</script>

@@ -1,0 +1,151 @@
+<div id="bullseye-logo"><a href="/">Bull's Eye</a></div>
+<div id="bullseye-team" class="bullseye-status-panel"></div>
+<div id="bullseye-problem" class="bullseye-status-panel"></div>
+<div id="bullseye-container"></div>
+
+<script type="text/x-jsrender" id="bullseye-template-team">
+    <div class="name">{{>name}}</div>
+    <div class="logo"><img src="images/teams/{{>id}}.png" alt=""></div>
+</script>
+
+<script type="text/x-jsrender" id="bullseye-template-problem">
+    <div class="name">{{>name}}</div>
+    <div class="score">
+        <div id="bullseye-problem-exploit-count">-</div> 
+        <div class="separate"></div> 
+        <div id="bullseye-problem-try-count">{{>try_count}}</div>
+    </div>
+</script>
+
+<script type="text/x-jsrender" id="bullseye-template-objects">
+    <div class="bullseye-objects">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116 116">
+            <defs>
+                <filter id="blur"><feGaussianBlur stdDeviation="3" result="blur" /></filter>
+            </defs>
+
+            <path d="M58,8C30.4,8,8,30.4,8,58s22.4,50,50,50s50-22.4,50-50S85.6,8,58,8z M98.9,55.8h-8.4c-1.1-16.3-14.1-29.3-30.4-30.4v-8.4,C81.1,18.2,97.8,34.9,98.9,55.8z M43,60.2c1,6.7,6.2,11.9,12.9,12.9v8.5c-11.3-1-20.3-10-21.3-21.3H43z M34.5,55.8,c1-11.3,10-20.3,21.3-21.3V43c-6.7,1-11.9,6.2-12.9,12.9H34.5z M60.2,73c6.7-1,11.9-6.2,12.9-12.9h8.5c-1,11.3-10,20.3-21.3,21.3,V73z M73,55.8c-1-6.7-6.2-11.9-12.9-12.9v-8.5c11.3,1,20.3,10,21.3,21.3H73z M55.8,17.1v8.4c-16.3,1.1-29.3,14.1-30.4,30.4h-8.4,C18.2,34.9,34.9,18.2,55.8,17.1z M17.1,60.2h8.4c1.1,16.3,14.1,29.3,30.4,30.4v8.4C34.9,97.8,18.2,81.1,17.1,60.2z M60.2,98.9v-8.4,c16.3-1.1,29.3-14.1,30.4-30.4h8.4C97.8,81.1,81.1,97.8,60.2,98.9z" class="front" />
+            <path d="M58,8C30.4,8,8,30.4,8,58s22.4,50,50,50s50-22.4,50-50S85.6,8,58,8z M98.9,55.8h-8.4c-1.1-16.3-14.1-29.3-30.4-30.4v-8.4,C81.1,18.2,97.8,34.9,98.9,55.8z M43,60.2c1,6.7,6.2,11.9,12.9,12.9v8.5c-11.3-1-20.3-10-21.3-21.3H43z M34.5,55.8,c1-11.3,10-20.3,21.3-21.3V43c-6.7,1-11.9,6.2-12.9,12.9H34.5z M60.2,73c6.7-1,11.9-6.2,12.9-12.9h8.5c-1,11.3-10,20.3-21.3,21.3,V73z M73,55.8c-1-6.7-6.2-11.9-12.9-12.9v-8.5c11.3,1,20.3,10,21.3,21.3H73z M55.8,17.1v8.4c-16.3,1.1-29.3,14.1-30.4,30.4h-8.4,C18.2,34.9,34.9,18.2,55.8,17.1z M17.1,60.2h8.4c1.1,16.3,14.1,29.3,30.4,30.4v8.4C34.9,97.8,18.2,81.1,17.1,60.2z M60.2,98.9v-8.4,c16.3-1.1,29.3-14.1,30.4-30.4h8.4C97.8,81.1,81.1,97.8,60.2,98.9z" class="back" filter="url(#blur)" />
+        </svg>
+    </div>
+</script>
+
+<script>
+$(() => {
+    let param = location.hash.slice(1) || location.replace('<%= url_for :action => 'index' %>')
+    let scene = new THREE.Scene()
+    let camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
+    camera.position.y = 1000
+    camera.position.z = 3000
+
+    let grid = new THREE.GridHelper(1000, 10);
+    grid.position = new THREE.Vector3(0, 0, 0);
+    grid.rotation = new THREE.Euler(0, 0, 0);
+    scene.add(grid);
+
+    // make object
+    let vector = new THREE.Vector3()
+    let objects = []
+    for (let i = 0; i < CONFIG.OBJECTS_NUMBER; i++) {
+        let element = $($('#bullseye-template-objects').render({'i': i}))[0]
+        let phi = Math.acos(-1 + (2 * i) / CONFIG.OBJECTS_NUMBER)
+        let theta = Math.sqrt(CONFIG.OBJECTS_NUMBER * Math.PI) * phi
+        let object = new THREE.CSS3DObject(element)
+        object.position.setFromSphericalCoords(800, phi, theta)
+        vector.copy(object.position).multiplyScalar(2)
+        object.lookAt(vector)
+
+        scene.add(object)
+        objects.push(object)
+    }
+
+    // lender
+    let renderer = new THREE.CSS3DRenderer()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    $('#bullseye-container').append(renderer.domElement)
+    renderer.render(scene, camera)
+
+    // animation
+    let currentRot = 0
+    let amountRot = 0.15
+    ;(function animation() {
+        currentRot += amountRot
+        let radian = currentRot * Math.PI / 180
+        camera.position.x = 3000 * Math.sin(radian)
+        camera.position.z = 3000 * Math.cos(radian)
+        camera.lookAt(new THREE.Vector3(0, 0, 0))
+        renderer.render(scene, camera)
+        requestAnimationFrame(animation)
+    })()
+
+    // action
+    let wait = (ms) => {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms)
+        })
+    }
+
+    let action = (r) => {
+        let rate = Math.floor(r.problem.exploit_count / r.problem.try_count * 100)
+        let exploitCountId = 0
+        Promise.resolve()
+            .then(() => {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        let f = () => {
+                            if (amountRot < -1.4) {
+                                exploitCountId = setInterval(() => {
+                                    $('#bullseye-problem-exploit-count').text(Math.floor(Math.random()*899+100))
+                                }, 50)
+                                resolve()
+                                return
+                            }
+                            setTimeout(() => {
+                                amountRot -= 0.15
+                                f()
+                            }, 200)
+                        }
+                        f()
+                    }, 3000)
+                })
+            })
+            .then(() => {
+                return new Promise((resolve) => {
+                    setTimeout(async () => {
+                        for (let i = 0; i < rate; i++) {
+                            let o = objects.splice(Math.floor(Math.random() * objects.length), 1)[0]
+                            $(o.element).addClass('explode')
+                            await wait(200)
+                        }
+                        resolve()
+                    }, 3000)
+                })
+            })
+            .then(() => {
+                return new Promise((resolve) => {
+                    clearInterval(exploitCountId)
+                    $('#bullseye-problem-exploit-count').text(r.problem.exploit_count)
+
+                    let f = () => {
+                        if (amountRot > 0.14) {
+                            resolve()
+                            return
+                        }
+                        setTimeout(() => {
+                            amountRot += 0.15
+                            f()
+                        }, 200)
+                    }
+                    f()
+                })
+            })
+    }
+
+    // dispatch
+    $.getJSON(CONFIG.API_BASE + '/' + param + '.json', (r) => {
+        $('#bullseye-team').append($('#bullseye-template-team').render(r.team))
+        $('#bullseye-problem').append($('#bullseye-template-problem').render(r.problem))
+        action(r)
+    })
+})
+</script>
