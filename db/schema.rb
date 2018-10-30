@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_30_034710) do
+ActiveRecord::Schema.define(version: 2018_10_30_084152) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2018_10_30_034710) do
     t.text "docker_compose"
     t.string "exploit_container_name"
     t.string "problem_container_name"
+    t.string "calc_formula"
   end
 
   create_table "schedule_results", force: :cascade do |t|
@@ -50,6 +51,8 @@ ActiveRecord::Schema.define(version: 2018_10_30_034710) do
     t.datetime "finished_at"
     t.string "schedule_uuid", default: "", null: false
     t.integer "schedule_id"
+    t.integer "score"
+    t.integer "failed"
     t.index ["schedule_id"], name: "index_schedule_results_on_schedule_id"
   end
 

@@ -1,6 +1,7 @@
 class Schedule < ApplicationRecord
   belongs_to :team
   belongs_to :problem
+  has_many :schedule_result
 
   after_save do |record|
     if record.next_jobid_changed? then
