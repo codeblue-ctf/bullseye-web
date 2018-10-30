@@ -34,29 +34,29 @@ class ScheduleWorker
 
     # TODO: build docker_compose with team information
 
+    bullseye_config = Rails.application.config.bullseye
+    runner_host = schedule.runner_host || bullseye_config[:runner_host]
+
     data = {
       id: SecureRandom.uuid,
       trials_count: schedule.problem.ntrials,
       timeout: schedule.problem.timeout,
       docker_compose: schedule.problem.docker_compose,
-      callback_url: '', # TODO: write
-      callback_authorization_token: '', # TODO: write,
-      registry_host: '', # TODO: write
-      admin_username: '', # TODO: write
-      admin_password: '', # TODO: write
+      callback_url: "http://#{bullseye_config[:web_host]}",
+      callback_authorizatoin_token: bullseye_config[:api_authorization_token],
+      registry_host: "http://#{bullseye_config[:docker_registry_host]}",
+      admin_username: bullseye_config[:admin][:name]
+      admin_password: bullseye_config[:admin][:password]
       flag_template: 'CBCTF{{{flag}}}' # XXX: hardcoded...
     }
-    puts data
-
     # submit to bullseye runner
-    result = submit_to_runner(data)
+    result = submit_to_runner(runner_host, data)
 
     # TODO: record submit log
   end
 
-  def submit_to_runner(data)
-    bullseye_config = Rails.application.config.bullseye
-    uri = URI("http://#{bullseye_config[:runner_start_endpoint]}")
+  def submit_to_runner(runner_host, data)
+    uri = URI("http://#{runner_host}")
     res = Net::HTTP.start(uri.host, uri.port) { |http|
       req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
       req.body = data.to_json

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_27_163044) do
+ActiveRecord::Schema.define(version: 2018_10_29_172910) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2018_10_27_163044) do
     t.integer "interval", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "runner_host"
     t.index ["problem_id"], name: "index_schedules_on_problem_id"
     t.index ["team_id"], name: "index_schedules_on_team_id"
   end
