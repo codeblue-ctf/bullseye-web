@@ -1,4 +1,6 @@
 class Problem < ApplicationRecord
+  has_many :schedule
+  
   before_save do |record|
     if record.docker_compose_changed? then
       begin

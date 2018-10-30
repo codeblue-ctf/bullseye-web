@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_30_034710) do
+ActiveRecord::Schema.define(version: 2018_10_30_103637) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -33,12 +33,12 @@ ActiveRecord::Schema.define(version: 2018_10_30_034710) do
     t.text "statement"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "score"
     t.integer "timeout"
     t.integer "ntrials"
     t.text "docker_compose"
     t.string "exploit_container_name"
     t.string "problem_container_name"
+    t.text "calc_formula", default: "# available variables: succeeded, failed, started_at, finished_at\n1000*succeeded/(succeeded + failed)", null: false
   end
 
   create_table "schedule_results", force: :cascade do |t|
@@ -46,10 +46,12 @@ ActiveRecord::Schema.define(version: 2018_10_30_034710) do
     t.text "error"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "start_at"
-    t.datetime "finished_at"
+    t.datetime "runner_started_at"
+    t.datetime "runner_finished_at"
     t.string "schedule_uuid", default: "", null: false
     t.integer "schedule_id"
+    t.integer "score"
+    t.integer "failed"
     t.index ["schedule_id"], name: "index_schedule_results_on_schedule_id"
   end
 
