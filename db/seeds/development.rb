@@ -7,7 +7,8 @@ end
 Team.find_or_create_by(login_name: 'team01') do |team|
   team.update(
     password: 'password',
-    name: 'team1'
+    name: 'team1',
+    email: 'dummy@localhost'
   )
 end
 

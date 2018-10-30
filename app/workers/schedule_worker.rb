@@ -9,9 +9,8 @@ class ScheduleWorker
   def perform(schedule_id)
     # send request to bullseye-runner
     schedule = Schedule.find(schedule_id)
-    team_id = schedule.team_id
-    problem_id = schedule.problem_id
-
+    team = schedule.team
+    problem = schedule.problem
 
     start_at = schedule.start_at
     finish_at = schedule.finish_at
@@ -22,41 +21,59 @@ class ScheduleWorker
       return
     end
 
-    # schedule next worker
-    if now < start_at then
-      ScheduleWorker.perform_at start_at, schedule_id
-      return
-    else
-      ScheduleWorker.perform_in (interval - (now.to_time - start_at.to_time) % interval), schedule_id
+    # update schedule
+    if schedule.next_jobid != self.jid then
+      job = Sidekiq::ScheduledSet.new.find_job(schedule.next_jobid)
+      job.delete if job
     end
 
-    # TODO: perform when the job did not perform for this turn
+    # schedule next worker
+    if now < start_at then
+      schedule.next_jobid = ScheduleWorker.perform_at start_at, schedule_id
+      schedule.save
+      return
+    end
 
-    # TODO: build docker_compose with team information
+    schedule.next_jobid = ScheduleWorker.perform_in (interval - (now.to_time - start_at.to_time) % interval), schedule_id
+    schedule.save
+
+    docker_compose = (problem.docker_compose || "") % {
+      team: team.login_name,
+      exploit: problem.exploit_container_name,
+      problem: problem.problem_container_name
+    }
+
+    bullseye_config = Rails.application.config.bullseye
+    runner_host = schedule.runner_host || bullseye_config[:runner_host]
 
     data = {
       id: SecureRandom.uuid,
-      trials_count: schedule.problem.ntrials,
-      timeout: schedule.problem.timeout,
-      docker_compose: schedule.problem.docker_compose,
-      callback_url: '', # TODO: write
-      callback_authorization_token: '', # TODO: write,
-      registry_host: '', # TODO: write
-      admin_username: '', # TODO: write
-      admin_password: '', # TODO: write
+      trials_count: problem.ntrials,
+      timeout: problem.timeout,
+      docker_compose: docker_compose,
+      callback_url: "http://#{bullseye_config[:web_host]}",
+      callback_authorizatoin_token: bullseye_config[:api_authorization_token],
+      registry_host: "http://#{bullseye_config[:docker_registry_host]}",
+      admin_username: bullseye_config[:admin][:name],
+      admin_password: bullseye_config[:admin][:password],
       flag_template: 'CBCTF{{{flag}}}' # XXX: hardcoded...
     }
-    puts data
 
     # submit to bullseye runner
-    result = submit_to_runner(data)
+    result = submit_to_runner(runner_host, data)
 
-    # TODO: record submit log
+    # record result
+    ScheduleResult.create(
+      schedule_id: schedule.id,
+      schedule_uuid: data[:id]
+    )
+
+    # increment round counter
+    schedule.current_round += 1
   end
 
-  def submit_to_runner(data)
-    bullseye_config = Rails.application.config.bullseye
-    uri = URI("http://#{bullseye_config[:runner_start_endpoint]}")
+  def submit_to_runner(runner_host, data)
+    uri = URI("http://#{runner_host}")
     res = Net::HTTP.start(uri.host, uri.port) { |http|
       req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
       req.body = data.to_json
