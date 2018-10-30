@@ -8,6 +8,9 @@ Sidekiq.configure_client do |config|
 end
 
 # initialize for all job on restarting
-Schedule.all.each do |record|
-  ScheduleWorker.perform_async record.id
+begin
+  Schedule.all.each do |record|
+    ScheduleWorker.perform_async record.id
+  end
+rescue
 end
