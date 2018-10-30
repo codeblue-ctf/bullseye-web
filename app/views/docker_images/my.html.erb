@@ -1,5 +1,6 @@
 <% @problems.each_with_index do |problem, i| %>
   <% info = @infos[i] %>
+  <% next if info.nil? %>
   <div>
     <p>problem: <%= problem.title %></p>
     <p>container name: <%= info['name'] %></p>

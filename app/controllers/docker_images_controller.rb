@@ -6,8 +6,13 @@ class DockerImagesController < ApplicationController
 
   def my
     @problems = Problem.all
-    @infos = @problems.map do |problem|
-      DockerRegistry::get_latest_info(current_team.name, problem.exploit_container_name)
+    begin
+      @infos = @problems.map do |problem|
+        DockerRegistry::get_latest_info(current_team.name, problem.exploit_container_name)
+      end
+    rescue => error
+      @infos = []
+      flash.now[:alert] = error
     end
   end
 
