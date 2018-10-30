@@ -7,12 +7,13 @@ Rails.application.routes.draw do
   resources :problems, only: [:index, :show]
   get 'home/index'
   root to: 'home#index'
-  get 'logs/submit_log'
+  get 'docker_images/my'
   get 'viewer(/:action)', :controller => 'viewer'
 
   # sidekiq web interface
   authenticate :admin do
     mount Sidekiq::Web, at: "/sidekiq"
+    get 'docker_images/all'
   end
 
   namespace :internal_api, { format: :json } do
