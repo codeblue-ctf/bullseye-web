@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_30_084152) do
+ActiveRecord::Schema.define(version: 2018_10_30_103637) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(version: 2018_10_30_084152) do
     t.text "statement"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "score"
     t.integer "timeout"
     t.integer "ntrials"
     t.text "docker_compose"
