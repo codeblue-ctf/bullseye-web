@@ -25,8 +25,9 @@ Rails.application.routes.draw do
 
   namespace :external_api, { format: :json } do
     namespace :v1 do
-      get 'problems', to: 'viewer#problems'
       get 'teams', to: 'viewer#teams'
+      get 'problems', to: 'viewer#problems'
+      get 'score/:id', to: 'viewer#score'
     end
   end
 end

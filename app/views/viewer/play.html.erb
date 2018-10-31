@@ -1,19 +1,36 @@
-<div id="bullseye-logo"><a href="/">Bull's Eye</a></div>
+<div id="bullseye-logo"><a href="<%= url_for :action => 'index' %>"></a></div>
 <div id="bullseye-team" class="bullseye-status-panel"></div>
 <div id="bullseye-problem" class="bullseye-status-panel"></div>
+<div id="bullseye-result"></div>
 <div id="bullseye-container"></div>
 
 <script type="text/x-jsrender" id="bullseye-template-team">
     <div class="name">{{>name}}</div>
-    <div class="logo"><img src="images/teams/{{>id}}.png" alt=""></div>
+    <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
 </script>
 
 <script type="text/x-jsrender" id="bullseye-template-problem">
-    <div class="name">{{>name}}</div>
+    <div class="name">{{>name}} #{{>round}}</div>
     <div class="score">
-        <div id="bullseye-problem-exploit-count">-</div> 
+        <div id="bullseye-problem-succeeded">-</div> 
         <div class="separate"></div> 
-        <div id="bullseye-problem-try-count">{{>try_count}}</div>
+        <div id="bullseye-problem-ntrials">{{>ntrials}}</div>
+    </div>
+</script>
+
+<script type="text/x-jsrender" id="bullseye-template-result">
+    <div class="flex">
+        <div class="items team">
+            <div class="name">{{>team_name}}</div>
+            <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
+        </div>
+        <div class="items problem">
+            <div class="name">{{>problem_name}} #{{>round}}</div>
+            <div class="score">
+                <div class="count">{{>count}}</div> 
+                <div class="point">+{{>score}}pt</div>
+            </div>
+        </div>
     </div>
 </script>
 
@@ -32,7 +49,10 @@
 
 <script>
 $(() => {
-    let param = location.hash.slice(1) || location.replace('<%= url_for :action => 'index' %>')
+    let _params = location.hash.slice(1).split('&') || location.replace('<%= url_for :action => 'index' %>')
+    let ID = _params[0]
+    let IS_SKIP = _params[1] === 'skip'
+
     let scene = new THREE.Scene()
     let camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
     camera.position.y = 1000
@@ -86,16 +106,20 @@ $(() => {
     }
 
     let action = (r) => {
-        let rate = Math.floor(r.problem.exploit_count / r.problem.try_count * 100)
+        let rate = Math.floor(r.problem.succeeded / r.problem.ntrials * 100)
         let exploitCountId = 0
         Promise.resolve()
             .then(() => {
+                if (IS_SKIP === true) {
+                    return new Promise((resolve) => { resolve() })
+                }
+
                 return new Promise((resolve) => {
                     setTimeout(() => {
                         let f = () => {
                             if (amountRot < -1.4) {
                                 exploitCountId = setInterval(() => {
-                                    $('#bullseye-problem-exploit-count').text(Math.floor(Math.random()*899+100))
+                                    $('#bullseye-problem-succeeded').text(Math.floor(Math.random()*899+100))
                                 }, 50)
                                 resolve()
                                 return
@@ -110,6 +134,10 @@ $(() => {
                 })
             })
             .then(() => {
+                if (IS_SKIP === true) {
+                    return new Promise((resolve) => { resolve() })
+                }
+
                 return new Promise((resolve) => {
                     setTimeout(async () => {
                         for (let i = 0; i < rate; i++) {
@@ -122,9 +150,13 @@ $(() => {
                 })
             })
             .then(() => {
+                if (IS_SKIP === true) {
+                    return new Promise((resolve) => { resolve() })
+                }
+
                 return new Promise((resolve) => {
                     clearInterval(exploitCountId)
-                    $('#bullseye-problem-exploit-count').text(r.problem.exploit_count)
+                    $('#bullseye-problem-succeeded').text(r.problem.succeeded)
 
                     let f = () => {
                         if (amountRot > 0.14) {
@@ -134,18 +166,38 @@ $(() => {
                         setTimeout(() => {
                             amountRot += 0.15
                             f()
-                        }, 200)
+                        }, 100)
                     }
                     f()
                 })
             })
+            .then(() => {
+                let perfect = r.problem.succeeded === r.problem.ntrials
+                let param = {
+                    'team_name': r.team.name,
+                    'team_id': r.team.team_id,
+                    'problem_name': r.problem.name,
+                    'round': r.problem.round,
+                    'count': perfect ? "Bull's Eye" : r.problem.succeeded + ' / ' + r.problem.ntrials,
+                    'score': r.problem.score,
+                }
+                $('#bullseye-result')
+                    .addClass(perfect ? 'perfect' : '')
+                    .append($('#bullseye-template-result').render(param))
+                    .click(() => { location = "<%= url_for :action => 'index' %>" })
+                    .fadeIn(200)
+            })
     }
 
     // dispatch
-    $.getJSON(CONFIG.API_BASE + '/' + param + '.json', (r) => {
-        $('#bullseye-team').append($('#bullseye-template-team').render(r.team))
-        $('#bullseye-problem').append($('#bullseye-template-problem').render(r.problem))
-        action(r)
+    $.getJSON(CONFIG.API_BASE + '/score/' + ID + '.json', (r) => {
+        if (r !== null) {
+            $('#bullseye-team').append($('#bullseye-template-team').render(r.team))
+            $('#bullseye-problem').append($('#bullseye-template-problem').render(r.problem))
+            action(r)
+        } else {
+            alert('Result not exists!')
+        }
     })
 })
 </script>

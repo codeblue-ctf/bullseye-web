@@ -14,5 +14,6 @@ end
 
 Problem.find_or_create_by(
   title: 'sanity-check',
-  statement: 'sanity-check'
+  statement: 'sanity-check',
+  calc_formula: '1000*succeeded/(succeeded+failed)'
 )

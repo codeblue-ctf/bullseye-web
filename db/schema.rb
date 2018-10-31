@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2018_10_30_103637) do
     t.text "docker_compose"
     t.string "exploit_container_name"
     t.string "problem_container_name"
-    t.text "calc_formula", null: false
+    t.text "calc_formula"
   end
 
   create_table "schedule_results", force: :cascade do |t|
