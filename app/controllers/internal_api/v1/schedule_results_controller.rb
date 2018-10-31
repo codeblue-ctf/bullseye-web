@@ -8,6 +8,6 @@ class InternalApi::V1::ScheduleResultsController < InternalApiController
 
   private
   def schedule_result_params
-    params.require(:schedule_result).permit(:schedule_uuid, :succeeded, :failed, :error, :start_at, :finished_at)
+    params.require(:schedule_result).permit(:schedule_uuid, :succeeded, :failed, :error, :runner_started_at, :runner_finished_at)
   end
 end
