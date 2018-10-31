@@ -6,7 +6,7 @@ class Schedule < ApplicationRecord
   after_save do |record|
     is_new = record.created_at == record.updated_at
     if is_new or record.next_jobid_changed? then
-      #ScheduleWorker.perform_async record.id
+      ScheduleWorker.perform_async record.id
     end
   end
 
