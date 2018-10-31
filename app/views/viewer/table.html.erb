@@ -1,0 +1,63 @@
+<header>
+    <div class="pull-left"><h1><a href="<%= url_for :action => 'index' %>">Bull's Eye</a></h1></div>
+</header>
+
+<div id="bullseye-menu"><a href="<%= url_for :action => 'index' %>">index</a></div>
+<div id="bullseye-table"></div>
+
+<script type="text/x-jsrender" id="bullseye-template-table">
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Team</th>
+            {{props problems}}
+            <th>{{>prop}}</th>
+            {{/props}}
+        </tr>
+        {{for teams}}
+            <tr>
+            <td class="min">{{>#index+1}}</td>
+                <td class="min">{{>name}}</td>
+                {{props ~root.problems ~index=#index}}
+                    <td>{{>~root.teams[~index].scores[key]}}</td>
+                {{/props}}
+            </tr>
+        {{/for}}
+    </table>
+</script>
+
+<script>
+$(() => {
+    $.getJSON(CONFIG.API_BASE + '/table.json', (r) => {
+        let teams = []
+        let played = JSON.parse(localStorage.played || '{}')
+        let schedule = played['schedule'] || {}
+
+        for (let team of r['team']) {
+            team['score_sum'] = 0
+            team['scores'] = {}
+            for (let problem_id in team['score']) {
+                let score = 0
+                for (schedule_id of schedule[team['schedule_team_id']] || []) {
+                    score += team['score'][problem_id][schedule_id] || 0
+                }
+                team['scores'][problem_id] = score
+                team['score_sum'] += score
+            }
+            teams.push(team)
+        }
+        teams.sort((a, b) => {
+            if (a['score_sum'] < b['score_sum']) {
+                return 1
+            }
+            if (a['score_sum'] > b['score_sum']) {
+                return -1
+            }
+            return 0
+        })
+
+        $('#bullseye-table').append($('#bullseye-template-table').render({'teams': teams, 'problems': r['problem']}))
+    })
+
+})
+</script>
