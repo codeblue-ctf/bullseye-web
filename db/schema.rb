@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_30_103637) do
+ActiveRecord::Schema.define(version: 2018_10_31_190121) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2018_10_30_103637) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "login_name"
+    t.string "default_runner"
     t.index ["email"], name: "index_teams_on_email", unique: true
     t.index ["login_name"], name: "index_teams_on_login_name", unique: true
     t.index ["reset_password_token"], name: "index_teams_on_reset_password_token", unique: true
