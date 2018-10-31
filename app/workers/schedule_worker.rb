@@ -57,12 +57,13 @@ class ScheduleWorker
 
     # record result
     ScheduleResult.create(
-      schedule_id: schedule_id,
-      schedule_uuid: data[:id]
+      schedule: schedule,
+      schedule_uuid: data[:id],
+      round: schedule.current_round,
     )
 
     # increment round counter
-    schedule.current_round += 1
+    schedule.update_columns(current_round: schedule.current_round+1)
   end
 
   def submit_to_runner(runner_host, data)

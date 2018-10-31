@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_30_103637) do
+ActiveRecord::Schema.define(version: 2018_10_31_174632) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2018_10_30_103637) do
     t.integer "schedule_id"
     t.integer "score"
     t.integer "failed"
+    t.integer "round"
     t.index ["schedule_id"], name: "index_schedule_results_on_schedule_id"
   end
 
@@ -65,7 +66,6 @@ ActiveRecord::Schema.define(version: 2018_10_30_103637) do
     t.datetime "updated_at", null: false
     t.string "runner_host"
     t.integer "current_round", default: 0
-    t.string "next_jobid"
     t.index ["problem_id"], name: "index_schedules_on_problem_id"
     t.index ["team_id"], name: "index_schedules_on_team_id"
   end
