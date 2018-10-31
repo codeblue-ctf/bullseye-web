@@ -5,7 +5,7 @@ class ProblemsController < ApplicationController
   # GET /problems
   # GET /problems.json
   def index
-    @problems = Problem.where(hidden: false)
+    @problems = Problem.where(hidden: [false, nil])
   end
 
   # GET /problems/1
@@ -15,6 +15,6 @@ class ProblemsController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_problem
-      @problem = Problem.where(hidden: false).find(params[:id])
+      @problem = Problem.where(hidden: [false, nil]).find(params[:id])
     end
 end
