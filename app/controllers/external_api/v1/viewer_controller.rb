@@ -5,7 +5,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     schedule_results_all.each do |schedule_result|
       key = schedule_result.schedule.team_id
       score_map[key] ||= {}
-      score_map[key][schedule_result.schedule_id] = schedule_result.score
+      score_map[key][schedule_result.id] = schedule_result.score
     end
 
     result = []
@@ -24,20 +24,20 @@ class ExternalApi::V1::ViewerController < ExternalApiController
 
   def problems
     result = {}
-    schedules_all = Schedule.includes(:problem)
-    schedules_all.each do |schedule|
-      result[schedule.problem_id] ||= {}
-      result[schedule.problem_id][:name] = schedule.problem.title
-      result[schedule.problem_id][:round] ||= {}
-      result[schedule.problem_id][:round][schedule.current_round] ||= {}
-      result[schedule.problem_id][:round][schedule.current_round][schedule.team_id] = schedule.id
+    schedule_results_all = ScheduleResult.includes(schedule: [:problem])
+    schedule_results_all.each do |schedule_result|
+      result[schedule_result.schedule.problem_id] ||= {}
+      result[schedule_result.schedule.problem_id][:name] = schedule_result.schedule.problem.title
+      result[schedule_result.schedule.problem_id][:round] ||= {}
+      result[schedule_result.schedule.problem_id][:round][schedule_result.round] ||= {}
+      result[schedule_result.schedule.problem_id][:round][schedule_result.round][schedule_result.schedule.team_id] = schedule_result.id
     end
 
     render json: result
   end
 
   def score
-    schedule_results = ScheduleResult.includes(schedule: [:team, :problem]).find_by(schedule_id: params[:id])
+    schedule_results = ScheduleResult.includes(schedule: [:team, :problem]).find_by(id: params[:id])
     render json: schedule_results ? {
       team: {
         team_id: schedule_results.schedule.team.login_name,
@@ -45,7 +45,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       },
       problem: {
         name: schedule_results.schedule.problem.title,
-        round: schedule_results.schedule.current_round,
+        round: schedule_results.round,
         ntrials: schedule_results.schedule.problem.ntrials,
         succeeded: schedule_results.succeeded,
         score: schedule_results.score

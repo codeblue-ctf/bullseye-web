@@ -1,7 +1,6 @@
 <header>
     <div class="pull-left"><h1><a href="<%= url_for %>">Bull's Eye</a></h1></div>
     <div class="pull-right"><div id="bullseye-problems"></div></div>
-    <div class="pull-right"><div id="bullseye-problems"></div></div>
 </header>
 <div id="bullseye-teams"></div>
 <div id="bullseye-nowexploiting">
@@ -35,6 +34,9 @@
         </div>
         <div class="items">
             <input type="number" id="bullseye-problem-round" value="1" min="1" max="1">
+        </div>
+        <div class="items">
+            <div id="bullseye-problems-autoplay">&#9654;</div>
         </div>
     </div>
 </script>
@@ -149,6 +151,32 @@ $(() => {
             let self = $(e.currentTarget)
             self.text(localStorage.mode = self.text() === 'play' ? 'skip' : 'play')
         })
+
+        $('#bullseye-problems-autoplay').click((e) => {
+            let problem_id = localStorage.currentProblemId
+            if (problem_id === undefined || problem_id === 0) {
+                alert('Select problem')
+                return
+            }
+
+            let current_round = $('#bullseye-problem-round').val()
+            if (PROBLEMS[problem_id]['round'][current_round] === undefined) {
+                alert('Result not exists (round)')
+                return
+            }
+            localStorage.currentRound = current_round
+
+            let schedule_ids = []
+            for (let schedule_team_id in PROBLEMS[problem_id]['round'][current_round]) {
+                schedule_id = PROBLEMS[problem_id]['round'][current_round][schedule_team_id]
+                schedule_ids.push(schedule_id)
+                setPlayed(schedule_team_id, schedule_id, problem_id, current_round)
+            }
+            schedule_ids.sort(() => { return Math.random() - .5 })
+            let first_id = schedule_ids.shift()
+            let mode = $('#bullseye-problems-mode').text() === 'play' ? 'play' : 'skip'
+            location.href = "<%= url_for :action => 'play' %>#" + first_id + '&' + mode + '&' + schedule_ids.join(',')
+        })
         
         if (localStorage.currentProblemId !== undefined) {
             selectProblem(localStorage.currentProblemId, localStorage.currentRound)
@@ -190,21 +218,22 @@ $(() => {
             }
 
             let current_round = $('#bullseye-problem-round').val()
+            if (PROBLEMS[problem_id]['round'][current_round] === undefined) {
+                alert('Result not exists (round)')
+                return
+            }
             localStorage.currentRound = current_round
 
             let schedule_team_id = self.data('schedule-team-id')
             let schedule_id = PROBLEMS[problem_id]['round'][current_round][schedule_team_id]
             if (schedule_id === undefined) {
-                alert('Result not exists')
+                alert('Result not exists (team)')
                 return
             }
 
             setPlayed(schedule_team_id, schedule_id, problem_id, current_round)
-            if ($('#bullseye-problems-mode').text() === 'play') {
-                location.href = "<%= url_for :action => 'play' %>#" + schedule_id
-            } else {
-                location.href = "<%= url_for :action => 'play' %>#" + schedule_id + '&skip'
-            }
+            let mode = $('#bullseye-problems-mode').text() === 'play' ? 'play' : 'skip'
+            location.href = "<%= url_for :action => 'play' %>#" + schedule_id + '&' + mode
         })
     }
 
