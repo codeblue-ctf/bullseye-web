@@ -331,3 +331,48 @@ h1, h1 a, #bullseye-logo a {
     font-size: 64px;
     line-height: 96px;
 }
+
+@media screen and (min-width: 1900px)  {
+    #bullseye-team {
+        padding: 18px;
+        font-size: 36px;
+    }
+    #bullseye-team .logo {
+        margin-left: 18px;
+    }
+    #bullseye-team .logo img {
+        width: 120px;
+    }
+
+    #bullseye-problem {
+        width: 480px;
+    }
+    #bullseye-problem .name {
+        font-size: 36px;
+    }
+    #bullseye-problem .score {
+        margin-top: 36px;
+        font-size: 42px;
+    }
+
+    #bullseye-result .team {
+        font-size: 42px;
+    }
+        #bullseye-result .team .name {
+            margin-bottom: 18px;
+        }
+    #bullseye-result .problem {
+        padding: 72px 0 0 72px;
+        font-size: 72px;
+    }
+    #bullseye-result .problem .name {
+        margin-bottom: 36px;
+    }
+    #bullseye-result .problem .count {
+        line-height: 96px;
+    }
+    #bullseye-result.perfect .problem .count {
+        font-size: 96px;
+        line-height: 144px;
+    }
+}
