@@ -58,8 +58,7 @@ class ScheduleWorker
     # record result
     ScheduleResult.create(
       schedule: schedule,
-      schedule_uuid: data[:id],
-      round: schedule.current_round,
+      schedule_uuid: data[:id]
     )
 
     # increment round counter
