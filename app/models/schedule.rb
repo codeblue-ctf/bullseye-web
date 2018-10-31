@@ -4,10 +4,15 @@ class Schedule < ApplicationRecord
   has_many :schedule_result
 
   after_save do |record|
-    is_new = record.created_at == record.updated_at
-    if is_new or record.next_jobid_changed? then
-      ScheduleWorker.perform_async record.id
+    next_jobid = record.next_jobid
+
+    if next_jobid
+      job = Sidekiq::ScheduledSet.new.find_job(next_jobid)
+      job.delete if job
     end
+
+    next_jobid = ScheduleWorker.perform_async record.id
+    record.update_columns(next_jobid: next_jobid)
   end
 
   before_destroy do |record|
