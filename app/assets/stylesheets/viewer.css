@@ -299,7 +299,11 @@ h1, h1 a, #bullseye-logo a {
     background: rgba(0,64,128,0.5);
 }
 #bullseye-result.perfect {
-    background: rgba(128,32,32,0.5);
+    background: rgba(12,180,12,0.3);
+}
+#bullseye-result.perfect .count {
+    font-size: 64px;
+    line-height: 96px;
 }
 #bullseye-result .flex {
     margin-top: 180px;
