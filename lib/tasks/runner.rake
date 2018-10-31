@@ -4,10 +4,11 @@ require 'uri'
 require 'json'
 
 namespace :runner do
-  task :send => :environment do |task, args|
+  task :send, ['problem_id', 'team_id', 'runner_host'] => :environment do |task, args|
     problem = Problem.find(args.problem_id)
     team = Team.find(args.team_id)
     runner_host = args.runner_host
+
     bullseye_config = Rails.application.config.bullseye
     docker_compose = (problem.docker_compose || "") % {
       team: team.login_name,
