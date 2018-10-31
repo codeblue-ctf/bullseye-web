@@ -10,8 +10,9 @@ end
 # initialize for all job on restarting
 begin
   Schedule.all.each do |record|
-    delete_job(record.id)
+    record.delete_job
     ScheduleWorker.perform_async record.id
   end
-rescue
+rescue => e
+  p e
 end

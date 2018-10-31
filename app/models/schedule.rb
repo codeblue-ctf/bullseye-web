@@ -1,10 +1,12 @@
+require 'sidekiq/api'
+
 class Schedule < ApplicationRecord
   belongs_to :team
   belongs_to :problem
   has_many :schedule_result
 
   after_save do |record|
-    delete_job(record.id)
+    record.delete_job
     ScheduleWorker.perform_async record.id
   end
 
@@ -14,9 +16,9 @@ class Schedule < ApplicationRecord
     end
   end
 
-  def delete_job(schedule_id)
+  def delete_job
     Sidekiq::ScheduledSet.new.select do |job|
-      if job.args[0] == schedule_id
+      if job.args[0] == self.id
         job.delete
       end
     end
