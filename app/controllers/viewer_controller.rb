@@ -7,4 +7,7 @@ class ViewerController < ApplicationController
 
   def play
   end
+
+  def table
+  end
 end

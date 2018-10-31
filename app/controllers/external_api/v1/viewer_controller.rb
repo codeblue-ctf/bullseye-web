@@ -22,6 +22,31 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     render json: result
   end
 
+  def table
+    score_map = {}
+    problem_map = {}
+    schedule_results_all = ScheduleResult.includes(schedule: [:problem])
+    schedule_results_all.each do |schedule_result|
+      key = schedule_result.schedule.team_id
+      score_map[key] ||= {}
+      score_map[key][schedule_result.schedule.problem_id] ||= {}
+      score_map[key][schedule_result.schedule.problem_id][schedule_result.id] = schedule_result.score
+      problem_map[schedule_result.schedule.problem_id] = schedule_result.schedule.problem.title
+    end
+
+    result = []
+    teams_all = Team.where('login_name not like ?', 'test%')
+    teams_all.each do |team|
+      result.push({
+        schedule_team_id: team.id,
+        name: team.name,
+        score: score_map[team.id] || {},
+      })
+    end
+
+    render json: {team: result, problem: problem_map}
+  end
+
   def problems
     result = {}
     schedule_results_all = ScheduleResult.includes(schedule: [:problem])
