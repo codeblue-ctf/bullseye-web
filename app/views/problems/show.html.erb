@@ -10,7 +10,7 @@
 
 <p>
   <strong>docker_compose.yml:</strong>
-  <pre><%= @problem.docker_compose %></pre>
+  <pre><%= render_docker_compose_template(@problem.docker_compose, team_login_name: current_team.login_name) %></pre>
 </p>
 
 <p>Following commands are the example to submit your exploit</p>
