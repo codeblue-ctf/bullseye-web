@@ -51,7 +51,7 @@ class ScheduleWorker
       trials_count: problem.ntrials,
       timeout: problem.timeout,
       docker_compose: docker_compose,
-      callback_url: "http://#{bullseye_config[:web_host]}",
+      callback_url: "http://#{bullseye_config[:web_host]}/internal_api/v1/submit_score",
       callback_authorizatoin_token: bullseye_config[:api_authorization_token],
       registry_host: "http://#{bullseye_config[:docker_registry_host]}",
       admin_username: bullseye_config[:admin][:name],
