@@ -52,6 +52,12 @@ h1, h1 a, #bullseye-logo a {
     display: flex;
 }
 
+#bullseye-menu a {
+    display: inline-block;
+    padding: 8px;
+    color: #fff;
+}
+
 /* index */
 #bullseye-teams {
     display: flex;
@@ -375,4 +381,25 @@ h1, h1 a, #bullseye-logo a {
         font-size: 96px;
         line-height: 144px;
     }
+}
+
+/* table */
+#bullseye-table table {
+    color: #fff;
+    border-collapse:collapse;
+    border-spacing:0px;
+    width: 100%;
+}
+#bullseye-table table td {
+    border: 1px solid #fff;
+    padding: 12px 4px;
+    text-align: center;
+    font-size: 24px;
+}
+#bullseye-table table th {
+    font-size: 20px;
+}
+#bullseye-table table td.min {
+    width: 1%;
+    white-space: nowrap;
 }
