@@ -4,15 +4,21 @@ class Schedule < ApplicationRecord
   has_many :schedule_result
 
   after_save do |record|
-    is_new = record.created_at == record.updated_at
-    if is_new or record.next_jobid_changed? then
-      ScheduleWorker.perform_async record.id
-    end
+    delete_job(record.id)
+    ScheduleWorker.perform_async record.id
   end
 
   before_destroy do |record|
     if record.schedule_result.size > 0 then
       raise ActiveRecord::ReadOnlyRecord, "update finish_at value to stop executed schedule"
+    end
+  end
+
+  def delete_job(schedule_id)
+    Sidekiq::ScheduledSet.new.select do |job|
+      if job.args[0] == schedule_id
+        job.delete
+      end
     end
   end
 end

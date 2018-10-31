@@ -10,15 +10,31 @@
 
 <p>
   <strong>docker_compose.yml:</strong>
-  <pre><%= @problem.docker_compose =></pre>
+  <pre><%= render_docker_compose_template(@problem.docker_compose, team: current_team.login_name) %></pre>
 </p>
 
-<p>Run the following command to submit your exploit</p>
+<p>Following commands are the example to submit your exploit</p>
 <pre>
 $ docker login <%= Rails.application.config.bullseye[:docker_registry_host] %>
 > Username: <%= current_team.login_name %>
-> Password: [TEAM_PASSWORD]
-$ docker push <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%= current_team.name %>/<%= @problem.title %>
+> Password: YOUR_TEAM_PASSWORD
+$ docker build -t <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%= current_team.login_name %>/<%= @problem.title %> DIRECTORY_OF_YOUR_EXPLOIT_DOCKERFILE
+$ docker push <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%= current_team.login_name %>/<%= @problem.title %>
 </pre>
+
+<p>
+  <strong>Number of trials:</strong>
+  <pre><%= @problem.ntrials %></pre>
+</p>
+
+<p>
+  <strong>Calculation of score:</strong>
+  <pre><%= @problem.calc_formula %></pre>
+</p>
+
+<p>
+  <strong>Timeout (millsec):</strong>
+  <pre><%= @problem.timeout %></pre>
+</p>
 
 <%= link_to 'Back', problems_path %>
