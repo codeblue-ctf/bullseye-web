@@ -10,10 +10,12 @@ Rails.application.routes.draw do
   get 'docker_images/my'
   get 'viewer(/:action)', :controller => 'viewer'
 
-  # sidekiq web interface
+  # interface for admin
   authenticate :admin do
     mount Sidekiq::Web, at: "/sidekiq"
     get 'docker_images/all'
+    get 'schedules/new'
+    post 'schedules/create_macro'
   end
 
   namespace :internal_api, { format: :json } do
