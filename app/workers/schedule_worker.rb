@@ -23,13 +23,12 @@ class ScheduleWorker
 
     # schedule next worker
     if now < start_at then
-      next_jobid = ScheduleWorker.perform_at start_at, schedule_id
-      schedule.update_columns(next_jobid: next_jobid)
+      ScheduleWorker.perform_at start_at, schedule_id
       return
     end
 
-    next_jobid = ScheduleWorker.perform_in (interval - (now.to_time - start_at.to_time) % interval), schedule_id
-    schedule.update_columns(next_jobid: next_jobid)
+    # start_at <= now < finish_at
+    ScheduleWorker.perform_in (interval - (now.to_time - start_at.to_time) % interval), schedule_id
 
     docker_compose = (problem.docker_compose || "") % {
       team: team.login_name,
