@@ -1,5 +1,7 @@
 class Problem < ApplicationRecord
   has_many :schedule
+
+  validates :calc_formula, presence: true
   
   before_save do |record|
     if record.docker_compose_changed? then
