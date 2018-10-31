@@ -6,6 +6,7 @@ class SchedulesController < ApplicationController
   def create_macro
     @schedules = Team.all.map do |team|
       params[:schedule][:team_id] = team.id
+      params[:schedule][:runner_host] = team.default_runner
       Schedule.create(schedule_params)
     end
   end
