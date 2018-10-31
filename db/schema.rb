@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_31_190121) do
+ActiveRecord::Schema.define(version: 2018_10_31_205050) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2018_10_31_190121) do
     t.string "exploit_container_name"
     t.string "problem_container_name"
     t.text "calc_formula"
+    t.boolean "hidden"
   end
 
   create_table "schedule_results", force: :cascade do |t|
