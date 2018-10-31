@@ -22,6 +22,15 @@ $ docker build -t <%= Rails.application.config.bullseye[:docker_registry_host] %
 $ docker push <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%= current_team.login_name %>/<%= @problem.problem_container_name %>
 </pre>
 
+<p>How to test your exploit</p>
+<pre>
+$ echo "CBCTF{TEST_FLAG}" > ./flag
+$ echo "" > ./submitted-flag
+$ docker-compose up -d
+$ cat submitted-flag # CBCTF{TEST_FLAG} will be shown if your exploit succeeded
+$ docker-compose down
+</pre>
+
 <p>
   <strong>Number of trials:</strong>
   <pre><%= @problem.ntrials %></pre>
