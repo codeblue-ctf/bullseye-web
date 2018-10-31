@@ -49,9 +49,10 @@
 
 <script>
 $(() => {
-    let _params = location.hash.slice(1).split('&') || location.replace('<%= url_for :action => 'index' %>')
-    let ID = _params[0]
-    let IS_SKIP = _params[1] === 'skip'
+    let _PARAMS = location.hash.slice(1).split('&') || location.replace('<%= url_for :action => 'index' %>')
+    let ID = _PARAMS[0]
+    let IS_SKIP = _PARAMS[1] === 'skip'
+    let NEXT_ID = _PARAMS[2] ? _PARAMS[2].split(',') : ''
 
     let scene = new THREE.Scene()
     let camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
@@ -156,7 +157,7 @@ $(() => {
 
                 return new Promise((resolve) => {
                     clearInterval(exploitCountId)
-                    $('#bullseye-problem-succeeded').text(r.problem.succeeded)
+                    $('#bullseye-problem-succeeded').text('000')
 
                     let f = () => {
                         if (amountRot > 0.14) {
@@ -186,6 +187,17 @@ $(() => {
                     .append($('#bullseye-template-result').render(param))
                     .click(() => { location = "<%= url_for :action => 'index' %>" })
                     .fadeIn(200)
+                $('#bullseye-problem-succeeded').text(r.problem.succeeded)
+
+                setTimeout(() => {
+                    let first_id = NEXT_ID ? NEXT_ID.shift() : ''
+                    if (first_id !== '') {
+                        location = '<%= url_for %>#' + first_id + '&' + _PARAMS[1] + '&' + NEXT_ID.join(',')
+                        location.reload()
+                    } else {
+                        location = "<%= url_for :action => 'index' %>"
+                    }
+                }, 5000)
             })
     }
 

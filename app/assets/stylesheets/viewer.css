@@ -163,6 +163,12 @@ h1, h1 a, #bullseye-logo a {
         0px 0px 0.5em rgba(0,188,255,1);
     letter-spacing: 2px;
 }
+#bullseye-problems-autoplay {
+    color: #fff;
+    cursor: pointer;
+    margin: 12px 0 0 12px;
+    font-size: 24px;
+}
 
 #bullseye-nowexploiting, #bullseye-result {
     display: none;
@@ -239,7 +245,7 @@ h1, h1 a, #bullseye-logo a {
     }
 
 #bullseye-problem {
-    width: 280px;
+    width: 320px;
     margin: 24px 24px 0 0;
     right: 0;
 }
@@ -301,10 +307,6 @@ h1, h1 a, #bullseye-logo a {
 #bullseye-result.perfect {
     background: rgba(12,180,12,0.3);
 }
-#bullseye-result.perfect .count {
-    font-size: 64px;
-    line-height: 96px;
-}
 #bullseye-result .flex {
     margin-top: 180px;
     justify-content: center;
@@ -321,4 +323,11 @@ h1, h1 a, #bullseye-logo a {
 }
 #bullseye-result .problem .name {
     margin-bottom: 24px;
+}
+#bullseye-result .problem .count {
+    line-height: 64px;
+}
+#bullseye-result.perfect .problem .count {
+    font-size: 64px;
+    line-height: 96px;
 }
