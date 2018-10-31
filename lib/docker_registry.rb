@@ -12,7 +12,7 @@ module DockerRegistry
       http.request(req)
     }
 
-    JSON.parse(res.body) if res.code == 200
+    JSON.parse(res.body) if res.code == '200'
   end
 
   def self.get_token(scope)
@@ -25,7 +25,7 @@ module DockerRegistry
       req.basic_auth(bullseye_config[:admin][:name], bullseye_config[:admin][:password])
       http.request(req)
     }
-    if res.code == 401 then
+    if res.code == '401' then
       raise "login to docker registry failed"
     end
     body = JSON.parse(res.body)

@@ -21,21 +21,15 @@ class ScheduleWorker
       return
     end
 
-    # update schedule
-    if schedule.next_jobid != self.jid then
-      job = Sidekiq::ScheduledSet.new.find_job(schedule.next_jobid)
-      job.delete if job
-    end
-
     # schedule next worker
     if now < start_at then
-      schedule.next_jobid = ScheduleWorker.perform_at start_at, schedule_id
-      schedule.save
+      next_jobid = ScheduleWorker.perform_at start_at, schedule_id
+      schedule.update_columns(next_jobid: next_jobid)
       return
     end
 
-    schedule.next_jobid = ScheduleWorker.perform_in (interval - (now.to_time - start_at.to_time) % interval), schedule_id
-    schedule.save
+    next_jobid = ScheduleWorker.perform_in (interval - (now.to_time - start_at.to_time) % interval), schedule_id
+    schedule.update_columns(next_jobid: next_jobid)
 
     docker_compose = (problem.docker_compose || "") % {
       team: team.login_name,
@@ -51,7 +45,7 @@ class ScheduleWorker
       trials_count: problem.ntrials,
       timeout: problem.timeout,
       docker_compose: docker_compose,
-      callback_url: "http://#{bullseye_config[:web_host]}",
+      callback_url: "http://#{bullseye_config[:web_host]}/internal_api/v1/submit_score",
       callback_authorizatoin_token: bullseye_config[:api_authorization_token],
       registry_host: "http://#{bullseye_config[:docker_registry_host]}",
       admin_username: bullseye_config[:admin][:name],

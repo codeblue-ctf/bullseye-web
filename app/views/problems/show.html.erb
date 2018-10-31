@@ -22,4 +22,19 @@ $ docker build -t <%= Rails.application.config.bullseye[:docker_registry_host] %
 $ docker push <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%= current_team.login_name %>/<%= @problem.title %>
 </pre>
 
+<p>
+  <strong>Number of trials:</strong>
+  <pre><%= @problem.ntrials %></pre>
+</p>
+
+<p>
+  <strong>Calculation of score:</strong>
+  <pre><%= @problem.calc_formula %></pre>
+</p>
+
+<p>
+  <strong>Timeout (millsec):</strong>
+  <pre><%= @problem.timeout %></pre>
+</p>
+
 <%= link_to 'Back', problems_path %>

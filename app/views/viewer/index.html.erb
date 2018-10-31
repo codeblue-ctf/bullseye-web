@@ -203,7 +203,7 @@ $(() => {
             if ($('#bullseye-problems-mode').text() === 'play') {
                 location.href = "<%= url_for :action => 'play' %>#" + schedule_id
             } else {
-                location.reload()
+                location.href = "<%= url_for :action => 'play' %>#" + schedule_id + '&skip'
             }
         })
     }
