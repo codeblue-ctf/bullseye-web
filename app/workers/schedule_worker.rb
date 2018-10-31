@@ -62,7 +62,7 @@ class ScheduleWorker
     )
 
     # increment round counter
-    schedule.current_round += 1
+    schedule.update_columsn(current_round: schedule.current_round+1)
   end
 
   def submit_to_runner(runner_host, data)
