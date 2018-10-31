@@ -31,4 +31,9 @@ $ docker push <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%
   <pre><%= @problem.calc_formula =></pre>
 </p>
 
+<p>
+  <strong>Timeout (millsec):</strong>
+  <pre><%= @problem.timeout =></pre>
+</p>
+
 <%= link_to 'Back', problems_path %>
