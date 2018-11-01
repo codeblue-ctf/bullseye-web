@@ -1,6 +1,7 @@
 <div id="bullseye-logo"><a href="<%= url_for :action => 'index' %>"></a></div>
 <div id="bullseye-team" class="bullseye-status-panel"></div>
 <div id="bullseye-problem" class="bullseye-status-panel"></div>
+<div id="bullseye-problem-round" class="bullseye-status-panel"></div>
 <div id="bullseye-result"></div>
 <div id="bullseye-container"></div>
 
@@ -10,12 +11,18 @@
 </script>
 
 <script type="text/x-jsrender" id="bullseye-template-problem">
-    <div class="name">{{>name}} #{{>round}}</div>
+    <div class="name">{{>name}}</div>
     <div class="score">
         <div id="bullseye-problem-succeeded">-</div> 
         <div class="separate"></div> 
         <div id="bullseye-problem-ntrials">{{>ntrials}}</div>
     </div>
+</script>
+
+<script type="text/x-jsrender" id="bullseye-template-problem-round">
+    <div class="round">Round {{>round}}</div>
+    <div class="separate"></div> 
+    <div class="time">{{>time}}</div>
 </script>
 
 <script type="text/x-jsrender" id="bullseye-template-result">
@@ -25,7 +32,7 @@
             <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
         </div>
         <div class="items problem">
-            <div class="name">{{>problem_name}} #{{>round}}</div>
+            <div class="name">{{>problem_name}}</div>
             <div class="score">
                 <div class="count">{{>count}}</div> 
                 <div class="point">+{{>score}}pt</div>
@@ -206,6 +213,10 @@ $(() => {
         if (r !== null) {
             $('#bullseye-team').append($('#bullseye-template-team').render(r.team))
             $('#bullseye-problem').append($('#bullseye-template-problem').render(r.problem))
+
+            let round = {'round': parseInt(r.problem.round) + 1, 'time': '〜 ' + CONFIG.ROUNDS[r.problem.round]}
+            $('#bullseye-problem-round').append($('#bullseye-template-problem-round').render(round))
+
             action(r)
         } else {
             alert('Result not exists!')
