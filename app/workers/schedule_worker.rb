@@ -66,6 +66,7 @@ class ScheduleWorker
   end
 
   def submit_to_runner(runner_host, data)
+    p data
     uri = URI("http://#{runner_host}")
     res = Net::HTTP.start(uri.host, uri.port) { |http|
       req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
