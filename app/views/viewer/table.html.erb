@@ -13,6 +13,8 @@
             {{props problems}}
             <th>{{>prop}}</th>
             {{/props}}
+            <th>Jeopardy</th>
+            <th>ALL</th>
         </tr>
         {{for teams}}
             <tr>
@@ -21,6 +23,8 @@
                 {{props ~root.problems ~index=#index}}
                     <td>{{>~root.teams[~index].scores[key]}}</td>
                 {{/props}}
+                <td class="min"><input type="text" class="bullseye-jeopardy" data-team-id="{{>schedule_team_id}}" value="{{>jeopardy}}"></td>
+                <td class="min">{{>score_sum}}</td>
             </tr>
         {{/for}}
     </table>
@@ -31,10 +35,11 @@ $(() => {
     $.getJSON(CONFIG.API_BASE + '/table.json', (r) => {
         let teams = []
         let played = JSON.parse(localStorage.played || '{}')
+        let jeopardy = JSON.parse(localStorage.jeopardy || '{}')
         let schedule = played['schedule'] || {}
 
         for (let team of r['team']) {
-            team['score_sum'] = 0
+            team['score_sum'] = team['jeopardy'] = jeopardy[team['schedule_team_id']] || 0
             team['scores'] = {}
             for (let problem_id in team['score']) {
                 let score = 0
@@ -44,6 +49,7 @@ $(() => {
                 team['scores'][problem_id] = score
                 team['score_sum'] += score
             }
+
             teams.push(team)
         }
         teams.sort((a, b) => {
@@ -57,6 +63,14 @@ $(() => {
         })
 
         $('#bullseye-table').append($('#bullseye-template-table').render({'teams': teams, 'problems': r['problem']}))
+
+        // events
+        $('.bullseye-jeopardy').change((e) => {
+            let self = $(e.currentTarget)
+            let jeopardy = JSON.parse(localStorage.jeopardy || '{}')
+            jeopardy[self.data('team-id')] = parseInt(self.val())
+            localStorage.jeopardy = JSON.stringify(jeopardy)
+        })
     })
 
 })

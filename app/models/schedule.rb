@@ -6,8 +6,8 @@ class Schedule < ApplicationRecord
   has_many :schedule_result
 
   after_save do |record|
-    record.delete_job
-    ScheduleWorker.perform_async record.id
+    #record.delete_job
+    #ScheduleWorker.perform_async record.id
   end
 
   before_destroy do |record|
