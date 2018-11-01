@@ -49,7 +49,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
 
   def problems
     result = {}
-    schedule_results_all = ScheduleResult.includes(schedule: [:problem])
+    schedule_results_all = ScheduleResult.joins(schedule: [:problem, :team]).where("teams.login_name not like ?", "test%")
     schedule_results_all.each do |schedule_result|
       result[schedule_result.schedule.problem_id] ||= {}
       result[schedule_result.schedule.problem_id][:name] = schedule_result.schedule.problem.title

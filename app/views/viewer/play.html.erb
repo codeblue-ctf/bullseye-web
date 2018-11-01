@@ -144,7 +144,7 @@ $(() => {
                         for (let i = 0; i < rate; i++) {
                             let o = objects.splice(Math.floor(Math.random() * objects.length), 1)[0]
                             $(o.element).addClass('explode')
-                            await wait(200)
+                            await wait(200*(1-i/rate))
                         }
                         resolve()
                     }, 3000)
