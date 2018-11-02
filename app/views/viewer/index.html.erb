@@ -86,7 +86,7 @@ $(() => {
     let selectRound = (round) => {
         localStorage.currentRound = round
         $('#bullseye-problems-round-selected').data('round', round)
-        $('#bullseye-problems-round-selected').text('R' + (parseInt(round) + 1) + ' (- ' + CONFIG.ROUNDS[round] + ')')
+        $('#bullseye-problems-round-selected').text('R' + (parseInt(round)) + ' (- ' + CONFIG.ROUNDS[round] + ')')
     }
 
     let getRound = () => {
@@ -110,7 +110,7 @@ $(() => {
         // set round panel
         let _rounds = {}
         for (let i = PROBLEMS[problem_id]['min_round']; i <= PROBLEMS[problem_id]['max_round']; i++) {
-            _rounds[i] = 'R' + (i + 1) + ' (- ' + CONFIG.ROUNDS[i] + ')'
+            _rounds[i] = 'R' + i + ' (- ' + CONFIG.ROUNDS[i] + ')'
         }
         $('#bullseye-problems-round').html($('#bullseye-template-problems-round').render({'rounds': _rounds}))
         selectRound(current_round || PROBLEMS[problem_id]['max_round'])

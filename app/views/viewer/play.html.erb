@@ -214,7 +214,7 @@ $(() => {
             $('#bullseye-team').append($('#bullseye-template-team').render(r.team))
             $('#bullseye-problem').append($('#bullseye-template-problem').render(r.problem))
 
-            let round = {'round': parseInt(r.problem.round) + 1, 'time': '〜 ' + CONFIG.ROUNDS[r.problem.round]}
+            let round = {'round': parseInt(r.problem.round), 'time': '〜 ' + CONFIG.ROUNDS[r.problem.round]}
             $('#bullseye-problem-round').append($('#bullseye-template-problem-round').render(round))
 
             action(r)
