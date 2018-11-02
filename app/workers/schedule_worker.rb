@@ -44,6 +44,7 @@ class ScheduleWorker
       trials_count: problem.ntrials,
       timeout: problem.timeout,
       docker_compose: docker_compose,
+      concurrency: schedule.concurrency,
       callback_url: "http://#{bullseye_config[:web_host]}/internal_api/v1/submit_score",
       callback_authorization_token: bullseye_config[:api_authorization_token],
       registry_host: "http://#{bullseye_config[:docker_registry_host]}",
