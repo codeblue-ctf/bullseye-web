@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_02_025007) do
+ActiveRecord::Schema.define(version: 2019_06_16_113506) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -42,6 +42,12 @@ ActiveRecord::Schema.define(version: 2018_11_02_025007) do
     t.boolean "hidden"
   end
 
+  create_table "round_tables", force: :cascade do |t|
+    t.string "label"
+    t.datetime "start_at"
+    t.boolean "disabled"
+  end
+
   create_table "schedule_results", force: :cascade do |t|
     t.integer "succeeded"
     t.text "error"
@@ -66,7 +72,6 @@ ActiveRecord::Schema.define(version: 2018_11_02_025007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "runner_host"
-    t.integer "current_round", default: 0
     t.integer "concurrency"
     t.index ["problem_id"], name: "index_schedules_on_problem_id"
     t.index ["team_id"], name: "index_schedules_on_team_id"

@@ -2,7 +2,7 @@ class ScheduleResult < ApplicationRecord
   belongs_to :schedule
 
   before_create do
-    self.round = schedule.current_round
+    self.round_id = Round.last.id
   end
 
   before_update do |record|
