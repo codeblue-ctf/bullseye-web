@@ -24,8 +24,7 @@ schedule = Schedule.find_or_create_by(
   start_at: Time.now,
   finish_at: Time.now + 60*10,
   interval: 30,
-  runner_host: "localhost:3001",
-  current_round: 0
+  runner_host: "localhost:3001"
 )
 
 schedule_result = ScheduleResult.find_or_create_by(

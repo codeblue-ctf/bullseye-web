@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_02_025007) do
+ActiveRecord::Schema.define(version: 2019_06_29_053742) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 2018_11_02_025007) do
     t.index ["login_name"], name: "index_admins_on_login_name", unique: true
   end
 
+  create_table "images", force: :cascade do |t|
+    t.string "image_digest"
+    t.integer "team_id"
+    t.integer "problem_id"
+    t.datetime "uploaded_at"
+    t.string "event_log"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "problems", force: :cascade do |t|
     t.string "title"
     t.text "statement"
@@ -40,6 +50,12 @@ ActiveRecord::Schema.define(version: 2018_11_02_025007) do
     t.string "problem_container_name"
     t.text "calc_formula"
     t.boolean "hidden"
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.string "label"
+    t.datetime "start_at"
+    t.boolean "disabled"
   end
 
   create_table "schedule_results", force: :cascade do |t|
@@ -66,10 +82,20 @@ ActiveRecord::Schema.define(version: 2018_11_02_025007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "runner_host"
-    t.integer "current_round", default: 0
     t.integer "concurrency"
     t.index ["problem_id"], name: "index_schedules_on_problem_id"
     t.index ["team_id"], name: "index_schedules_on_team_id"
+  end
+
+  create_table "scores", force: :cascade do |t|
+    t.integer "score"
+    t.integer "image_id"
+    t.integer "succeeded"
+    t.integer "failed"
+    t.datetime "runner_started_at"
+    t.datetime "runner_finished_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "teams", force: :cascade do |t|

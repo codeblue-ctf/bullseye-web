@@ -54,8 +54,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       result[schedule_result.schedule.problem_id] ||= {}
       result[schedule_result.schedule.problem_id][:name] = schedule_result.schedule.problem.title
       result[schedule_result.schedule.problem_id][:round] ||= {}
-      result[schedule_result.schedule.problem_id][:round][schedule_result.round] ||= {}
-      result[schedule_result.schedule.problem_id][:round][schedule_result.round][schedule_result.schedule.team_id] = schedule_result.id
+      result[schedule_result.schedule.problem_id][:round][schedule_result.round_id] ||= {}
+      result[schedule_result.schedule.problem_id][:round][schedule_result.round_id][schedule_result.schedule.team_id] = schedule_result.id
     end
 
     render json: result
@@ -70,7 +70,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       },
       problem: {
         name: schedule_results.schedule.problem.title,
-        round: schedule_results.round,
+        round_id: schedule_results.round_id,
         ntrials: schedule_results.schedule.problem.ntrials,
         succeeded: schedule_results.succeeded,
         score: schedule_results.score
