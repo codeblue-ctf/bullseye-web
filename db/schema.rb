@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2019_06_29_052119) do
     t.boolean "hidden"
   end
 
-  create_table "round_tables", force: :cascade do |t|
+  create_table "round", force: :cascade do |t|
     t.string "label"
     t.datetime "start_at"
     t.boolean "disabled"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2019_06_29_052119) do
     t.index ["team_id"], name: "index_schedules_on_team_id"
   end
 
-  create_table "score_tables", force: :cascade do |t|
+  create_table "score", force: :cascade do |t|
     t.integer "score"
     t.integer "image_id"
     t.integer "succeeded"

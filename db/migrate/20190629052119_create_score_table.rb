@@ -1,6 +1,6 @@
 class CreateScoreTable < ActiveRecord::Migration[5.2]
   def change
-    create_table :score_tables do |t|
+    create_table :score do |t|
       t.integer :score
       t.integer :image_id
       t.integer :succeeded
