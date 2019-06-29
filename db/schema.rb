@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_29_052119) do
+ActiveRecord::Schema.define(version: 2019_06_29_053742) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 2019_06_29_052119) do
     t.datetime "updated_at", null: false
     t.string "login_name"
     t.index ["login_name"], name: "index_admins_on_login_name", unique: true
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "image_digest"
+    t.integer "team_id"
+    t.integer "problem_id"
+    t.datetime "uploaded_at"
+    t.string "event_log"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "problems", force: :cascade do |t|
