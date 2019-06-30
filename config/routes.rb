@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'submit_score', to: 'schedule_results#submit'
       post 'login', to: 'authorization#login'
+      post 'registry_event', to: 'image#register'
     end
   end
 
