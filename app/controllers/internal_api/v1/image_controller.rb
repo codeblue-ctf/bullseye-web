@@ -7,10 +7,12 @@ class InternalApi::V1::ImageController < InternalApiController
       end
 
       team_name = event[:actor][:name]
-      exploit_name = event[:target][:repository].match(/^[^\/]+\/([^\/]+)$/)[1]
+      exploit_name = event[:target][:repository].match(/^[^\/]+\/([^\/]+)$/) do |match|
+        match.nil? ? nil : match[1]
+      end
 
-      team = Team.find(login_name: team_name)
-      problem = Problem.find(exploit_container_name: exploit_name)
+      team = Team.where(login_name: team_name).first
+      problem = Problem.where(exploit_container_name: exploit_name).first
       if team.nil? or problem.nil? then
         next
       end
