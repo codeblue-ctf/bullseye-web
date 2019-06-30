@@ -1,15 +1,15 @@
 <template>
-  <div id="app">
-    <p>{{ message }}</p>
+  <div>
+    <header-nav />
+    <router-view/>
   </div>
 </template>
 
 <script>
+import HeaderNav from './components/HeaderNav.vue'
 export default {
-  data: function () {
-    return {
-      message: "Hello Vue!"
-    }
+  components: {
+    HeaderNav
   }
 }
 </script>
