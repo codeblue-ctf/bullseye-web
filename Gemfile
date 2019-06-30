@@ -70,3 +70,4 @@ gem 'redis-namespace'
 gem 'sinatra', require: false
 gem 'dotenv-rails'
 gem 'mysql2'
+gem 'webpacker', '~> 4.x'
