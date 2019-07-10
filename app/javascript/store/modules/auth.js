@@ -1,7 +1,7 @@
 import * as api from '../../api'
 
 const state = {
-  signined: false,
+  signedIn: false,
   token: ''
 }
 
@@ -15,12 +15,12 @@ const actions = {
 
 const mutations = {
   login (state, { token }) {
-    state.signed = true
+    state.signedIn = true
     state.token = token
   },
 
-  logout (state, { token }) {
-    state.signed = false
+  logout (state) {
+    state.signedIn = false
     state.token = ''
   }
 }
