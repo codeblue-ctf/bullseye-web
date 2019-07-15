@@ -1,4 +1,6 @@
 class ExternalApi::V1::ViewerController < ExternalApiController
+  before_action :authenticate_admin!
+
   def teams
     score_map = {}
     schedule_results_all = ScheduleResult.includes(:schedule)
