@@ -4,7 +4,7 @@
 
     <ul>
       <li v-for="problem in problems">
-        {{ problem.title }}
+        <router-link :to="{ name: 'problem', params: { id: problem.id } }">{{ problem.title }}</router-link>
       </li>
     </ul>
   </div>
@@ -14,10 +14,6 @@
 import { mapState } from 'vuex'
 
 export default {
-  mounted () {
-    console.log(this)
-    this.$store.dispatch('problem/fetch')
-  },
   computed: {
     ...mapState('problem', ['problems'])
   }
