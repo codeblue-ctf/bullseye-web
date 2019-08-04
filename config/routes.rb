@@ -3,14 +3,13 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   devise_for :teams
   devise_for :admins
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  resources :problems, only: [:index, :show]
-  get 'home/index'
+
   root to: 'home#index'
   get 'docker_images/my'
   get 'viewer(/:action)', :controller => 'viewer'
 
   # interface for admin
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   authenticate :admin do
     mount Sidekiq::Web, at: "/sidekiq"
     get 'docker_images/all'
@@ -37,4 +36,6 @@ Rails.application.routes.draw do
       get 'viewer/score/:id', to: 'viewer#score'
     end
   end
+
+  get '*path', to: 'home#index'
 end
