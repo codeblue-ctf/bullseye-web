@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="problem">
     <p>{{problem.title}}</p>
 
     <p>{{problem.description}}</p>
@@ -15,10 +15,11 @@
 import { mapState } from 'vuex'
 
 export default {
+  props: ['id'],
   computed: {
     ...mapState('problem', {
-      problem (state) {
-        return state.problems.find(p => p.id === this.$route.params.id)
+      problem () {
+        return this.$store.state.problem.problems.find(p => p.id === this.id)
       }
     })
   }
