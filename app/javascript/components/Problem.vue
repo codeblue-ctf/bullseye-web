@@ -3,6 +3,11 @@
     <p>{{problem.title}}</p>
 
     <p>{{problem.description}}</p>
+
+    <p>
+      <strong>docker_compose.yml:</strong>
+      <pre>{{problem.docker_compose}}</pre>
+    </p>
   </div>
 </template>
 
