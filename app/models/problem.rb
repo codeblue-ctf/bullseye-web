@@ -19,7 +19,7 @@ class Problem < ApplicationRecord
 
   def team_docker_compose(team)
     docker_compose_params = {
-      team: team.login_name
+      team: team[:login_name]
     }
     DockerComposeTemplate::render(self.docker_compose, docker_compose_params)
   end

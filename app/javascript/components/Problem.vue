@@ -22,6 +22,9 @@ export default {
         return this.$store.state.problem.problems.find(p => p.id === this.id)
       }
     })
+  },
+  created () {
+    this.$store.dispatch('problem/fetch')
   }
 }
 </script>

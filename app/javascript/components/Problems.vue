@@ -16,6 +16,9 @@ import { mapState } from 'vuex'
 export default {
   computed: {
     ...mapState('problem', ['problems'])
+  },
+  created () {
+    this.$store.dispatch('problem/fetch')
   }
 }
 </script>

@@ -10,9 +10,6 @@ import HeaderNav from './components/HeaderNav.vue'
 export default {
   components: {
     HeaderNav
-  },
-  created () {
-    this.$store.dispatch('problem/fetch')
   }
 }
 </script>

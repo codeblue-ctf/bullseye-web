@@ -3,7 +3,7 @@ import * as api from '../../api'
 
 const state = {
   signedIn: false,
-  token: null
+  tokens: {}
 }
 
 const actions = {
@@ -22,12 +22,18 @@ const actions = {
 const mutations = {
   login (state, res) {
     state.signedIn = true
-    state.token = res.headers['access-token']
+    state.tokens = {
+      'access-token': res.headers['access-token'],
+      'client': res.headers['client'],
+      'uid': res.headers['uid'],
+      'token-type': res.headers['token-type'],
+      'expiry': res.headers['expiry'],
+    }
   },
 
   logout (state) {
     state.signedIn = false
-    state.token = null
+    state.tokens = {}
   }
 }
 
