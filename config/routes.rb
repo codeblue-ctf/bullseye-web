@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     end
   end
 
-  mount_devise_token_auth_for 'Team', at: 'external_api/v1/auth'
+  mount_devise_token_auth_for 'Team', at: 'external_api/v1/auth', skip: [:omniauth_callbacks]
   namespace :external_api, { format: :json } do
     namespace :v1 do
 
