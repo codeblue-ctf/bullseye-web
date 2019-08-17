@@ -3,7 +3,7 @@ import * as api from '../../api'
 
 const state = {
   signedIn: false,
-  token: ''
+  token: null
 }
 
 const actions = {
@@ -11,6 +11,7 @@ const actions = {
     api.login(data).then(res => commit('login', res.data)).catch(err => err)
   },
   logout ({ commit, state }) {
+    commit('logout')
     router.push('/signin')
   }
 }
@@ -23,7 +24,7 @@ const mutations = {
 
   logout (state) {
     state.signedIn = false
-    state.token = ''
+    state.token = null
   }
 }
 
