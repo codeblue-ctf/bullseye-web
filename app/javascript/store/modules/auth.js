@@ -1,3 +1,4 @@
+import router from 'router'
 import * as api from '../../api'
 
 const state = {
@@ -10,6 +11,7 @@ const actions = {
     api.login(data).then(res => commit('login', res.data)).catch(err => err)
   },
   logout ({ commit, state }) {
+    router.push('/signin')
   }
 }
 
