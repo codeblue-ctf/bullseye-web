@@ -1,7 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  devise_for :teams
+  mount_devise_token_auth_for 'Team', at: 'auth'
   devise_for :admins
 
   root to: 'home#index'
@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
   namespace :external_api, { format: :json } do
     namespace :v1 do
+      mount_devise_token_auth_for 'Team', at: 'auth'
+
       resources :problems, only: [:index, :show]
 
       # this is for viewer

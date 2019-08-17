@@ -10,7 +10,7 @@ http.interceptors.response.use((res) => {}, (error) => {
 })
 
 export function login({name, password}) {
-  return http.post('/external_api/v1/login', {
+  return http.post('/external_api/v1/auth/sign_in', {
     name,
     password
   })
