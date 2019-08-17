@@ -8,18 +8,21 @@ const state = {
 
 const actions = {
   login ({ commit, state }, data) {
-    api.login(data).then(res => commit('login', res.data)).catch(err => err)
+    api.login(data).then(res => {
+      commit('login', res)
+      router.push({ name: 'home' })
+    }).catch(err => err)
   },
   logout ({ commit, state }) {
     commit('logout')
-    router.push('/signin')
+    router.push({ name: 'signin' })
   }
 }
 
 const mutations = {
-  login (state, { token }) {
+  login (state, res) {
     state.signedIn = true
-    state.token = token
+    state.token = res.headers['access-token']
   },
 
   logout (state) {
