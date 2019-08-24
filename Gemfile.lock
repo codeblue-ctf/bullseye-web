@@ -82,6 +82,9 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
+    devise_token_auth (1.1.0)
+      devise (> 3.5.2, < 4.7)
+      rails (>= 4.2.0, < 6)
     dotenv (2.7.2)
     dotenv-rails (2.7.2)
       dotenv (= 2.7.2)
@@ -96,6 +99,7 @@ GEM
     haml (5.1.1)
       temple (>= 0.8.0)
       tilt
+    hashie (3.6.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     io-like (0.3.0)
@@ -145,6 +149,9 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
+    omniauth (1.9.0)
+      hashie (>= 3.4.6, < 3.7.0)
+      rack (>= 1.6.2, < 3)
     orm_adapter (0.5.0)
     public_suffix (3.1.0)
     puma (3.12.1)
@@ -282,11 +289,13 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 4.2)
   devise
+  devise_token_auth
   dotenv-rails
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   mini_racer
   mysql2
+  omniauth
   puma (~> 3.11)
   rails (~> 5.2.0)
   rails_admin

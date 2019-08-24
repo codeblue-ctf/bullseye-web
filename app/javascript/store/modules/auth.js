@@ -1,27 +1,39 @@
+import router from 'router'
 import * as api from '../../api'
 
 const state = {
   signedIn: false,
-  token: ''
+  tokens: {}
 }
 
 const actions = {
   login ({ commit, state }, data) {
-    api.login(data).then(res => commit('login', res.data)).catch(err => err)
+    api.login(data).then(res => {
+      commit('login', res)
+      router.push({ name: 'home' })
+    }).catch(err => err)
   },
   logout ({ commit, state }) {
+    commit('logout')
+    router.push({ name: 'signin' })
   }
 }
 
 const mutations = {
-  login (state, { token }) {
+  login (state, res) {
     state.signedIn = true
-    state.token = token
+    state.tokens = {
+      'access-token': res.headers['access-token'],
+      'client': res.headers['client'],
+      'uid': res.headers['uid'],
+      'token-type': res.headers['token-type'],
+      'expiry': res.headers['expiry'],
+    }
   },
 
   logout (state) {
     state.signedIn = false
-    state.token = ''
+    state.tokens = {}
   }
 }
 

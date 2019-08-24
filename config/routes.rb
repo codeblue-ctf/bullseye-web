@@ -1,8 +1,8 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  devise_for :teams
-  devise_for :admins
+  # devise for admin should not work due to devise token auth
+  #devise_for :admins
 
   root to: 'home#index'
   get 'docker_images/my'
@@ -25,8 +25,10 @@ Rails.application.routes.draw do
     end
   end
 
+  mount_devise_token_auth_for 'Team', at: 'external_api/v1/auth', skip: [:omniauth_callbacks]
   namespace :external_api, { format: :json } do
     namespace :v1 do
+
       resources :problems, only: [:index, :show]
 
       # this is for viewer

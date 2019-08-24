@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from 'store'
 import Home from './components/Home.vue'
 import Problems from './components/Problems.vue'
 import Problem from './components/Problem.vue'
@@ -7,7 +8,7 @@ import Signin from './components/Signin.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -23,12 +24,25 @@ export default new Router({
     {
       path: '/problems',
       name: 'problems',
-      component: Problems
+      component: Problems,
+      meta: { requiresAuth: true }
     },
     {
       path: '/problems/:id',
       name: 'problem',
-      component: Problem
+      component: Problem,
+      props: (route) => ( { id: parseInt(route.params.id) } ),
+      meta: { requiresAuth: true }
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth) && !store.state.auth.signedIn) {
+    next('signin')
+  } else {
+    next()
+  }
+})
+
+export default router

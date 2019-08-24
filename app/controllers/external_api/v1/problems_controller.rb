@@ -1,13 +1,18 @@
 class ExternalApi::V1::ProblemsController < ExternalApiController
-  #before_action :authenticate_team!
+  before_action :authenticate_team!
   before_action :set_problem, only: [:show]
 
   # GET /problems
   # GET /problems.json
   def index
-    @problems = Problem.where(hidden: [false, nil])
+    problems = Problem.where(hidden: [false, nil])
+      .map { |p|
+        json = p.as_json
+        json['docker_compose'] = p.team_docker_compose(current_team)
+        json
+      }
 
-    render json: { problems: @problems }
+    render json: { problems: problems }
   end
 
   # GET /problems/1
