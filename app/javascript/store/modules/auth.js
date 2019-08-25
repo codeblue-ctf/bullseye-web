@@ -1,9 +1,12 @@
 import router from 'router'
 import * as api from '../../api'
 
+const tokenKeyName = 'bullseye-token'
+
+const initialToken = JSON.parse(window.localStorage.getItem(tokenKeyName)) || null
 const state = {
-  signedIn: false,
-  tokens: {}
+  signedIn: !!initialToken,
+  tokens: initialToken || {}
 }
 
 const actions = {
@@ -36,11 +39,17 @@ const mutations = {
       'token-type': res.headers['token-type'],
       'expiry': res.headers['expiry'],
     }
+
+    // store token to localStorage
+    window.localStorage.setItem(tokenKeyName, JSON.stringify(state.tokens))
   },
 
   logout (state) {
     state.signedIn = false
     state.tokens = {}
+
+    // remove token from localStorage
+    window.localStorage.removeItem(tokenKeyName)
   }
 }
 
