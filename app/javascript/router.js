@@ -5,6 +5,7 @@ import Home from './components/Home.vue'
 import Problems from './components/Problems.vue'
 import Problem from './components/Problem.vue'
 import Signin from './components/Signin.vue'
+import Logout from './components/Logout.vue'
 
 Vue.use(Router)
 
@@ -20,6 +21,11 @@ const router = new Router({
       path: '/signin',
       name: 'signin',
       component: Signin
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: Logout
     },
     {
       path: '/problems',
