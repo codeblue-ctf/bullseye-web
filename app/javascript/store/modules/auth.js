@@ -7,11 +7,18 @@ const state = {
 }
 
 const actions = {
-  login ({ commit, state }, data) {
-    api.login(data).then(res => {
-      commit('login', res)
+  async login ({ commit, state }, data) {
+    const res = await api.login(data)
+    commit('login', res)
+
+    // validate fetched token
+    const validResult = await api.validateToken()
+    if (validResult) {
       router.push({ name: 'home' })
-    }).catch(err => err)
+    } else {
+      commit('logout')
+      router.push({ name: 'signin' })
+    }
   },
   logout ({ commit, state }) {
     commit('logout')

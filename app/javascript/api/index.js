@@ -34,6 +34,10 @@ export function login({name, password}) {
   })
 }
 
+export function validateToken() {
+  return http().get('/external_api/v1/auth/validate_token')
+}
+
 export function fetchProblems() {
   return http().get('/external_api/v1/problems.json')
 }
