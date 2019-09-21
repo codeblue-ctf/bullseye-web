@@ -1,6 +1,11 @@
 class InternalApi::V1::ImageController < InternalApiController
   def register
-    params[:events].each { |event|
+    param = JSON.parse(request.body.read)
+    if param[:events].nil?
+      render json: { result: 'error' }
+    end
+
+    param[:events].each { |event|
       # only accept push event
       if event[:action] != 'push' then
         next
