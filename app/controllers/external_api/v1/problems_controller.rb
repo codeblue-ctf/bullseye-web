@@ -22,10 +22,11 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
       team_id: current_team.id,
       problem_id: @problem.id
     ).order("uploaded_at DESC")
+    .select(:problem_id, :team_id, :uploaded_at, :created_at, :image_digest)
 
     render json: {
       problem: @problem,
-      images: @images.to_json(only: [:problem_id, :team_id, :uploaded_at, :created_at, :image_digest])
+      images: @images
     }
   end
 
