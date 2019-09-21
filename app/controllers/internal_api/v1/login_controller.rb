@@ -1,4 +1,4 @@
-class InternalApi::V1::AuthorizationController < InternalApiController
+class InternalApi::V1::LoginController < InternalApiController
   def login
     if params[:name] == 'admin' then
       succeed = Admin.all.find { |admin| admin.valid_password?(params[:password]) }.present?
