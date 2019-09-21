@@ -12,7 +12,19 @@
     <div>
       <h2>Containers your team pushed</h2>
 
-      <ul>
+      <table>
+        <thead>
+          <tr>
+            <th>image digest</th>
+            <th>uploaded at</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="image in images">
+            <th>{{image.image_digest}}</th>
+            <th>{{image.uploaded_at}}</th>
+          </tr>
+        </tbody>
       </ul>
     </div>
   </div>
@@ -26,12 +38,20 @@ export default {
   computed: {
     ...mapState('problem', {
       problem () {
-        return this.$store.state.problem.problems.find(p => p.id === this.id)
+        const detail = this.$store.state.problem.problemDetails.get(this.id)
+        if (detail) {
+          return detail.problem
+        }
+      },
+      images () {
+        const detail = this.$store.state.problem.problemDetails.get(this.id)
+        if (detail) {
+          return detail.images
+        }
       }
     })
   },
   created () {
-    this.$store.dispatch('problem/fetchAll')
     this.$store.dispatch('problem/fetch', { id: this.id })
   }
 }
