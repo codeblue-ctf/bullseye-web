@@ -1,16 +1,26 @@
 import * as api from '../../api'
 
 const state = {
-  problems: []
+  problems: [],
+  problemDetails: new Map()
 }
 
 const actions = {
-  fetch ({ commit, state }, data) {
+  fetch ({ commit, state }, { id }) {
+    api.fetchProblem(id).then(res => commit('fetchProblemDetail', {
+      id,
+      data: res.data
+    })).catch(err => err)
+  },
+  fetchAll ({ commit, state }, data) {
     api.fetchProblems().then(res => commit('fetchProblems', res.data)).catch(err => err)
   }
 }
 
 const mutations = {
+  fetchProblemDetail (state, { id, data }) {
+    state.problemDetails.set(id, data)
+  },
   fetchProblems (state, { problems }) {
     state.problems = problems
   }

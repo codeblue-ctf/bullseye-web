@@ -31,7 +31,8 @@ export default {
     })
   },
   created () {
-    this.$store.dispatch('problem/fetch')
+    this.$store.dispatch('problem/fetchAll')
+    this.$store.dispatch('problem/fetch', { id: this.id })
   }
 }
 </script>

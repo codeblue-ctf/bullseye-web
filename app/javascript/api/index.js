@@ -41,3 +41,7 @@ export function validateToken() {
 export function fetchProblems() {
   return http().get('/external_api/v1/problems.json')
 }
+
+export function fetchProblem(id) {
+  return http().get(`/external_api/v1/problems/${id}.json`)
+}

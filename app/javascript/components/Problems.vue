@@ -18,7 +18,7 @@ export default {
     ...mapState('problem', ['problems'])
   },
   created () {
-    this.$store.dispatch('problem/fetch')
+    this.$store.dispatch('problem/fetchAll')
   }
 }
 </script>
