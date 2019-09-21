@@ -21,8 +21,8 @@
         </thead>
         <tbody>
           <tr v-for="image in images">
-            <th>{{image.image_digest}}</th>
-            <th>{{image.uploaded_at}}</th>
+            <td>{{image.image_digest}}</td>
+            <td>{{image.uploaded_at}}</td>
           </tr>
         </tbody>
       </ul>
@@ -38,13 +38,13 @@ export default {
   computed: {
     ...mapState('problem', {
       problem () {
-        const detail = this.$store.state.problem.problemDetails.get(this.id)
+        const detail = this.$store.state.problem.problemDetails[this.id]
         if (detail) {
           return detail.problem
         }
       },
       images () {
-        const detail = this.$store.state.problem.problemDetails.get(this.id)
+        const detail = this.$store.state.problem.problemDetails[this.id]
         if (detail) {
           return detail.images
         }

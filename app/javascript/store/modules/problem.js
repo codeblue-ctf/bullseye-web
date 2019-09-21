@@ -2,7 +2,7 @@ import * as api from '../../api'
 
 const state = {
   problems: [],
-  problemDetails: new Map()
+  problemDetails: {}
 }
 
 const actions = {
@@ -19,7 +19,7 @@ const actions = {
 
 const mutations = {
   fetchProblemDetail (state, { id, data }) {
-    state.problemDetails.set(id, data)
+    state.problemDetails[id] = data
   },
   fetchProblems (state, { problems }) {
     state.problems = problems
