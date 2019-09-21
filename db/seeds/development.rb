@@ -15,6 +15,7 @@ end
 problem = Problem.find_or_create_by(
   title: 'sanity-check',
   statement: 'sanity-check',
+  exploit_container_name: 'sanity-check',
   calc_formula: '1000*succeeded/(succeeded+failed)'
 )
 
