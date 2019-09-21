@@ -8,6 +8,13 @@
       <strong>docker_compose.yml:</strong>
       <pre>{{problem.docker_compose}}</pre>
     </p>
+
+    <div>
+      <h2>Containers your team pushed</h2>
+
+      <ul>
+      </ul>
+    </div>
   </div>
 </template>
 
