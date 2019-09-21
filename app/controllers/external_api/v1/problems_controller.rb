@@ -22,6 +22,11 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
       team_id: current_team.id,
       problem_id: @problem.id
     ).order("uploaded_at DESC")
+
+    render json: {
+      problem: @problem,
+      images: @images.to_json(only: [:problem_id, :team_id, :uploaded_at, :created_at, :image_digest])
+    }
   end
 
     # Use callbacks to share common setup or constraints between actions.
