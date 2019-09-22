@@ -7,6 +7,8 @@ module DockerRegistry
     uri = URI("https://#{bullseye_config[:docker_registry_host]}#{path}")
     # TODO: SSL should be verified!!!!
     res = Net::HTTP.start(uri.host, uri.port, use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE) { |http|
+      http.open_timeout = 2
+      http.read_timeout = 2
       req = Net::HTTP::Get.new(uri)
       req['Authorization'] = "Bearer #{token}"
       http.request(req)
@@ -21,6 +23,8 @@ module DockerRegistry
     uri = URI.parse("https://#{bullseye_config[:docker_registry_auth_host]}/auth?account=#{bullseye_config[:admin][:name]}&scope=#{scope}&service=Docker%20registry")
     # TODO: SSL should be verified!!!!
     res = Net::HTTP.start(uri.host, uri.port, use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE) { |http|
+      http.open_timeout = 2
+      http.read_timeout = 2
       req = Net::HTTP::Get.new(uri)
       req.basic_auth(bullseye_config[:admin][:name], bullseye_config[:admin][:password])
       http.request(req)
