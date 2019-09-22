@@ -1,11 +1,15 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  # devise for admin should not work due to devise token auth
+  # XXX: devise for admin should not work due to devise token auth
   #devise_for :admins
 
   root to: 'home#index'
-  get 'docker_images/my'
+
+  # XXX: we no longer use docker images controller because it sends many requests
+  # XXX: but we might have to use this in the future when webhook endpoint breaks
+  #get 'docker_images/my'
+
   get 'viewer(/:action)', :controller => 'viewer'
 
   # interface for admin
@@ -20,6 +24,8 @@ Rails.application.routes.draw do
   namespace :internal_api, { format: :json } do
     namespace :v1 do
       post 'submit_score', to: 'schedule_results#submit'
+
+      # comes from docker registry
       post 'login', to: 'login#login'
       post 'registry_event', to: 'image#register'
     end
@@ -28,7 +34,6 @@ Rails.application.routes.draw do
   mount_devise_token_auth_for 'Team', at: 'external_api/v1/auth', skip: [:omniauth_callbacks]
   namespace :external_api, { format: :json } do
     namespace :v1 do
-
       resources :problems, only: [:index, :show]
 
       # this is for viewer
