@@ -2,7 +2,9 @@ class ScheduleResult < ApplicationRecord
   belongs_to :schedule
 
   before_create do
-    self.round_id = Round.last.id
+    # XXX: Comment out Round because Round is deprecated
+    # XXX: We will refactoring schedule this model
+    # self.round_id = Round.last.id
   end
 
   before_update do |record|
