@@ -4,10 +4,10 @@
 
     <p>{{problem.description}}</p>
 
-    <p>
+    <div>
       <strong>docker_compose.yml:</strong>
       <pre>{{problem.docker_compose}}</pre>
-    </p>
+    </div>
 
     <div>
       <h2>Containers your team pushed</h2>
@@ -25,7 +25,7 @@
             <td>{{image.uploaded_at}}</td>
           </tr>
         </tbody>
-      </ul>
+      </table>
     </div>
   </div>
 </template>
