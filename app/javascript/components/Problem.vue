@@ -1,13 +1,32 @@
 <template>
-  <div v-if="problem">
-    <p>{{problem.title}}</p>
+  <div v-if="detail">
+    <p>{{detail.problem.title}}</p>
 
-    <p>{{problem.description}}</p>
+    <p>{{detail.problem.description}}</p>
 
-    <p>
+    <div>
       <strong>docker_compose.yml:</strong>
-      <pre>{{problem.docker_compose}}</pre>
-    </p>
+      <pre>{{detail.problem.docker_compose}}</pre>
+    </div>
+
+    <div>
+      <h2>Containers your team pushed</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>image digest</th>
+            <th>uploaded at</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="image in detail.images">
+            <td>{{image.image_digest}}</td>
+            <td>{{image.uploaded_at}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -18,13 +37,13 @@ export default {
   props: ['id'],
   computed: {
     ...mapState('problem', {
-      problem () {
-        return this.$store.state.problem.problems.find(p => p.id === this.id)
+      detail(state) {
+        return state.problemDetails[this.id]
       }
     })
   },
   created () {
-    this.$store.dispatch('problem/fetch')
+    this.$store.dispatch('problem/fetch', { id: this.id })
   }
 }
 </script>

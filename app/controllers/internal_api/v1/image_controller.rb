@@ -1,6 +1,13 @@
 class InternalApi::V1::ImageController < InternalApiController
   def register
-    params[:events].each { |event|
+    # need to parse json because docker registry send with Content-Type: application/vnd.docker.distribution.events.v1+json
+    body = request.body.read
+    param = JSON.parse(body, {:symbolize_names => true})
+    if param[:events].nil?
+      render json: { result: 'error' }
+    end
+
+    param[:events].each { |event|
       # only accept push event
       if event[:action] != 'push' then
         next

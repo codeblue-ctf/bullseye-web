@@ -3,7 +3,7 @@
 
 ## System dependencies
 
-- ruby 2.5.1p57
+- ruby 2.6.4
 
 ## Configuration
 

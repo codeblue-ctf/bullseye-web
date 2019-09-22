@@ -1,1 +1,1 @@
-json.partial! "problems/problem", problem: @problem
+json.partial! "problems/problem", problem: @problem, images: @images
