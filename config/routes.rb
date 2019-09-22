@@ -10,7 +10,12 @@ Rails.application.routes.draw do
   # XXX: but we might have to use this in the future when webhook endpoint breaks
   #get 'docker_images/my'
 
-  get 'viewer(/:action)', :controller => 'viewer'
+  namespace :viewer do
+    %w(play table).each do |action|
+        get action, action: action
+    end
+    get '', action: 'index'
+  end
 
   # interface for admin
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
