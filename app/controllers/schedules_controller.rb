@@ -1,6 +1,15 @@
 class SchedulesController < ApplicationController
-  def new
+  def new_macro
     @schedule = Schedule.new
+    @problems = Problem.all
+    @teams = Team.all
+    @start_times = [
+      '10:00',
+      '12:00',
+      '14:00',
+      '16:00',
+      '18:00'
+    ]
   end
 
   def create_macro
