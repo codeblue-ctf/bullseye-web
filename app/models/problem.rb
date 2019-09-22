@@ -1,8 +1,11 @@
+require './lib/docker_compose_template'
+
 class Problem < ApplicationRecord
   has_many :schedule
 
   validates :calc_formula, presence: true
-  
+
+  # XXX: what's this???
   before_save do |record|
     if record.docker_compose_changed? then
       begin
