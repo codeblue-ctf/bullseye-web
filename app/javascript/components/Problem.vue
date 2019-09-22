@@ -10,17 +10,19 @@
     </div>
 
     <div>
-      <h2>Containers your team pushed</h2>
+      <h2>Submitted exploits</h2>
 
       <table>
         <thead>
           <tr>
+            <th>image tag</th>
             <th>image digest</th>
             <th>uploaded at</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="image in detail.images">
+            <td>{{image.tag}}</td>
             <td>{{image.image_digest}}</td>
             <td>{{image.uploaded_at}}</td>
           </tr>

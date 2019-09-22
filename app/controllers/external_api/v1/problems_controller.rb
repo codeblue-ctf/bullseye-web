@@ -28,6 +28,7 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
       # TODO: make it faster by using .where(is_manifest: true) instead of filter
       images: @images.filter{ |image| image.manifest? }.map{ |image|
         {
+            tag: image.tag,
             problem_id: image.problem_id,
             team_id: image.team_id,
             uploaded_at: image.uploaded_at,
