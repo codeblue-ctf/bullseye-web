@@ -1,3 +1,4 @@
+# TODO: this controller is not used for now. it will be removed
 class ProblemsController < ApplicationController
   before_action :authenticate_team!
   before_action :set_problem, only: [:show]
