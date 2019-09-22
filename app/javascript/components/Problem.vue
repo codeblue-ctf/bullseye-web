@@ -1,12 +1,12 @@
 <template>
-  <div v-if="problem">
-    <p>{{problem.title}}</p>
+  <div v-if="detail">
+    <p>{{detail.problem.title}}</p>
 
-    <p>{{problem.description}}</p>
+    <p>{{detail.problem.description}}</p>
 
     <div>
       <strong>docker_compose.yml:</strong>
-      <pre>{{problem.docker_compose}}</pre>
+      <pre>{{detail.problem.docker_compose}}</pre>
     </div>
 
     <div>
@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="image in images">
+          <tr v-for="image in detail.images">
             <td>{{image.image_digest}}</td>
             <td>{{image.uploaded_at}}</td>
           </tr>
@@ -37,17 +37,8 @@ export default {
   props: ['id'],
   computed: {
     ...mapState('problem', {
-      problem () {
-        const detail = this.$store.state.problem.problemDetails[this.id]
-        if (detail) {
-          return detail.problem
-        }
-      },
-      images () {
-        const detail = this.$store.state.problem.problemDetails[this.id]
-        if (detail) {
-          return detail.images
-        }
+      detail(state) {
+        return state.problemDetails[this.id]
       }
     })
   },

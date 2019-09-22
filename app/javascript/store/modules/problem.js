@@ -1,4 +1,5 @@
 import * as api from '../../api'
+import Vue from 'vue'
 
 const state = {
   problems: [],
@@ -19,7 +20,9 @@ const actions = {
 
 const mutations = {
   fetchProblemDetail (state, { id, data }) {
-    state.problemDetails[id] = data
+    state.problemDetails = { ... state.problemDetails,
+      [id]: data
+    }
   },
   fetchProblems (state, { problems }) {
     state.problems = problems
