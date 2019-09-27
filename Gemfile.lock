@@ -70,15 +70,7 @@ GEM
     chromedriver-helper (2.1.1)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
-    coffee-rails (4.2.2)
-      coffee-script (>= 2.2.0)
-      railties (>= 4.0.0)
-    coffee-script (2.4.1)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
-    connection_pool (2.2.2)
     crass (1.0.4)
     devise (4.7.1)
       bcrypt (~> 3.0)
@@ -95,7 +87,6 @@ GEM
       dotenv (= 2.7.5)
       railties (>= 3.2, < 6.1)
     erubi (1.8.0)
-    execjs (2.7.0)
     ffi (1.11.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -146,7 +137,6 @@ GEM
       libv8 (>= 6.9.411)
     minitest (5.11.3)
     msgpack (1.3.1)
-    mustermann (1.0.3)
     mysql2 (0.5.2)
     nested_form (0.3.2)
     nio4r (2.5.1)
@@ -162,8 +152,6 @@ GEM
     rack-pjax (1.1.0)
       nokogiri (~> 1.5)
       rack (>= 1.1)
-    rack-protection (2.0.7)
-      rack
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -208,9 +196,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    redis (4.1.3)
-    redis-namespace (1.6.0)
-      redis (>= 3.0.4)
     regexp_parser (1.6.0)
     remotipart (1.4.3)
     responders (3.0.0)
@@ -218,17 +203,6 @@ GEM
       railties (>= 5.0)
     ruby_dep (1.5.0)
     rubyzip (1.2.4)
-    sass (3.7.4)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.1.0)
-      railties (>= 5.2.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
     sassc (2.2.1)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -240,16 +214,6 @@ GEM
     selenium-webdriver (3.142.4)
       childprocess (>= 0.5, < 3.0)
       rubyzip (~> 1.2, >= 1.2.2)
-    sidekiq (6.0.0)
-      connection_pool (>= 2.2.2)
-      rack (>= 2.0.0)
-      rack-protection (>= 2.0.0)
-      redis (>= 4.1.0)
-    sinatra (2.0.7)
-      mustermann (~> 1.0)
-      rack (~> 2.0)
-      rack-protection (= 2.0.7)
-      tilt (~> 2.0)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -297,7 +261,6 @@ DEPENDENCIES
   byebug
   capybara (>= 2.15, < 4.0)
   chromedriver-helper
-  coffee-rails (~> 4.2)
   devise
   devise_token_auth
   dotenv-rails
@@ -306,14 +269,10 @@ DEPENDENCIES
   mini_racer
   mysql2
   omniauth
-  puma (~> 3.11)
+  puma (~> 3.12)
   rails (~> 5.2.0)
   rails_admin
-  redis-namespace
-  sass-rails (~> 5.0)
   selenium-webdriver
-  sidekiq
-  sinatra
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3
