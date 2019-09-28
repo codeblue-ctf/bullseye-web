@@ -3,13 +3,8 @@ class SchedulesController < ApplicationController
     @schedule = Schedule.new
     @problems = Problem.all
     @teams = Team.all
-    @start_times = [
-      '10:00',
-      '12:00',
-      '14:00',
-      '16:00',
-      '18:00'
-    ]
+    # TODO: get times from rounds table
+    @start_times = Round.all.pluck(:start_at)
   end
 
   def create_macro
