@@ -1,9 +1,4 @@
-require 'sidekiq/web'
-
 Rails.application.routes.draw do
-  # XXX: devise for admin should not work due to devise token auth
-  #devise_for :admins
-
   root to: 'home#index'
 
   # XXX: we no longer use docker images controller because it sends many requests
@@ -18,17 +13,22 @@ Rails.application.routes.draw do
   end
 
   # interface for admin
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  authenticate :admin do
-    mount Sidekiq::Web, at: "/sidekiq"
-    get 'docker_images/all'
-    get 'schedules/new'
-    post 'schedules/create_macro'
+  
+  # XXX: devise for admin should not work due to devise token auth
+  devise_for :admins
+
+  scope :admin do
+    authenticate :admin do
+      get 'docker_images/all'
+      get 'schedules/new_macro'
+      post 'schedules/create_macro'
+    end
   end
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
   namespace :internal_api, { format: :json } do
     namespace :v1 do
-      post 'submit_score', to: 'schedule_results#submit'
+      post 'submit_score', to: 'scores#submit'
 
       # comes from docker registry
       post 'login', to: 'login#login'

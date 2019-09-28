@@ -1,18 +1,16 @@
 class SchedulesController < ApplicationController
-  def new
+  def new_macro
     @schedule = Schedule.new
+    @problems = Problem.all
+    @teams = Team.all
+    @start_times = Round.all.pluck(:start_at)
   end
 
   def create_macro
-    @schedules = Team.all.map do |team|
-      params[:schedule][:team_id] = team.id
-      params[:schedule][:runner_host] = team.default_runner
-      Schedule.create(schedule_params)
-    end
-  end
-
-  private
-  def schedule_params
-    params.require(:schedule).permit(:problem_id, :team_id, :start_at, :finish_at, :interval, :runner_host)
+    Schedule.create(
+      teams: params[:teams].to_json,
+      problems: params[:problems].to_json,
+      start_times: params[:start_times].to_json
+    )
   end
 end

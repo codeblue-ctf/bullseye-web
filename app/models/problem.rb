@@ -1,5 +1,3 @@
-require './lib/docker_compose_template'
-
 class Problem < ApplicationRecord
   has_many :schedule
 

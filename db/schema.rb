@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_17_183754) do
+ActiveRecord::Schema.define(version: 2019_09_28_131609) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -58,44 +58,24 @@ ActiveRecord::Schema.define(version: 2019_08_17_183754) do
     t.boolean "disabled"
   end
 
-  create_table "schedule_results", force: :cascade do |t|
-    t.integer "succeeded"
-    t.text "error"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "runner_started_at"
-    t.datetime "runner_finished_at"
-    t.string "schedule_uuid", default: "", null: false
-    t.integer "schedule_id"
-    t.integer "score"
-    t.integer "failed"
-    t.integer "round"
-    t.index ["schedule_id"], name: "index_schedule_results_on_schedule_id"
-  end
-
   create_table "schedules", force: :cascade do |t|
-    t.integer "team_id"
-    t.integer "problem_id"
     t.datetime "start_at", null: false
-    t.datetime "finish_at", null: false
-    t.integer "interval", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "runner_host"
-    t.integer "concurrency"
-    t.index ["problem_id"], name: "index_schedules_on_problem_id"
-    t.index ["team_id"], name: "index_schedules_on_team_id"
+    t.string "teams"
+    t.string "problems"
   end
 
   create_table "scores", force: :cascade do |t|
     t.integer "score"
-    t.integer "image_id"
+    t.integer "image_digest"
     t.integer "succeeded"
     t.integer "failed"
     t.datetime "runner_started_at"
     t.datetime "runner_finished_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "log"
   end
 
   create_table "teams", force: :cascade do |t|
