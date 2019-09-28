@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
   namespace :internal_api, { format: :json } do
     namespace :v1 do
-      post 'submit_score', to: 'schedule_results#submit'
+      post 'submit_score', to: 'scores#submit'
 
       # comes from docker registry
       post 'login', to: 'login#login'

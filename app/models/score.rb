@@ -1,13 +1,6 @@
-class ScheduleResult < ApplicationRecord
-  belongs_to :schedule
-
-  before_create do
-    # XXX: Comment out Round because Round is deprecated
-    # XXX: We will refactoring schedule this model
-    # self.round_id = Round.last.id
-  end
-
+class Score < ApplicationRecord
   before_update do |record|
+    # TODO: maybe no need to calc score in this time instead of viewer
     succeeded = record.succeeded
     failed = record.failed
 
