@@ -12,11 +12,11 @@
     <p>Following commands are the example to submit your exploit</p>
     <!-- TODO: create config API -->
     <pre>
-$ docker login <%= Rails.application.config.bullseye[:docker_registry_host] %>
+$ docker login {{config.docker_registry_host}}
 > Username: <%= current_team.login_name %>
 > Password: YOUR_TEAM_PASSWORD
-$ docker build -t <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%= current_team.login_name %>/<%= @problem.exploit_container_name %> DIRECTORY_OF_YOUR_EXPLOIT_DOCKERFILE
-$ docker push <%= Rails.application.config.bullseye[:docker_registry_host] %>/<%= current_team.login_name %>/<%= @problem.problem_container_name %>
+$ docker build -t {{config.docker_registry_host}}/<%= current_team.login_name %>/{{problem.exploit_container_name}} DIRECTORY_OF_YOUR_EXPLOIT_DOCKERFILE
+$ docker push {{config.docker_registry_host}}/<%= current_team.login_name %>/{{problem.problem_container_name}}
     </pre>
 
     <p>How to test your exploit</p>
@@ -76,6 +76,7 @@ import { mapState } from 'vuex'
 export default {
   props: ['id'],
   computed: {
+    ...mapState(['config', 'auth']),
     ...mapState('problem', {
       detail(state) {
         return state.problemDetails[this.id]
