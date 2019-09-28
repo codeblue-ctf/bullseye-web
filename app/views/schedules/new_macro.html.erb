@@ -4,18 +4,18 @@
   <div class="field">
     <%= f.label :teams %><br />
     <%= f.select :teams, options_from_collection_for_select(@teams, :id, :name),
-        {}, {multiple: true, size: 5} %>
+        {include_hidden: false}, {multiple: true, size: 5} %>
   </div>
 
   <div class="field">
     <%= f.label :problems %><br />
     <%= f.select :problems, options_from_collection_for_select(@problems, :id, :title),
-        {}, {multiple: true, size: 5} %>
+        {include_hidden: false}, {multiple: true, size: 5} %>
   </div>
 
   <div class="field">
     <%= f.label :start_times %><br />
-    <%= f.select :start_times, @start_times, {}, {multiple: true, size: 5} %>
+    <%= f.select :start_times, @start_times, {include_hidden: false}, {multiple: true, size: 5} %>
   </div>
 
   <div class="actions">
