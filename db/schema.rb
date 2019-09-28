@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_17_183754) do
+ActiveRecord::Schema.define(version: 2019_09_28_124619) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -74,17 +74,11 @@ ActiveRecord::Schema.define(version: 2019_08_17_183754) do
   end
 
   create_table "schedules", force: :cascade do |t|
-    t.integer "team_id"
-    t.integer "problem_id"
     t.datetime "start_at", null: false
-    t.datetime "finish_at", null: false
-    t.integer "interval", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "runner_host"
-    t.integer "concurrency"
-    t.index ["problem_id"], name: "index_schedules_on_problem_id"
-    t.index ["team_id"], name: "index_schedules_on_team_id"
+    t.string "teams"
+    t.string "problems"
   end
 
   create_table "scores", force: :cascade do |t|
