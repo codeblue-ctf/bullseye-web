@@ -10,7 +10,6 @@
     </div>
 
     <p>Following commands are the example to submit your exploit</p>
-    <!-- TODO: create config API -->
     <pre>
 $ docker login {{config.docker_registry_host}}
 > Username: {{ currentTeam.login_name }}

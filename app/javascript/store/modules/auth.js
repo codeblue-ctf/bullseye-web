@@ -5,7 +5,7 @@ const tokenKeyName = 'bullseye-token'
 
 const initialToken = JSON.parse(window.localStorage.getItem(tokenKeyName)) || null
 const state = {
-  currentTeam: {},
+  currentTeam: null,
   signedIn: !!initialToken,
   tokens: initialToken || {}
 }
