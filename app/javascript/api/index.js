@@ -18,6 +18,7 @@ const http = () => {
     }
   })
   newAxios.interceptors.response.use(res => res, (error) => {
+    // TODO: if current location does not require auth, do not logout
     if (error.response.status === 401) {
       store.dispatch('auth/logout')
     }
@@ -44,4 +45,8 @@ export function fetchProblems() {
 
 export function fetchProblem(id) {
   return http().get(`/external_api/v1/problems/${id}.json`)
+}
+
+export function fetchCurrentTeam() {
+  return http().get(`/external_api/v1/current_team.json`)
 }

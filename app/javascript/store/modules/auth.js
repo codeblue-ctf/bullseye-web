@@ -5,6 +5,7 @@ const tokenKeyName = 'bullseye-token'
 
 const initialToken = JSON.parse(window.localStorage.getItem(tokenKeyName)) || null
 const state = {
+  currentTeam: null,
   signedIn: !!initialToken,
   tokens: initialToken || {}
 }
@@ -26,6 +27,10 @@ const actions = {
   logout ({ commit, state }) {
     commit('logout')
     router.push({ name: 'signin' })
+  },
+  async fetchCurrentTeam ({ commit, state }) {
+    const res = await api.fetchCurrentTeam()
+    commit('setTeam', res.data)
   }
 }
 
@@ -43,13 +48,15 @@ const mutations = {
     // store token to localStorage
     window.localStorage.setItem(tokenKeyName, JSON.stringify(state.tokens))
   },
-
   logout (state) {
     state.signedIn = false
     state.tokens = {}
 
     // remove token from localStorage
     window.localStorage.removeItem(tokenKeyName)
+  },
+  setTeam (state, { current_team }) {
+    state.currentTeam = current_team
   }
 }
 
