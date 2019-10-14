@@ -41,6 +41,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :problems, only: [:index, :show]
 
+      get 'current_team', to: 'auth#show_current_team'
+
       # this is for viewer
       get 'viewer/teams', to: 'viewer#teams'
       get 'viewer/table', to: 'viewer#table'

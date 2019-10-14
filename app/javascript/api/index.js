@@ -45,3 +45,7 @@ export function fetchProblems() {
 export function fetchProblem(id) {
   return http().get(`/external_api/v1/problems/${id}.json`)
 }
+
+export function fetchCurrentTeam() {
+  return http().get(`/external_api/v1/current_team.json`)
+}
