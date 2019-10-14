@@ -3,11 +3,11 @@ class Schedule < ApplicationRecord
   after_destroy :send_destroy_notification
 
   def send_create_notification
-    # TODO: send create schedule request to runner-master
-    # masterとの通信に失敗したら通知する必要あり？
+    # XXX: masterとの通信に失敗したら通知する必要あり？
+    RunnerMaster::create_schedule(self)
   end
-  def send_destroy_notification
-    # TODO: send destroy schedule request to runner-master
-    # masterとの通信に失敗したら通知する必要あり？
+  def send_destroy_notification(schedule)
+    # XXX: masterとの通信に失敗したら通知する必要あり？
+    RunnerMaster::delete_schedule(schedule.id)
   end
 end
