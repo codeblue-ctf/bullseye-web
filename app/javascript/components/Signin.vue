@@ -29,11 +29,12 @@ export default {
     }
   },
   methods: {
-    login () {
-      this.$store.dispatch('auth/login', {
+    async login () {
+      await this.$store.dispatch('auth/login', {
         name: this.name,
         password: this.password
       })
+      await this.$store.dispatch('auth/fetchCurrentTeam')
     }
   }
 }
