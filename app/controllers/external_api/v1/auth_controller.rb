@@ -1,5 +1,5 @@
 class ExternalApi::V1::AuthController < ExternalApiController
-  before_action :authenticate_team!, only: [:current_team]
+  before_action :authenticate_team!, only: [:show_current_team]
 
   def login
   end
