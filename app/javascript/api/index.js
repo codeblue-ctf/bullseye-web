@@ -18,6 +18,7 @@ const http = () => {
     }
   })
   newAxios.interceptors.response.use(res => res, (error) => {
+    // TODO: if current location does not require auth, do not logout
     if (error.response.status === 401) {
       store.dispatch('auth/logout')
     }
