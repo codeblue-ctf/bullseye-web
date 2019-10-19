@@ -1,6 +1,4 @@
 class Problem < ApplicationRecord
-  has_many :schedule
-
   validates :calc_formula, presence: true
 
   # XXX: what's this???
