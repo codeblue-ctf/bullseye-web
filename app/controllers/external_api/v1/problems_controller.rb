@@ -24,6 +24,7 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
     ).order("uploaded_at DESC")
 
     render json: {
+      # TODO: return problem.team_docker_compose(current_team)
       problem: @problem,
       # TODO: make it faster by using .where(is_manifest: true) instead of filter
       images: @images.filter{ |image| image.manifest? }.map{ |image|

@@ -14,8 +14,23 @@
   </div>
 
   <div class="field">
-    <%= f.label :start_times %><br />
-    <%= f.select :start_times, @start_times, {include_hidden: false}, {multiple: true, size: 5} %>
+    <%= f.label :start_at %><br />
+    <%= f.select :start_at, @start_times, {include_hidden: false}  %>
+  </div>
+
+  <div class="field">
+    <%= f.label :stop_at %><br />
+    <%= f.datetime_local_field :stop_at %>
+  </div>
+
+  <div class="field">
+    <%= f.label :interval %><br />
+    <%= f.number_field :interval %>
+  </div>
+
+  <div class="field">
+    <%= f.label :worker_hosts %><br />
+    <%= f.text_field :worker_hosts %>
   </div>
 
   <div class="actions">

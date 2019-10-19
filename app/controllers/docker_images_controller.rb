@@ -1,3 +1,4 @@
+# XXX: deprecated
 class DockerImagesController < ApplicationController
   before_action :authenticate_team!, only: [:my]
   before_action :authenticate_admin!, only: [:all]
