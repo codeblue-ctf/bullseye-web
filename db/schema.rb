@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_28_131609) do
+ActiveRecord::Schema.define(version: 2019_10_19_000000) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -56,14 +56,6 @@ ActiveRecord::Schema.define(version: 2019_09_28_131609) do
     t.string "label"
     t.datetime "start_at"
     t.boolean "disabled"
-  end
-
-  create_table "schedules", force: :cascade do |t|
-    t.datetime "start_at", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "teams"
-    t.string "problems"
   end
 
   create_table "scores", force: :cascade do |t|
