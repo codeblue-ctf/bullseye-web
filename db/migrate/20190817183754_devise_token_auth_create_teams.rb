@@ -38,12 +38,12 @@ class DeviseTokenAuthCreateTeams < ActiveRecord::Migration[5.2]
       add_column :teams, :tokens, :text
 
       #t.timestamps
-    end
+    #end
 
     #add_index :teams, :email,                unique: true
     add_index :teams, [:uid, :provider],     unique: true
     #add_index :teams, :reset_password_token, unique: true
     #add_index :teams, :confirmation_token,   unique: true
     # add_index :teams, :unlock_token,       unique: true
-  #end
+  end
 end
