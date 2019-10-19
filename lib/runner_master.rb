@@ -11,19 +11,25 @@ module RunnerMaster
     req = Net::HTTP::Post.new(uri)
     req['Content-Type'] = 'application/json'
     req.body = data.to_json
-    res = http.request(req)
+    res = Net::HTTP.start(uri.host, uri.port) { |http|
+      http.request(req)
+    }
     JSON.parse(res.body)
   end
   def self.delete(path)
     uri = runner_master_api_url(path)
     req = Net::HTTP::Delete.new(uri)
-    res = http.request(req)
+    res = Net::HTTP.start(uri.host, uri.port) { |http|
+      http.request(req)
+    }
     JSON.parse(res.body)
   end
   def self.get(path)
     uri = runner_master_api_url(path)
     req = Net::HTTP::Get.new(uri)
-    res = http.request(req)
+    res = Net::HTTP.start(uri.host, uri.port) { |http|
+      http.request(req)
+    }
     JSON.parse(res.body)
   end
 
