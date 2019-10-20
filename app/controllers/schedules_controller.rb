@@ -8,7 +8,7 @@ class SchedulesController < ApplicationController
   def create_macro
     params[:teams].each do |team|
       Problem.where(id: params[:problems]).each do |problem|
-        yml = DockerCompoeTemplate::format_to_runner_template(problem.docker_compose, team: team)
+        yml = DockerComposeTemplate::format_to_runner_template(problem.docker_compose, team: team)
         RunnerMaster::create_schedule(
           team_id: team.to_s,
           problem_id: problem.id.to_s,
