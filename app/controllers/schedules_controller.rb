@@ -11,8 +11,8 @@ class SchedulesController < ApplicationController
         RunnerMaster::create_schedule(
           team_id: team,
           problem_id: problem.id,
-          start_at: params[:start_at].iso8601,
-          stop_at: params[:stop_at].iso8601,
+          start_at: Time.parse(params[:start_at]).iso8601, # TODO: get time from round id
+          stop_at: Time.parse(params[:stop_at]).iso8601,
           yml: problem.docker_compose,
           interval: params[:interval],
           ntrials: problem.ntrials,
