@@ -1,15 +1,13 @@
 class Problem < ApplicationRecord
   validates :calc_formula, presence: true
 
-  # XXX: what's this???
+  # XXX: validate docker compose file
   before_save do |record|
     if record.docker_compose_changed? then
       begin
-        record.docker_compose % {
-          team: "",
-          exploit: "",
-          problem: ""
-        }
+        DockerComposeTemplate::render(record.docker_compose, {
+          team: ""
+        })
       rescue KeyError => e
         raise ActiveRecord::ValidationError, "#{e}"
       end
