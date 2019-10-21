@@ -15,8 +15,8 @@ class SchedulesController < ApplicationController
         yml = DockerComposeTemplate::format_to_runner_template(problem.docker_compose)
 
         RunnerMaster::create_schedule(
-          start_at: Time.parse(params[:start_at]).iso8601, # TODO: get time from round id
-          stop_at: Time.parse(params[:stop_at]).iso8601, # TODO: this should be JST
+          start_at: Time.parse(params[:start_at]).utc.iso8601, # TODO: get time from round id
+          stop_at: Time.parse(params[:stop_at]).utc.iso8601, # TODO: this should be JST
           yml: yml,
           interval: params[:interval].to_i,
           ntrials: problem.ntrials,
