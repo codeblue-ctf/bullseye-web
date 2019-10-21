@@ -43,7 +43,7 @@ module DockerComposeTemplate
   # 
   # services:
   #   exploit:
-  #     image: localhost:5000/team01/test-challenge{{.exploitHash}}
+  #     image: localhost:5000/{{.team}}/test-challenge{{.exploitHash}}
   #     depends_on:
   #       - challenge
   #       - flag-submit
@@ -61,9 +61,9 @@ module DockerComposeTemplate
   #       - "{{.submitPath}}:/flag"
   #     expose:
   #       - "1337"
-  def self.format_to_runner_template(docker_compose, params)
+  def self.format_to_runner_template(docker_compose)
     docker_compose % {
-      team: params[:team], # TODO: spec may change
+      team: '{{.team}}',
       exploit_hash: '{{.exploitHash}}',
       flag_path: '{{.flagPath}}',
       trial_number: '{{.trialNumber}}',
