@@ -15,7 +15,7 @@ module DockerComposeTemplate
   #       - "%{flag_path}:/flag"
   #     expose:
   #       - "8080"
-  #     environments:
+  #     environment:
   #       - TRIAL_NUMBER=%{trial_number}
   #   flag-submit:
   #     image: registry-y0cf0u1w.finals.ctf.codeblue.jp:5000/public/flag-submit
@@ -53,7 +53,7 @@ module DockerComposeTemplate
   #       - "{{.flagPath}}:/flag"
   #     expose:
   #       - "8080"
-  #     environments:
+  #     environment:
   #       - TRIAL_NUMBER={{.trialNumber}}
   #   flag-submit:
   #     image: localhost:5000/flag-submit

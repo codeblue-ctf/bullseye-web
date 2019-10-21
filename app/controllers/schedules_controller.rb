@@ -2,7 +2,7 @@ class SchedulesController < ApplicationController
   def new_macro
     @problems = Problem.all
     @teams = Team.all
-    @start_times = Round.all.pluck(:start_at)
+    @start_times = Round.all.map { |round| ["#{round.label} (#{round.start_at})", round.start_at] }
   end
 
   def create_macro
