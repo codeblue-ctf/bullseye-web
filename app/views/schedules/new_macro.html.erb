@@ -24,13 +24,13 @@
   </div>
 
   <div class="field">
-    <%= f.label :interval %><br />
+    <%= f.label :interval, "Interval (minutes)" %><br />
     <%= f.number_field :interval %>
   </div>
 
   <div class="field">
     <%= f.label :worker_hosts %><br />
-    <%= f.text_field :worker_hosts %>
+    <%= f.text_field :worker_hosts, placeholder: "10.146.0.19:10080,10.146.0.19:10080" %>
   </div>
 
   <div class="actions">
