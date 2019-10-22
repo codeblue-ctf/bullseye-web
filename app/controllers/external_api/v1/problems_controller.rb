@@ -22,10 +22,11 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
       team_id: current_team.id,
       problem_id: @problem.id
     ).order("uploaded_at DESC")
+    problem = @problem.as_json
+    problem['docker_compose'] = p.team_docker_compose(current_team)
 
     render json: {
-      # TODO: return problem.team_docker_compose(current_team)
-      problem: @problem,
+      problem: problem,
       # TODO: make it faster by using .where(is_manifest: true) instead of filter
       images: @images.filter{ |image| image.manifest? }.map{ |image|
         {
