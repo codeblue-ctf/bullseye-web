@@ -39,7 +39,10 @@ module RunnerMaster
   def self.delete_schedule(schedule_id)
     delete("/schedule/#{schedule_id}")
   end
-  def self.get_schedule_result(schedule_id)
-    get("/schedule/#{schedule_id}")
+  def self.get_schedules
+    get("/schedule")
+  end
+  def self.get_results
+    get("/result")
   end
 end
