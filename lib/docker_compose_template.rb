@@ -28,7 +28,7 @@ module DockerComposeTemplate
 
     default_params = {
       team: '',
-      exploit_hash: '@latest',
+      exploit_hash: '',
       flag_path: './flag',
       trial_number: '1',
       submit_flag_path: './submit_flag'
