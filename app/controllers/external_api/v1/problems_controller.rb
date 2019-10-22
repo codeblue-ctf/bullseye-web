@@ -23,7 +23,7 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
       problem_id: @problem.id
     ).order("uploaded_at DESC")
     problem = @problem.as_json
-    problem['docker_compose'] = p.team_docker_compose(current_team)
+    problem['docker_compose'] = @problem.team_docker_compose(current_team)
 
     render json: {
       problem: problem,
