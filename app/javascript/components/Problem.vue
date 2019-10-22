@@ -20,11 +20,11 @@ $ docker push {{config.docker_registry_host}}/{{ currentTeam.login_name }}/{{pro
 
     <p>How to test your exploit</p>
     <pre>
-$ cat docker-compose.yml # It is the docker-compose.yml of this problem
-version '3'
+$ cat docker-compose.yml # It should be docker-compose.yml of this problem
+version '2'
 ...
 $ echo "CBCTF{TEST_FLAG}" > ./flag
-$ echo "" > ./submitted-flag
+$ echo "" > ./submit_flag
 $ docker-compose up -d
 $ cat submitted-flag # CBCTF{TEST_FLAG} will be shown if your exploit succeeded
 $ docker-compose down
