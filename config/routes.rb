@@ -22,6 +22,11 @@ Rails.application.routes.draw do
       get 'docker_images/all'
       get 'schedules/new_macro'
       post 'schedules/create_macro'
+
+      # this is for viewer
+      get 'viewer/index', to: 'viewer#index'
+      get 'viewer/play', to: 'viewer#play'
+      get 'viewer/table', to: 'viewer#table'
     end
   end
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

@@ -2,17 +2,35 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   before_action :authenticate_admin!
 
   def teams
+    images = RunnerMaster::get_images
+    teams = Team.all
+    problems = Problem.all # TODO: it should be public problems
+    rounds = Rounds.where(disabled: false)
+    image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
     score_map = {}
-    schedule_results_all = ScheduleResult.includes(:schedule)
-    schedule_results_all.each do |schedule_result|
-      key = schedule_result.schedule.team_id
-      score_map[key] ||= {}
-      score_map[key][schedule_result.id] = schedule_result.score
+
+    teams.each do |team|
+      score_map[team.id] = {}
+      rounds.each do |round|
+        problems.each do |problem|
+          # search latest image on the current round
+          # TODO: this method can be faster
+          image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
+          next if image.nil?
+          score = image_to_score[image.digest]
+          next if score.nil?
+
+          # calc score
+          calclated_score = score.calc_score(problem.calc_formula)
+          next if calclated_score.nil?
+
+          score_map[team.id][score.id] = team_score
+        end
+      end
     end
 
     result = []
-    teams_all = Team.where('login_name not like ?', 'test%')
-    teams_all.each do |team|
+    teams.each do |team|
       result.push({
         team_id: team.login_name,
         schedule_team_id: team.id,
@@ -78,5 +96,14 @@ class ExternalApi::V1::ViewerController < ExternalApiController
         score: schedule_results.score
       }
     } : nil
+  end
+
+  private
+  def find_image(images, team, problem, before_at)
+    images
+      .sort { |a, b| a.created_at <=> b.created_at }
+      .find { |image|
+        image.team == team and image.problem == problem and image.created_at <= before_at
+      }
   end
 end
