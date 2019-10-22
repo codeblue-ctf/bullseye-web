@@ -1,4 +1,4 @@
-require '../runner_master'
+require './lib/runner_master'
 
 namespace :sync_data do
   task :fetch_result => :environment do
@@ -8,6 +8,7 @@ namespace :sync_data do
     # store results 
     results.each do |result|
       score = Score.where(runner_result_id: result[:id]).first_or_initialize
+      score.runner_result_id = result[:id]
       score.image_digest = result[:exploit_hash] # XXX: we can't fetch this parameter yet
       score.succeeded = result[:succeeded]
       score.failed = result[:ntrials] - result[:succeeded]
