@@ -2,7 +2,7 @@
   <div v-if="problem && currentTeam">
     <h1 class="display-4 mb-4">{{problem.title}}</h1>
 
-    <p>{{problem.statement}}</p>
+    <pre>{{problem.statement}}</pre>
 
     <div class="card mb-4">
       <div class="card-header">docker_compose.yml:</div>
