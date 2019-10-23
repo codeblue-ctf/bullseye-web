@@ -30,7 +30,8 @@
 
   <div class="field">
     <%= f.label :worker_hosts %><br />
-    <%= f.text_field :worker_hosts, placeholder: "10.146.0.19:10080,10.146.0.19:10080" %>
+    <%= f.select :worker_hosts, options_from_collection_for_select(@runner_workers, :host, :host),
+        {include_hidden: false}, {multiple: true, size: 5} %>
   </div>
 
   <div class="actions">
