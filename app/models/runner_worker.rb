@@ -1,0 +1,2 @@
+class RunnerWorker < ApplicationRecord
+end
