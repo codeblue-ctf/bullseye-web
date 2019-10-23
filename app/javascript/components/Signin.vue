@@ -1,20 +1,20 @@
 <template>
   <div>
-    <h2>Sign In</h2>
+    <h1 class="display-4 mb-4">Sign In</h1>
     
     <form v-on:submit.prevent="login">
-      <div>
+      <div class="form-group">
         <label>Login name</label>
-        <input type="text" v-model="name">
+        <input class="form-control" type="text" v-model="name">
       </div>
     
-      <div>
+      <div class="form-group">
         <label>Password</label>
-        <input type="password" v-model="password">
+        <input class="form-control" type="password" v-model="password">
       </div>
 
-      <div>
-        <input type="submit">
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary">
       </div>
     </form>
   </div>

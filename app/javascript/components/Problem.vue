@@ -1,60 +1,51 @@
 <template>
   <div v-if="problem && currentTeam">
-    <p>{{problem.title}}</p>
+    <h1 class="display-4 mb-4">{{problem.title}}</h1>
 
-    <p>{{problem.statement}}</p>
+    <pre>{{problem.statement}}</pre>
 
-    <div>
-      <strong>docker_compose.yml:</strong>
-      <pre>{{problem.docker_compose}}</pre>
+    <div class="card mb-4">
+      <div class="card-header">docker_compose.yml:</div>
+      <pre class="card-body"><code>{{problem.docker_compose}}</code></pre>
     </div>
 
-    <p>Following commands are the example to submit your exploit</p>
-    <pre>
-$ docker login {{config.docker_registry_host}}
+    <p>Submit your exploit:</p>
+    <pre class="border bg-light p-2"><code>$ docker login {{config.docker_registry_host}}
 > Username: {{ currentTeam.login_name }}
 > Password: YOUR_TEAM_PASSWORD
 $ docker build -t {{config.docker_registry_host}}/{{ currentTeam.login_name }}/{{problem.exploit_container_name}} DIRECTORY_OF_YOUR_EXPLOIT_DOCKERFILE
-$ docker push {{config.docker_registry_host}}/{{ currentTeam.login_name }}/{{problem.exploit_container_name}}
-    </pre>
+$ docker push {{config.docker_registry_host}}/{{ currentTeam.login_name }}/{{problem.exploit_container_name}}</code></pre>
 
-    <p>How to test your exploit</p>
-    <pre>
-$ cat docker-compose.yml # It is the docker-compose.yml of this problem
+    <p>Test your exploit in your computer:</p>
+    <pre class="border bg-light p-2"><code>$ cat docker-compose.yml # It is the docker-compose.yml of this problem
 version '3'
 ...
 $ echo "CBCTF{TEST_FLAG}" > ./flag
-$ echo "" > ./submitted-flag
+$ echo "" > ./submit_flag
 $ docker-compose up -d
-$ cat submitted-flag # CBCTF{TEST_FLAG} will be shown if your exploit succeeded
-$ docker-compose down
-    </pre>
+$ cat submit_flag # CBCTF{TEST_FLAG} will be shown if your exploit succeeded
+$ docker-compose down</code></pre>
 
-    <p>
-      <strong>Number of trials:</strong>
-      <pre>{{problem.ntrials}}</pre>
-    </p>
+    <dl class="row">
+      <dt class="col-sm-3">Number of trials</dt>
+      <dd class="col-sm-9">{{problem.ntrials}}</dd>
 
-    <p>
-      <strong>Calculation of score:</strong>
-      <pre>{{problem.calc_formula}}</pre>
-    </p>
+      <dt class="col-sm-3">Calculation of score</dt>
+      <dd class="col-sm-9">{{problem.calc_formula}}</dd>
 
-    <p>
-      <strong>Timeout (millsec):</strong>
-      <pre>{{problem.timeout}}</pre>
-    </p>
-
+      <dt class="col-sm-3">Timeout (sec)</dt>
+      <dd class="col-sm-9">{{problem.timeout}}</dd>
+    </dl>
 
     <div>
       <h2>Submitted exploits</h2>
 
-      <table>
+      <table class="table">
         <thead>
           <tr>
-            <th>image tag</th>
-            <th>image digest</th>
-            <th>uploaded at</th>
+            <th scope="col">image tag</th>
+            <th scope="col">image digest</th>
+            <th scope="col">uploaded at</th>
           </tr>
         </thead>
         <tbody>

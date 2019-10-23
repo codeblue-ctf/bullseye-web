@@ -1,12 +1,14 @@
 <template>
   <div>
-    <p>problems</p>
+    <h1 class="display-4 mb-4">Problems</h1>
 
-    <ul>
-      <li v-for="problem in problems">
-        <router-link :to="{ name: 'problem', params: { id: problem.id } }">{{ problem.title }}</router-link>
-      </li>
-    </ul>
+    <div class="row">
+      <div class="col-sm-2" v-for="problem in problems">
+        <div class="card">
+          <router-link class="card-body" :to="{ name: 'problem', params: { id: problem.id } }">{{ problem.title }}</router-link>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
