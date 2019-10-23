@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_10_22_080428) do
+=======
+ActiveRecord::Schema.define(version: 2019_10_23_064618) do
+>>>>>>> origin/master
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -56,6 +60,10 @@ ActiveRecord::Schema.define(version: 2019_10_22_080428) do
     t.string "label"
     t.datetime "start_at"
     t.boolean "disabled"
+  end
+
+  create_table "runner_workers", force: :cascade do |t|
+    t.string "host"
   end
 
   create_table "scores", force: :cascade do |t|
