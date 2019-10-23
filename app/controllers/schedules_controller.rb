@@ -3,12 +3,14 @@ class SchedulesController < ApplicationController
     @problems = Problem.all
     @teams = Team.all
     @start_times = Round.all.map { |round| ["#{round.label} (#{round.start_at})", round.start_at] }
+    @runner_workers = RunnerWorker.all
   end
 
   def create_macro
     bullseye_config = Rails.application.config.bullseye
     teams = Team.where(id: params[:teams])
     problems = Problem.where(id: params[:problems])
+    worker_hosts = params[:worker_hosts].join(',') # worker hosts should be , separated string
     teams.each do |team|
       problems.each do |problem|
         # format docker compose template to runner's one
@@ -21,7 +23,7 @@ class SchedulesController < ApplicationController
           interval: params[:interval].to_i,
           ntrials: problem.ntrials,
           timeout: problem.timeout,
-          worker_hosts: params[:worker_hosts],
+          worker_hosts: worker_hosts,
           registry_host: bullseye_config[:docker_registry_host],
           registry_username: bullseye_config[:admin][:name],
           registry_password: bullseye_config[:admin][:password],
