@@ -4,7 +4,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   def teams
     images = RunnerMaster::get_images
     teams = Team.all
-    problems = Problem.all # TODO: it should be public problems
+    problems = Problem.where(hidden: false)
     rounds = Rounds.where(disabled: false)
     image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
     score_map = {}

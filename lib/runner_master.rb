@@ -45,4 +45,7 @@ module RunnerMaster
   def self.get_results
     get("/result")
   end
+  def self.get_images
+    get("/image")
+  end
 end
