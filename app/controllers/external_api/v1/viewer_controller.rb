@@ -101,7 +101,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   private
   def find_image(images, team, problem, before_at)
     images
-      .sort { |a, b| a.created_at <=> b.created_at }
+      .sort { |a, b| b.created_at <=> a.created_at } # find latest image
       .find { |image|
         image.team == team and image.problem == problem and image.created_at <= before_at
       }
