@@ -10,7 +10,7 @@ namespace :sync_data do
       next if round[:results].size == 0
 
       # use latest result
-      result = round[:results].sort(|a, b| b[:CreatedAt] <=> a[:CreatedAt])[0]
+      result = round[:results].sort{ |a, b| b[:CreatedAt] <=> a[:CreatedAt] }[0]
 
       score = Score.where(runner_round_id: round[:id]).first_or_initialize
       score.runner_round_id = round[:id]
