@@ -40,5 +40,10 @@ class SchedulesController < ApplicationController
   end
 
   def delete
+    delete_schedules = params[:schedule_ids].to_unsafe_h.filter { |k,v| v == "1" }
+    delete_schedules.each do |schedule_id, v|
+      RunnerMaster::delete_schedule(schedule_id)
+    end
+    redirect_to action: 'list'
   end
 end
