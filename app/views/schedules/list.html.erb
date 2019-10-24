@@ -12,6 +12,7 @@
         <th>Stop At</th>
         <th>Interval</th>
         <th>Worker Hosts</th>
+        <th>Detail</th>
       </tr>
     </thead>
     <tbody>
@@ -25,6 +26,12 @@
           <td><%= schedule['stop_at'] %></td>
           <td><%= schedule['interval'] %></td>
           <td><%= schedule['worker_hosts'] %></td>
+          <td>
+            <details>
+              <summary>Detail</summary>
+              <code><%= schedule %></code>
+            </details>
+          </td>
         </tr>
       <% end %>
     </tbody>
