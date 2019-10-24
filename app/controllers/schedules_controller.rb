@@ -34,4 +34,11 @@ class SchedulesController < ApplicationController
       end
     end
   end
+
+  def list
+    @schedules = RunnerMaster::get_schedules
+  end
+
+  def delete
+  end
 end

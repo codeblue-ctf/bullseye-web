@@ -1,0 +1,36 @@
+<h2>Schedules</h2>
+
+<%= form_with(url: '/admin/schedules/delete') do |f| %>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Problem</th>
+        <th>Team</th>
+        <th>Start At</th>
+        <th>Stop At</th>
+        <th>Interval</th>
+        <th>Worker Hosts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @schedules.each do |schedule| %>
+        <tr>
+          <td><%= f.check_box "schedule_ids[#{schedule['ID']}]" %></td>
+          <td><%= schedule['ID'] %></td>
+          <td><%= schedule['problem'] %></td>
+          <td><%= schedule['team'] %></td>
+          <td><%= schedule['start_at'] %></td>
+          <td><%= schedule['stop_at'] %></td>
+          <td><%= schedule['interval'] %></td>
+          <td><%= schedule['worker_hosts'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="actions">
+    <%= f.submit "Delete Schedules" %>
+  </div>
+<% end %>
