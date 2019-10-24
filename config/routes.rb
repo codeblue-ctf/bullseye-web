@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   scope :admin do
     authenticate :admin do
       get 'docker_images/all'
+      get 'schedules/list'
+      post 'schedules/delete'
       get 'schedules/new_macro'
       post 'schedules/create_macro'
 
