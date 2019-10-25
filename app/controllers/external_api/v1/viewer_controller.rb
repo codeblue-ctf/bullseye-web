@@ -64,7 +64,11 @@ class ExternalApi::V1::ViewerController < ExternalApiController
           score = image_to_score[image['digest']]
           next if score.nil?
 
-          score_map[problem.id][round.id] = score.runner_round_id
+          # calc score
+          calclated_score = score.calc_score(problem.calc_formula)
+          next if calclated_score.nil?
+
+          score_map[problem.id][score.runner_round_id] = calclated_score
           problem_map[problem.id] = problem.title
         end
       end
@@ -112,9 +116,9 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   end
 
   def score
-    score = Score.where(runner_round_id: params[:id]).first
-    problem = Problem.where(exploit_container_name: score.problem_name).first
-    team = Team.where(login_name: score.team_login_name).first
+    score = Score.find(runner_round_id: params[:id])
+    problem = Problem.find(exploit_container_name: score.problem_name)
+    team = Team.find(login_name: score.team_login_name)
     calclated_score = score.calc_score(problem.calc_formula)
     render json: {
       team: {
