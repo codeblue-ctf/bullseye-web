@@ -20,8 +20,8 @@ class SchedulesController < ApplicationController
         stop_at = Time.parse(params[:stop_at] + " +0900").utc.iso8601
 
         RunnerMaster::create_schedule(
-          start_at: start_at
-          stop_at: stop_at
+          start_at: start_at,
+          stop_at: stop_at,
           yml: yml,
           interval: params[:interval].to_i,
           ntrials: problem.ntrials,

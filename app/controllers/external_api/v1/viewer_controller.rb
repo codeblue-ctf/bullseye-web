@@ -4,8 +4,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   def teams
     images = RunnerMaster::get_images
     teams = Team.all
-    problems = Problem.where(hidden: false)
-    rounds = Rounds.where(disabled: false)
+    problems = Problem.where(hidden: [false, nil])
+    rounds = Round.where(disabled: [false, nil])
     image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
     score_map = {}
 
@@ -17,7 +17,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
           # TODO: this method can be faster
           image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
           next if image.nil?
-          score = image_to_score[image.digest]
+          score = image_to_score[image['digest']]
           next if score.nil?
 
           # calc score
@@ -101,9 +101,10 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   private
   def find_image(images, team, problem, before_at)
     images
-      .sort { |a, b| b.created_at <=> a.created_at } # find latest image
+      .sort { |a, b| b['CreatedAt'] <=> a['CreatedAt'] } # find latest image
       .find { |image|
-        image.team == team and image.problem == problem and image.created_at <= before_at
+        (image['team'] == team && image['problem'] == problem &&
+          Time.parse(image['CreatedAt']).to_i <= before_at.to_i)
       }
   end
 end
