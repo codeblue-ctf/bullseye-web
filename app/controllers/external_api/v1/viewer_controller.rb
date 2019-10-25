@@ -131,7 +131,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       },
       problem: {
         name: problem.title,
-        round_id: round.id,
+        round_id: round&.id,
         ntrials: problem.ntrials,
         succeeded: score.succeeded,
         score: calclated_score
@@ -141,7 +141,11 @@ class ExternalApi::V1::ViewerController < ExternalApiController
 
   private
   def find_image(images, team, problem, before_at)
-    # TODO: image['CreatedAt'] はUTCなのでJSTに変えておく
+    # XXX: image['CreatedAt'] はUTCなのでJSTに変えておく
+    images = images.map{ |i|
+      i['CreatedAt'] = Time.parse(i['CreatedAt'] + ' +00:00').in_time_zone('Tokyo')
+      i
+    }
     images
       .sort { |a, b| b['CreatedAt'] <=> a['CreatedAt'] } # find latest image
       .find { |image|
