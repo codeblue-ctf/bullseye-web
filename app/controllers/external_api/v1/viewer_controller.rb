@@ -24,7 +24,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
           calclated_score = score.calc_score(problem.calc_formula)
           next if calclated_score.nil?
 
-          score_map[team.id][score.id] = team_score
+          score_map[team.id][score.runner_round_id] = calclated_score
         end
       end
     end
@@ -69,13 +69,34 @@ class ExternalApi::V1::ViewerController < ExternalApiController
 
   def problems
     result = {}
-    schedule_results_all = ScheduleResult.joins(schedule: [:problem, :team]).where("teams.login_name not like ?", "test%")
-    schedule_results_all.each do |schedule_result|
-      result[schedule_result.schedule.problem_id] ||= {}
-      result[schedule_result.schedule.problem_id][:name] = schedule_result.schedule.problem.title
-      result[schedule_result.schedule.problem_id][:round] ||= {}
-      result[schedule_result.schedule.problem_id][:round][schedule_result.round_id] ||= {}
-      result[schedule_result.schedule.problem_id][:round][schedule_result.round_id][schedule_result.schedule.team_id] = schedule_result.id
+
+    images = RunnerMaster::get_images
+    teams = Team.all
+    problems = Problem.where(hidden: [false, nil])
+    rounds = Round.where(disabled: [false, nil])
+    image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
+
+    problems.each do |problem|
+      result[problem.id] = {
+        name: problem.title,
+        round: {}
+      }
+      rounds.each do |round|
+        result[problem.id][:round][round.id] = {}
+        teams.each do |team|
+          result[problem.id][:round][round.id] = {}
+          image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
+          next if image.nil?
+          score = image_to_score[image['digest']]
+          next if score.nil?
+
+          # calc score
+          calclated_score = score.calc_score(problem.calc_formula)
+          next if calclated_score.nil?
+
+          result[problem.id][:round][round.id][score.runner_round_id] = calclated_score
+        end
+      end
     end
 
     render json: result
