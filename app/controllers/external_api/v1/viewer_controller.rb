@@ -43,24 +43,36 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   end
 
   def table
-    score_map = {}
-    problem_map = {}
-    schedule_results_all = ScheduleResult.includes(schedule: [:problem])
-    schedule_results_all.each do |schedule_result|
-      key = schedule_result.schedule.team_id
-      score_map[key] ||= {}
-      score_map[key][schedule_result.schedule.problem_id] ||= {}
-      score_map[key][schedule_result.schedule.problem_id][schedule_result.id] = schedule_result.score
-      problem_map[schedule_result.schedule.problem_id] = schedule_result.schedule.problem.title
-    end
+    images = RunnerMaster::get_images
+    teams = Team.all
+    problems = Problem.where(hidden: [false, nil])
+    rounds = Round.where(disabled: [false, nil])
+    image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
 
     result = []
-    teams_all = Team.where('login_name not like ?', 'test%')
-    teams_all.each do |team|
+    problem_map = {}
+
+    teams.each do |team|
+      score_map = {}
+      problems.each do |problem|
+        score_map[problem.id] = {}
+        rounds.each do |round|
+          # search latest image on the current round
+          # TODO: this method can be faster
+          image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
+          next if image.nil?
+          score = image_to_score[image['digest']]
+          next if score.nil?
+
+          score_map[problem.id][round.id] = score.runner_round_id
+          problem_map[problem.id] = problem.title
+        end
+      end
+
       result.push({
         schedule_team_id: team.id,
         name: team.name,
-        score: score_map[team.id] || {},
+        score: score_map
       })
     end
 
@@ -84,17 +96,14 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       rounds.each do |round|
         result[problem.id][:round][round.id] = {}
         teams.each do |team|
-          result[problem.id][:round][round.id] = {}
+          # search latest image on the current round
+          # TODO: this method can be faster
           image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
           next if image.nil?
           score = image_to_score[image['digest']]
           next if score.nil?
 
-          # calc score
-          calclated_score = score.calc_score(problem.calc_formula)
-          next if calclated_score.nil?
-
-          result[problem.id][:round][round.id][score.runner_round_id] = calclated_score
+          result[problem.id][:round][round.id][team.id] = score.runner_round_id
         end
       end
     end
@@ -114,7 +123,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       },
       problem: {
         name: problem.title,
-        round_id: 'TBD',
+        round_id: 'TBD', # TODO: 時刻からround IDを出してごまかす
         ntrials: problem.ntrials,
         succeeded: score.succeeded,
         score: calclated_score
