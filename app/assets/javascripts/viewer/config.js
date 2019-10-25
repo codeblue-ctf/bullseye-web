@@ -1,6 +1,6 @@
 const CONFIG = {}
 CONFIG.OBJECTS_NUMBER = 100
-CONFIG.API_BASE = '/external_api/v1'
+CONFIG.API_BASE = '/external_api/v1/viewer'
 CONFIG.ROUNDS = {
     '1': 'day1 13:30',
     '2': 'day1 15:30',

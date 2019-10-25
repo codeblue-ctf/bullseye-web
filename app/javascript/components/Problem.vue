@@ -16,9 +16,9 @@
 $ docker build -t {{config.docker_registry_host}}/{{ currentTeam.login_name }}/{{problem.exploit_container_name}} DIRECTORY_OF_YOUR_EXPLOIT_DOCKERFILE
 $ docker push {{config.docker_registry_host}}/{{ currentTeam.login_name }}/{{problem.exploit_container_name}}</code></pre>
 
-    <p>Test your exploit in your computer:</p>
+    <p>Test your exploit in local:</p>
     <pre class="border bg-light p-2"><code>$ cat docker-compose.yml # It is the docker-compose.yml of this problem
-version '3'
+version '2'
 ...
 $ echo "CBCTF{TEST_FLAG}" > ./flag
 $ echo "" > ./submit_flag

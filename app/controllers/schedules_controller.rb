@@ -15,10 +15,13 @@ class SchedulesController < ApplicationController
       problems.each do |problem|
         # format docker compose template to runner's one
         yml = DockerComposeTemplate::format_to_runner_template(problem.docker_compose)
+        start_at = Time.parse(params[:start_at]).utc.iso8601
+        # XXX: input is local time. add local timezone for now
+        stop_at = Time.parse(params[:stop_at] + " +0900").utc.iso8601
 
         RunnerMaster::create_schedule(
-          start_at: Time.parse(params[:start_at]).utc.iso8601, # TODO: get time from round id
-          stop_at: Time.parse(params[:stop_at]).utc.iso8601, # TODO: this should be JST
+          start_at: start_at,
+          stop_at: stop_at,
           yml: yml,
           interval: params[:interval].to_i,
           ntrials: problem.ntrials,
