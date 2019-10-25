@@ -103,20 +103,23 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   end
 
   def score
-    schedule_results = ScheduleResult.includes(schedule: [:team, :problem]).find_by(id: params[:id])
-    render json: schedule_results ? {
+    score = Score.where(runner_round_id: params[:id]).first
+    problem = Problem.where(exploit_container_name: score.problem_name).first
+    team = Team.where(login_name: score.team_login_name).first
+    calclated_score = score.calc_score(problem.calc_formula)
+    render json: {
       team: {
-        team_id: schedule_results.schedule.team.login_name,
-        name: schedule_results.schedule.team.name
+        team_id: team.login_name,
+        name: team.name
       },
       problem: {
-        name: schedule_results.schedule.problem.title,
-        round_id: schedule_results.round_id,
-        ntrials: schedule_results.schedule.problem.ntrials,
-        succeeded: schedule_results.succeeded,
-        score: schedule_results.score
+        name: problem.title,
+        round_id: 'TBD',
+        ntrials: problem.ntrials,
+        succeeded: score.succeeded,
+        score: calclated_score
       }
-    } : nil
+    }
   end
 
   private

@@ -48,4 +48,7 @@ module RunnerMaster
   def self.get_images
     get("/image")
   end
+  def self.get_rounds
+    get("/round")
+  end
 end
