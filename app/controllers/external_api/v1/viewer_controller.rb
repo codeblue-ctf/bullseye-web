@@ -121,7 +121,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     team = Team.find_by(login_name: score.team_login_name)
     # XXX: 正確なroundはわからないのでrunner_started_atから推測する
     # XXX: runner_started_at は UTCなのでJSTに変える
-    runner_started_at_in_tokyo = Time.parse(runner_started_at + ' +00:00').in_time_zone('Tokyo')
+    runner_started_at_in_tokyo = Time.parse(score.runner_started_at.to_s + ' +00:00').in_time_zone('Tokyo')
     round = Round.where('start_at <= ?', runner_started_at_in_tokyo).order(start_at: 'DESC').first
     calclated_score = score.calc_score(problem.calc_formula)
     render json: {
