@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_25_074540) do
+ActiveRecord::Schema.define(version: 2019_10_25_081031) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(version: 2019_10_25_074540) do
     t.datetime "updated_at", null: false
     t.text "log"
     t.integer "runner_round_id"
+    t.string "team_login_name"
+    t.string "problem_name"
     t.index ["runner_round_id"], name: "index_scores_on_runner_round_id", unique: true
   end
 
