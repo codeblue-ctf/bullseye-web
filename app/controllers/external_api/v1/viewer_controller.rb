@@ -116,9 +116,13 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   end
 
   def score
-    score = Score.find(runner_round_id: params[:id])
-    problem = Problem.find(exploit_container_name: score.problem_name)
-    team = Team.find(login_name: score.team_login_name)
+    score = Score.find_by(runner_round_id: params[:id])
+    problem = Problem.find_by(exploit_container_name: score.problem_name)
+    team = Team.find_by(login_name: score.team_login_name)
+    # XXX: 正確なroundはわからないのでrunner_started_atから推測する
+    # XXX: runner_started_at は UTCなのでJSTに変える
+    runner_started_at_in_tokyo = Time.parse(runner_started_at + ' +00:00').in_time_zone('Tokyo')
+    round = Round.where('start_at <= ?', runner_started_at_in_tokyo).order(start_at: 'DESC').first
     calclated_score = score.calc_score(problem.calc_formula)
     render json: {
       team: {
@@ -127,7 +131,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       },
       problem: {
         name: problem.title,
-        round_id: 'TBD', # TODO: 時刻からround IDを出してごまかす
+        round_id: round.id,
         ntrials: problem.ntrials,
         succeeded: score.succeeded,
         score: calclated_score
@@ -137,6 +141,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
 
   private
   def find_image(images, team, problem, before_at)
+    # TODO: image['CreatedAt'] はUTCなのでJSTに変えておく
     images
       .sort { |a, b| b['CreatedAt'] <=> a['CreatedAt'] } # find latest image
       .find { |image|
