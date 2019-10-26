@@ -18,24 +18,26 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
   # GET /problems/1
   # GET /problems/1.json
   def show
-    @images = Image.where(
-      team_id: current_team.id,
-      problem_id: @problem.id
-    ).order("uploaded_at DESC")
+    scores =  Score.where(
+      team_login_name: current_team.login_name,
+      problem_name: @problem.exploit_container_name
+    ).order("runner_started_at DESC")
+
     problem = @problem.as_json
     problem['docker_compose'] = @problem.team_docker_compose(current_team)
 
     render json: {
       problem: problem,
-      # TODO: make it faster by using .where(is_manifest: true) instead of filter
-      images: @images.filter{ |image| image.manifest? }.map{ |image|
+      scores: scores.map{ |score|
+        calclated_score = score.calc_score(@problem.calc_formula)
         {
-            tag: image.tag,
-            problem_id: image.problem_id,
-            team_id: image.team_id,
-            uploaded_at: image.uploaded_at,
-            created_at: image.created_at,
-            image_digest: image.image_digest
+            succeeded: score.succeeded,
+            calclated_score: calclated_score,
+            problem_id: score.problem_name,
+            team_id: score.team_login_name,
+            runner_started_at: score.runner_started_at,
+            created_at: score.created_at,
+            image_digest: score.image_digest
         }
       }
     }

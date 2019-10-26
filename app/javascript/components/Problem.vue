@@ -38,21 +38,21 @@ $ docker-compose down</code></pre>
     </dl>
 
     <div>
-      <h2>Submitted exploits</h2>
+      <h2>Your exploits</h2>
 
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">image tag</th>
+            <th scope="col">score (succeeded/total)</th>
             <th scope="col">image digest</th>
-            <th scope="col">uploaded at</th>
+            <th scope="col">runner started at</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="image in images">
-            <td>{{image.tag}}</td>
-            <td>{{image.image_digest}}</td>
-            <td>{{image.uploaded_at}}</td>
+          <tr v-for="score in scores">
+            <td>{{score.calclated_score}} ({{score.succeeded}}/{{problem.ntrials}})</td>
+            <td>{{score.image_digest}}</td>
+            <td>{{score.runner_started_at}}</td>
           </tr>
         </tbody>
       </table>
@@ -79,8 +79,8 @@ export default {
       problem() {
         return this.detail && this.detail.problem
       },
-      images() {
-        return this.detail && this.detail.images
+      scores() {
+        return this.detail && this.detail.scores
       }
     })
   },
