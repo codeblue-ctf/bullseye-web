@@ -3,7 +3,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
 
   def teams
     images = RunnerMaster::get_images
-    teams = Team.all
+    teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
     image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
@@ -44,7 +44,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
 
   def table
     images = RunnerMaster::get_images
-    teams = Team.all
+    teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
     image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
@@ -87,7 +87,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     result = {}
 
     images = RunnerMaster::get_images
-    teams = Team.all
+    teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
     image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
