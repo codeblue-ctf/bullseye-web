@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_25_081031) do
+ActiveRecord::Schema.define(version: 2019_10_26_144408) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 2019_10_25_081031) do
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.text "tokens"
+    t.integer "account_type", default: 0
     t.index ["email"], name: "index_teams_on_email", unique: true
     t.index ["login_name"], name: "index_teams_on_login_name", unique: true
     t.index ["reset_password_token"], name: "index_teams_on_reset_password_token", unique: true
