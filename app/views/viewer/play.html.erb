@@ -56,6 +56,9 @@
 
 <script>
 $(() => {
+    let ACTION_WAIT = 1000
+    let BULLSEYE_WAIT = 150
+
     let _PARAMS = location.hash.slice(1).split('&') || location.replace('<%= url_for :action => 'index' %>')
     let ID = _PARAMS[0]
     let IS_SKIP = _PARAMS[1] === 'skip'
@@ -138,7 +141,7 @@ $(() => {
                             }, 200)
                         }
                         f()
-                    }, 3000)
+                    }, ACTION_WAIT)
                 })
             })
             .then(() => {
@@ -151,10 +154,10 @@ $(() => {
                         for (let i = 0; i < rate; i++) {
                             let o = objects.splice(Math.floor(Math.random() * objects.length), 1)[0]
                             $(o.element).addClass('explode')
-                            await wait(200*(1-i/rate))
+                            await wait(BULLSEYE_WAIT*(1-i/rate))
                         }
                         resolve()
-                    }, 3000)
+                    }, ACTION_WAIT)
                 })
             })
             .then(() => {
@@ -185,7 +188,7 @@ $(() => {
                     'team_name': r.team.name,
                     'team_id': r.team.team_id,
                     'problem_name': r.problem.name,
-                    'round': r.problem.round,
+                    'round': r.problem.round_id,
                     'count': perfect ? "Bull's Eye" : r.problem.succeeded + ' / ' + r.problem.ntrials,
                     'score': r.problem.score,
                 }
@@ -214,7 +217,7 @@ $(() => {
             $('#bullseye-team').append($('#bullseye-template-team').render(r.team))
             $('#bullseye-problem').append($('#bullseye-template-problem').render(r.problem))
 
-            let round = {'round': parseInt(r.problem.round), 'time': '〜 ' + CONFIG.ROUNDS[r.problem.round]}
+            let round = {'round': parseInt(r.problem.round_id), 'time': viewer_formatRound(r.problem.problem_id, r.problem.round_id)}
             $('#bullseye-problem-round').append($('#bullseye-template-problem-round').render(round))
 
             action(r)

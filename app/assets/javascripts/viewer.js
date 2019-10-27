@@ -5,4 +5,5 @@
  * = require ./viewer/tween.min.js
  * = require ./viewer/CSS3DRenderer.js
  * = require ./viewer/config.js
+ * = require ./viewer/utils.js
  */
