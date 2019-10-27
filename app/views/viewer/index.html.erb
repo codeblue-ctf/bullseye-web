@@ -194,11 +194,16 @@ $(() => {
             }
 
             let current_round = getRound()
+
+            // validation
             if (PROBLEMS[problem_id]['round'][current_round] === undefined) {
-                alert('Result not exists (round)')
+                alert('Select ROUND not exists')
                 return
             }
-            localStorage.currentRound = current_round
+            if (Object.keys(PROBLEMS[problem_id]['round'][current_round]['team_result']).length === 0) {
+                alert('Team result not exists')
+                return
+            }
 
             let schedule_ids = []
             for (let schedule_team_id in PROBLEMS[problem_id]['round'][current_round]['team_result']) {
@@ -209,6 +214,8 @@ $(() => {
             schedule_ids.sort(() => { return Math.random() - .5 }) // what??
             let first_id = schedule_ids.shift()
             let mode = $('#bullseye-problems-mode').text() === 'play' ? 'play' : 'skip'
+
+            localStorage.currentRound = current_round
             location.href = "<%= url_for :action => 'play' %>#" + first_id + '&' + mode + '&' + schedule_ids.join(',')
         })
         
