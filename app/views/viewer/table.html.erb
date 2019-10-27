@@ -2,11 +2,11 @@
     <div class="pull-left"><h1><a href="<%= url_for :action => 'index' %>">Bull's Eye</a></h1></div>
 </header>
 
-<div id="bullseye-menu"><a href="<%= url_for :action => 'index' %>">index</a></div>
+<div id="bullseye-menu"><a href="<%= url_for :action => 'index' %>">Viewer</a></div>
 <div id="bullseye-table"></div>
 
 <script type="text/x-jsrender" id="bullseye-template-table">
-    <table>
+    <table class="table">
         <tr>
             <th>#</th>
             <th>Team</th>
@@ -31,6 +31,8 @@
 </script>
 
 <script>
+$.ajaxSetup({xhrFields: {withCredentials: true}});
+
 $(() => {
     $.getJSON(CONFIG.API_BASE + '/table.json', (r) => {
         let teams = []

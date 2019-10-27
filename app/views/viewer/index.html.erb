@@ -16,7 +16,7 @@
     </div>
 </header>
 
-<div id="bullseye-menu"><a href="<%= url_for :action => 'table' %>">table</a></div>
+<div id="bullseye-menu"><a href="<%= url_for :action => 'table' %>">Detail</a></div>
 <div id="bullseye-teams"></div>
 <div id="bullseye-nowexploiting">
     <div class="message">
@@ -49,21 +49,34 @@
 </script>
 
 <script type="text/x-jsrender" id="bullseye-template-teams">
-    {{for teams}}
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>Score</th>
+        </tr>
+
+        <%#
         <div class="teams-container">
             <div class="teams" data-schedule-team-id="{{>schedule_team_id}}">
                 <div class="name">{{>name}}</div>
-                <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
                 <div class="score">{{>score}}pt</div>
             </div>
         </div>
-    {{/for}}
+        %>
+
+        {{for teams}}
+            <tr class="teams" data-schedule-team-id="{{>schedule_team_id}}">
+                <td class="min">{{>#index+1}}</td>
+                <td>{{>name}}</td>
+                <td>{{>score}}</td>
+            </tr>
+        {{/for}}
+    </table>
 </script>
 
 <script>
 $(() => {
-    let PROBLEMS = {}
-
     let setPlayed = (schedule_team_id, schedule_id, problem_id, current_round) => {
         let played = JSON.parse(localStorage.played || '{}')
 
@@ -83,10 +96,10 @@ $(() => {
         localStorage.played = JSON.stringify(played)
     }
 
-    let selectRound = (round) => {
+    let selectRound = (problem_id, round) => {
         localStorage.currentRound = round
         $('#bullseye-problems-round-selected').data('round', round)
-        $('#bullseye-problems-round-selected').text('R' + (parseInt(round)) + ' (- ' + CONFIG.ROUNDS[round] + ')')
+        $('#bullseye-problems-round-selected').text(viewer_formatRound(problem_id, round))
     }
 
     let getRound = () => {
@@ -110,17 +123,17 @@ $(() => {
         // set round panel
         let _rounds = {}
         for (let i = PROBLEMS[problem_id]['min_round']; i <= PROBLEMS[problem_id]['max_round']; i++) {
-            _rounds[i] = 'R' + i + ' (- ' + CONFIG.ROUNDS[i] + ')'
+            _rounds[i] = viewer_formatRound(problem_id, i)
         }
         $('#bullseye-problems-round').html($('#bullseye-template-problems-round').render({'rounds': _rounds}))
-        selectRound(current_round || PROBLEMS[problem_id]['max_round'])
+        selectRound(problem_id, current_round || PROBLEMS[problem_id]['max_round'])
 
         $('#bullseye-problems-round-selected').click((e) => {
             $('#bullseye-problems-round-panel').fadeToggle(200)
         })
         $('.rounds').click((e) => {
             let self = $(e.currentTarget)
-            selectRound(self.data('round'))
+            selectRound(problem_id, self.data('round'))
             $('#bullseye-problems-round-panel').hide()
         })
 
@@ -134,18 +147,13 @@ $(() => {
         }
     }
 
-    let loadProblems = (r) => {
-        PROBLEMS = r
-
+    let loadProblems = () => {
         // make panel
         let _problems = []
-        for (let problem_id in r) {
-            let round = Object.keys(r[problem_id]['round'])
-            PROBLEMS[problem_id]['min_round'] = Math.min(...round)
-            PROBLEMS[problem_id]['max_round'] = Math.max(...round)
+        for (let problem_id in PROBLEMS) {
             _problems.push({
                 'problem_id': problem_id,
-                'name': r[problem_id]['name']
+                'name': PROBLEMS[problem_id]['name']
             })
         }
         $('#bullseye-problems-list').append($('#bullseye-template-problems-list').render({'problems': _problems}))
@@ -193,12 +201,12 @@ $(() => {
             localStorage.currentRound = current_round
 
             let schedule_ids = []
-            for (let schedule_team_id in PROBLEMS[problem_id]['round'][current_round]) {
-                schedule_id = PROBLEMS[problem_id]['round'][current_round][schedule_team_id]
+            for (let schedule_team_id in PROBLEMS[problem_id]['round'][current_round]['team_result']) {
+                schedule_id = PROBLEMS[problem_id]['round'][current_round]['team_result'][schedule_team_id]
                 schedule_ids.push(schedule_id)
                 setPlayed(schedule_team_id, schedule_id, problem_id, current_round)
             }
-            schedule_ids.sort(() => { return Math.random() - .5 })
+            schedule_ids.sort(() => { return Math.random() - .5 }) // what??
             let first_id = schedule_ids.shift()
             let mode = $('#bullseye-problems-mode').text() === 'play' ? 'play' : 'skip'
             location.href = "<%= url_for :action => 'play' %>#" + first_id + '&' + mode + '&' + schedule_ids.join(',')
@@ -252,7 +260,7 @@ $(() => {
             localStorage.currentRound = current_round
 
             let schedule_team_id = self.data('schedule-team-id')
-            let schedule_id = PROBLEMS[problem_id]['round'][current_round][schedule_team_id]
+            let schedule_id = PROBLEMS[problem_id]['round'][current_round]['team_result'][schedule_team_id]
             if (schedule_id === undefined) {
                 alert('Result not exists (team)')
                 return
@@ -266,7 +274,7 @@ $(() => {
 
     $.getJSON(CONFIG.API_BASE + '/teams.json', (r) => {
         loadTeams(r)
-        $.getJSON(CONFIG.API_BASE + '/problems.json', loadProblems)
+        loadProblems()
     })
 
 })
