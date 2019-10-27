@@ -30,10 +30,11 @@ class SchedulesController < ApplicationController
           registry_host: bullseye_config[:docker_registry_host],
           registry_username: bullseye_config[:admin][:name],
           registry_password: bullseye_config[:admin][:password],
-          callback_url: "",
+          callback_url: '',
           team: team.login_name,
           problem: problem.exploit_container_name,
           x11_required: problem.x11_required,
+          flag_template: problem.flag_template,
         )
       end
     end

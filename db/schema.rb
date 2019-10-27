@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_27_080227) do
+ActiveRecord::Schema.define(version: 2019_10_27_132040) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_080227) do
     t.text "calc_formula"
     t.boolean "hidden"
     t.boolean "x11_required"
+    t.string "flag_template", default: "CBCTF{[a-z]{16}}"
   end
 
   create_table "rounds", force: :cascade do |t|

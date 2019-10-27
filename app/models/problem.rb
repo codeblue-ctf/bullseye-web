@@ -1,5 +1,6 @@
 class Problem < ApplicationRecord
   validates :calc_formula, presence: true
+  validates :flag_template, presence: true, allow_blank: false
 
   # XXX: validate docker compose file
   before_save do |record|
