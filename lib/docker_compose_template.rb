@@ -13,6 +13,7 @@ module DockerComposeTemplate
   #     image: registry-y0cf0u1w.finals.ctf.codeblue.jp:5000/problems/sample
   #     volumes:
   #       - "%{flag_path}:/flag"
+  #       - "%{x11_path}}:/tmp/.X11-unix/X0"
   #     expose:
   #       - "8080"
   #     environment:
@@ -51,6 +52,7 @@ module DockerComposeTemplate
   #     image: localhost:5000/test-challenge
   #     volumes:
   #       - "{{.flagPath}}:/flag"
+  #       - "{{.X11Path}}:/tmp/.X11-unix/X0"
   #     expose:
   #       - "8080"
   #     environment:
@@ -68,6 +70,7 @@ module DockerComposeTemplate
       flag_path: '{{.flagPath}}',
       trial_number: '{{.trialNumber}}',
       submit_flag_path: '{{.submitPath}}',
+      x11_path: '{{.X11Path}}',
     }
   end
 end
