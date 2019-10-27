@@ -99,6 +99,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       }
       rounds.each do |round|
         result[problem.id][:round][round.id] = {}
+        result[problem.id][:round][round.id][:start_at] = round.start_at
+        result[problem.id][:round][round.id][:team_result] = {}
         teams.each do |team|
           # search latest image on the current round
           # TODO: this method can be faster
@@ -107,7 +109,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
           score = image_to_score[image['digest']]
           next if score.nil?
 
-          result[problem.id][:round][round.id][team.id] = score.runner_round_id
+          result[problem.id][:round][round.id][:team_result][team.id] = score.runner_round_id
         end
       end
     end
