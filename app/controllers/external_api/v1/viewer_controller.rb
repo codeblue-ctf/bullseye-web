@@ -6,8 +6,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
-    # TODO: 問題名、チーム名も同じやつで最新のスコアを取ってくるようにする
-    image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
+    image_to_score = image_to_score_map()
     score_map = {}
 
     teams.each do |team|
@@ -18,7 +17,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
           # TODO: this method can be faster
           image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
           next if image.nil?
-          score = image_to_score[image['digest']]
+          # get score from image digest, team login name and exploit container name
+          score = image_to_score[[image['digest'], team.login_name, problem.exploit_container_name]]
           next if score.nil?
 
           # calc score
@@ -48,8 +48,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
-    # TODO: 問題名、チーム名も同じやつで最新のスコアを取ってくるようにする
-    image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
+    image_to_score = image_to_score_map()
 
     result = []
     problem_map = {}
@@ -63,7 +62,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
           # TODO: this method can be faster
           image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
           next if image.nil?
-          score = image_to_score[image['digest']]
+          # get score from image digest, team login name and exploit container name
+          score = image_to_score[[image['digest'], team.login_name, problem.exploit_container_name]]
           next if score.nil?
 
           # calc score
@@ -92,8 +92,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
-    # TODO: 問題名、チーム名も同じやつで最新のスコアを取ってくるようにする
-    image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
+    image_to_score = image_to_score_map()
 
     problems.each do |problem|
       result[problem.id] = {
@@ -109,7 +108,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
           # TODO: this method can be faster
           image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
           next if image.nil?
-          score = image_to_score[image['digest']]
+          # get score from image digest, team login name and exploit container name
+          score = image_to_score[[image['digest'], team.login_name, problem.exploit_container_name]]
           next if score.nil?
 
           result[problem.id][:round][round.id][:team_result][team.id] = score.runner_round_id
@@ -159,5 +159,13 @@ class ExternalApi::V1::ViewerController < ExternalApiController
         (image['team'] == team && image['exploit_container'] == exploit_container_name &&
           image['CreatedAt'].to_i <= before_at.to_i)
       }
+  end
+
+  # create a hash that return score from key: [image_digest, team_login_name, problem_name]
+  # sort by runner_started_at so that it returns latest score
+  def image_to_score_map
+    Score.all.order(runnner_started_at: :asc).map { |score|
+      [[score.image_digest, score.team_login_name, score.problem_name], score]
+    }.to_h
   end
 end
