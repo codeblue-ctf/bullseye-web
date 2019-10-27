@@ -16,7 +16,7 @@ namespace :sync_data do
 
       score = Score.where(runner_round_id: round['ID']).first_or_initialize
       score.runner_round_id = round['ID']
-      score.image_digest = round['exploit_hash'] # XXX: we can't fetch this parameter yet
+      score.image_digest = round['image_hash'] # XXX: we can't fetch this parameter yet
       score.succeeded = result['succeeded']
       score.failed = round['ntrials'] - result['succeeded']
       score.runner_started_at = round['start_at']
