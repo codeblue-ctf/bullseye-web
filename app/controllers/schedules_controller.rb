@@ -33,6 +33,7 @@ class SchedulesController < ApplicationController
           callback_url: "",
           team: team.login_name,
           problem: problem.exploit_container_name,
+          x11_required: problem.x11_required,
         )
       end
     end
