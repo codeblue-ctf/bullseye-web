@@ -164,7 +164,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   # create a hash that return score from key: [image_digest, team_login_name, problem_name]
   # sort by runner_started_at so that it returns latest score
   def image_to_score_map
-    Score.all.order(runnner_started_at: :asc).map { |score|
+    Score.all.order(runner_started_at: :asc).map { |score|
       [[score.image_digest, score.team_login_name, score.problem_name], score]
     }.to_h
   end
