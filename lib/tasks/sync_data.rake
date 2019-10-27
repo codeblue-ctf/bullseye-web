@@ -21,7 +21,7 @@ namespace :sync_data do
       score.failed = round['ntrials'] - result['succeeded']
       score.runner_started_at = round['start_at']
       score.team_login_name = round['team']
-      score.problem_name = round['problem']
+      score.problem_name = round['exploit_container']
       score.log = round.to_json
       score.save
     end
