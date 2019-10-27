@@ -132,9 +132,9 @@ class ExternalApi::V1::ViewerController < ExternalApiController
         name: team.name
       },
       problem: {
+        problem_id: problem.id,
         name: problem.title,
         round_id: round&.id,
-        start_at: runner_started_at_in_tokyo,
         ntrials: problem.ntrials,
         succeeded: score.succeeded,
         score: calclated_score
