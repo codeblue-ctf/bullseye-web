@@ -32,6 +32,7 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
         calclated_score = score.calc_score(@problem.calc_formula)
         {
             succeeded: score.succeeded,
+            executed: score.executed,
             calclated_score: calclated_score,
             problem_id: score.problem_name,
             team_id: score.team_login_name,
