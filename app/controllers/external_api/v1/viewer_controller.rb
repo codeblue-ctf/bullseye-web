@@ -154,7 +154,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       .sort { |a, b| b['CreatedAt'] <=> a['CreatedAt'] } # find latest image
       .find { |image|
         (image['team'] == team && image['problem'] == problem &&
-          Time.parse(image['CreatedAt']).to_i <= before_at.to_i)
+          image['CreatedAt'].to_i <= before_at.to_i)
       }
   end
 end
