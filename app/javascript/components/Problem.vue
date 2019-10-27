@@ -33,7 +33,7 @@ $ docker-compose down</code></pre>
       <dt class="col-sm-3">Calculation of score</dt>
       <dd class="col-sm-9">{{problem.calc_formula}}</dd>
 
-      <dt class="col-sm-3">Timeout (sec)</dt>
+      <dt class="col-sm-3">Timeout (millisec)</dt>
       <dd class="col-sm-9">{{problem.timeout}}</dd>
     </dl>
 
