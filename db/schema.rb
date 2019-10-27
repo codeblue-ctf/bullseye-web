@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_27_132040) do
+ActiveRecord::Schema.define(version: 2019_10_27_173325) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2019_10_27_132040) do
 
   create_table "scores", force: :cascade do |t|
     t.integer "score"
-    t.integer "image_digest"
+    t.string "image_digest"
     t.integer "succeeded"
     t.integer "failed"
     t.datetime "runner_started_at"
