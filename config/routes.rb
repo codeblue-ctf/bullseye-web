@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       post 'schedules/create_macro'
 
       # this is for viewer
-      get 'viewer/index', to: 'viewer#index'
+      get 'viewer/', to: 'viewer#index'
       get 'viewer/play', to: 'viewer#play'
       get 'viewer/table', to: 'viewer#table'
     end
