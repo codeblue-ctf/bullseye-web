@@ -1,24 +1,34 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.5/bootstrap-table.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/filter-control/bootstrap-table-filter-control.min.css">
+
 <h2>Schedules</h2>
 
 <%= form_with(url: '/admin/schedules/delete') do |f| %>
-  <table>
+  <div class="actions">
+    <%= f.submit "Delete Schedules" %>
+  </div>
+
+  <table id="schedules" data-toggle="table" data-filter-control="true" data-click-to-select="true"
+    data-id-field="id" data-select-item-name="schedule_ids[]">
     <thead>
       <tr>
-        <th></th>
-        <th>ID</th>
-        <th>Problem</th>
-        <th>Team</th>
-        <th>Start At</th>
-        <th>Stop At</th>
-        <th>Interval</th>
-        <th>Worker Hosts</th>
-        <th>Detail</th>
+        <th data-field="state" data-checkbox="true"></th>
+        <th data-filter-control="input" data-sortable="true" data-field="id">ID</th>
+        <th data-filter-control="select" data-sortable="true" data-field="problem">Problem</th>
+        <th data-filter-control="select" data-sortable="true" data-field="team">Team</th>
+        <th data-filter-control="input" data-sortable="true" data-field="start_at">Start At</th>
+        <th data-filter-control="input" data-sortable="true" data-field="stop_at">Stop At</th>
+        <th data-filter-control="input" data-sortable="true" data-field="interval">Interval</th>
+        <th data-filter-control="input" data-sortable="true" data-field="worker_hosts">Worker Hosts</th>
+        <th data-filter-control="input" data-sortable="true" data-field="detail">Detail</th>
       </tr>
     </thead>
     <tbody>
       <% @schedules.each do |schedule| %>
         <tr>
-          <td><%= f.check_box "schedule_ids[#{schedule['ID']}]" %></td>
+          <td></td>
           <td><%= schedule['ID'] %></td>
           <td><%= schedule['problem'] %></td>
           <td><%= schedule['team'] %></td>
@@ -36,8 +46,10 @@
       <% end %>
     </tbody>
   </table>
-
-  <div class="actions">
-    <%= f.submit "Delete Schedules" %>
-  </div>
 <% end %>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
