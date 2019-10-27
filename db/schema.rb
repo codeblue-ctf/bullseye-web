@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_26_144408) do
+ActiveRecord::Schema.define(version: 2019_10_27_080227) do
 
   create_table "admins", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2019_10_26_144408) do
     t.string "problem_container_name"
     t.text "calc_formula"
     t.boolean "hidden"
+    t.boolean "x11_required"
   end
 
   create_table "rounds", force: :cascade do |t|
