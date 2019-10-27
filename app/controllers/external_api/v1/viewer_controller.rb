@@ -146,8 +146,9 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   def find_image(images, team, problem, before_at)
     # XXX: image['CreatedAt'] はUTCなのでJSTに変えておく
     images = images.map{ |i|
-      i['CreatedAt'] = Time.parse(i['CreatedAt'] + ' +00:00').in_time_zone('Tokyo')
-      i
+      new_i = i.dup
+      new_i['CreatedAt'] = Time.parse(new_i['CreatedAt'] + ' +00:00').in_time_zone('Tokyo')
+      new_i
     }
     images
       .sort { |a, b| b['CreatedAt'] <=> a['CreatedAt'] } # find latest image
