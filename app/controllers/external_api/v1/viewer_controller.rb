@@ -6,6 +6,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
+    # TODO: 問題名、チーム名も同じやつで最新のスコアを取ってくるようにする
     image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
     score_map = {}
 
@@ -47,6 +48,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
+    # TODO: 問題名、チーム名も同じやつで最新のスコアを取ってくるようにする
     image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
 
     result = []
@@ -90,6 +92,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
+    # TODO: 問題名、チーム名も同じやつで最新のスコアを取ってくるようにする
     image_to_score = Score.all.map { |score| [score.image_digest, score] }.to_h
 
     problems.each do |problem|
@@ -143,7 +146,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   end
 
   private
-  def find_image(images, team, problem, before_at)
+  def find_image(images, team, exploit_container_name, before_at)
     # XXX: image['CreatedAt'] はUTCなのでJSTに変えておく
     images = images.map{ |i|
       new_i = i.dup
@@ -153,7 +156,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     images
       .sort { |a, b| b['CreatedAt'] <=> a['CreatedAt'] } # find latest image
       .find { |image|
-        (image['team'] == team && image['problem'] == problem &&
+        (image['team'] == team && image['exploit_container'] == exploit_container_name &&
           image['CreatedAt'].to_i <= before_at.to_i)
       }
   end
