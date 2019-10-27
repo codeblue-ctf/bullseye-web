@@ -50,7 +50,7 @@ $ docker-compose down</code></pre>
         </thead>
         <tbody>
           <tr v-for="score in scores">
-            <td>{{score.calclated_score}} ({{score.succeeded}}/{{problem.ntrials}})</td>
+            <td>{{score.calclated_score}} ({{score.succeeded}}/{{score.executed}})</td>
             <td>{{score.image_digest}}</td>
             <td>{{score.runner_started_at}}</td>
           </tr>
