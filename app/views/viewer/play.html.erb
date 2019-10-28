@@ -7,7 +7,6 @@
 
 <script type="text/x-jsrender" id="bullseye-template-team">
     <div class="name">{{>name}}</div>
-    <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
 </script>
 
 <script type="text/x-jsrender" id="bullseye-template-problem">
@@ -29,7 +28,6 @@
     <div class="flex">
         <div class="items team">
             <div class="name">{{>team_name}}</div>
-            <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
         </div>
         <div class="items problem">
             <div class="name">{{>problem_name}}</div>
@@ -44,15 +42,16 @@
 <script type="text/x-jsrender" id="bullseye-template-result-x11">
     <div class="flex">
         <div class="items team">
-            <div class="name">{{>team_name}}</div>
-            <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
-        </div>
-        <div class="items problem">
             <div class="menu">
                 play capture
                 <a href="#">success</a>
                 <a href="#">failed</a>
             </div>
+        </div>
+        <div class="items team">
+            <div class="name">{{>team_name}}</div>
+        </div>
+        <div class="items problem">
             <div class="name">{{>problem_name}}</div>
             <div class="score">
                 <div class="count">{{>count}}</div> 
@@ -213,11 +212,9 @@ $(() => {
                     'count': perfect ? "Bull's Eye" : r.problem.succeeded + ' / ' + r.problem.ntrials,
                     'score': r.problem.score,
                 }
-                let result_element = (r.problem.x11_requierd) ?
-                    '#bullseye-template-result-x11' : '#bullseye-template-result';
                 $('#bullseye-result')
                     .addClass(perfect ? 'perfect' : '')
-                    .append($(result_element).render(param))
+                    .append($('#bullseye-template-result').render(param))
                     .fadeIn(200)
                 $('#bullseye-problem-succeeded').text(r.problem.succeeded)
 
@@ -232,6 +229,7 @@ $(() => {
                 }
 
                 //if (r.problem.x11_required) {
+                //    $('#bullseye-result').click(finalize)
                 //} else {
                 //    $('#bullseye-result').click(finalize)
                 //    setTimeout(finalize, 5000)
@@ -239,6 +237,22 @@ $(() => {
                 $('#bullseye-result').click(finalize)
                 setTimeout(finalize, 5000)
             })
+    }
+
+    let test = (r) => {
+        let perfect = r.problem.succeeded === r.problem.ntrials
+        let param = {
+            'team_name': r.team.name,
+            'team_id': r.team.team_id,
+            'problem_name': r.problem.name,
+            'round': r.problem.round_id,
+            'count': perfect ? "Bull's Eye" : r.problem.succeeded + ' / ' + r.problem.ntrials,
+            'score': r.problem.score,
+        }
+        $('#bullseye-result')
+            .addClass(perfect ? 'perfect' : '')
+            .append($('#bullseye-template-result-x11').render(param))
+            .fadeIn(200)
     }
 
     // dispatch
@@ -251,6 +265,7 @@ $(() => {
             $('#bullseye-problem-round').append($('#bullseye-template-problem-round').render(round))
 
             action(r)
+            //test(r)
         } else {
             alert('Result not exists!')
         }
