@@ -51,4 +51,15 @@ module RunnerMaster
   def self.get_rounds
     get("/round")
   end
+  def self.get_round_capture(runner_round_id)
+    get("/round/capture/#{runner_round_id}")
+  end
+  def self.get_job_capture(job_id)
+    uri = runner_master_api_url("/job/capture/#{job_id}")
+    req = Net::HTTP::Get.new(uri)
+    res = Net::HTTP.start(uri.host, uri.port) { |http|
+      http.request(req)
+    }
+    res.body
+  end
 end

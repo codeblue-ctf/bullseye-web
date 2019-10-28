@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get 'viewer/', to: 'viewer#index'
       get 'viewer/play', to: 'viewer#play'
       get 'viewer/table', to: 'viewer#table'
+      get 'viewer/capture/:id', to: 'viewer#capture'
     end
   end
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
@@ -46,6 +47,7 @@ Rails.application.routes.draw do
       get 'viewer/table', to: 'viewer#table'
       get 'viewer/problems', to: 'viewer#problems'
       get 'viewer/score/:id', to: 'viewer#score'
+      get 'viewer/capture_id/:id/:type', to: 'viewer#capture'
     end
   end
 

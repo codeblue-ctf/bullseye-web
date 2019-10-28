@@ -140,8 +140,17 @@ class ExternalApi::V1::ViewerController < ExternalApiController
         round_id: round&.id,
         ntrials: problem.ntrials,
         succeeded: score.succeeded,
+        x11_required: problem.x11_required,
         score: calclated_score
       }
+    }
+  end
+
+  def capture_id
+    round_captures = RunnerMaster::get_round_capture(params[:id])
+    capture_ids = round_captures[params[:type]] || [false]
+    render json: {
+      id: capture_ids.sample
     }
   end
 
