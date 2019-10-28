@@ -312,12 +312,13 @@ h1, h1 a, #bullseye-logo a {
 #bullseye-result .flex {
     margin-top: 180px;
     justify-content: center;
+    align-items: center;
 }
 #bullseye-result .team {
-    font-size: 28px;
+    font-size: 40px;
 }
     #bullseye-result .team .name {
-        margin-bottom: 12px;
+        /*margin-bottom: 12px;*/
     }
 #bullseye-result .problem {
     padding: 48px 0 0 48px;
