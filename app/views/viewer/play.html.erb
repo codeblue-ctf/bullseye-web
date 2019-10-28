@@ -41,6 +41,27 @@
     </div>
 </script>
 
+<script type="text/x-jsrender" id="bullseye-template-result-x11">
+    <div class="flex">
+        <div class="items team">
+            <div class="name">{{>team_name}}</div>
+            <div class="logo"><img src="/images/teams/{{>team_id}}.png" alt=""></div>
+        </div>
+        <div class="items problem">
+            <div class="menu">
+                play capture
+                <a href="#">success</a>
+                <a href="#">failed</a>
+            </div>
+            <div class="name">{{>problem_name}}</div>
+            <div class="score">
+                <div class="count">{{>count}}</div> 
+                <div class="point">+{{>score}}pt</div>
+            </div>
+        </div>
+    </div>
+</script>
+
 <script type="text/x-jsrender" id="bullseye-template-objects">
     <div class="bullseye-objects">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 116 116">
@@ -192,9 +213,11 @@ $(() => {
                     'count': perfect ? "Bull's Eye" : r.problem.succeeded + ' / ' + r.problem.ntrials,
                     'score': r.problem.score,
                 }
+                let result_element = (r.problem.x11_requierd) ?
+                    '#bullseye-template-result-x11' : '#bullseye-template-result';
                 $('#bullseye-result')
                     .addClass(perfect ? 'perfect' : '')
-                    .append($('#bullseye-template-result').render(param))
+                    .append($(result_element).render(param))
                     .fadeIn(200)
                 $('#bullseye-problem-succeeded').text(r.problem.succeeded)
 
@@ -208,11 +231,13 @@ $(() => {
                     }
                 }
 
-                if (r.problem.x11_required) {
-                } else {
-                    $('#bullseye-result').click(finalize)
-                    setTimeout(finalize, 5000)
-                }
+                //if (r.problem.x11_required) {
+                //} else {
+                //    $('#bullseye-result').click(finalize)
+                //    setTimeout(finalize, 5000)
+                //}
+                $('#bullseye-result').click(finalize)
+                setTimeout(finalize, 5000)
             })
     }
 
