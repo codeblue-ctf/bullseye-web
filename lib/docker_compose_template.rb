@@ -32,7 +32,8 @@ module DockerComposeTemplate
       exploit_hash: '',
       flag_path: './flag',
       trial_number: '1',
-      submit_flag_path: './submit_flag'
+      submit_flag_path: './submit_flag',
+      x11_path: '/tmp/.X11-unix/X0',
     }
     params = default_params.merge(params)
     docker_compose % params
