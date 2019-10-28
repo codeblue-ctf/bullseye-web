@@ -57,7 +57,7 @@
 <script>
 $(() => {
     let ACTION_WAIT = 1000
-    let BULLSEYE_WAIT = 150
+    let BULLSEYE_WAIT = 50
 
     let _PARAMS = location.hash.slice(1).split('&') || location.replace('<%= url_for :action => 'index' %>')
     let ID = _PARAMS[0]
@@ -195,11 +195,10 @@ $(() => {
                 $('#bullseye-result')
                     .addClass(perfect ? 'perfect' : '')
                     .append($('#bullseye-template-result').render(param))
-                    .click(() => { location = "<%= url_for :action => 'index' %>" })
                     .fadeIn(200)
                 $('#bullseye-problem-succeeded').text(r.problem.succeeded)
 
-                setTimeout(() => {
+                let finalize = () => {
                     let first_id = NEXT_ID ? NEXT_ID.shift() : ''
                     if (first_id !== '') {
                         location = '<%= url_for %>#' + first_id + '&' + _PARAMS[1] + '&' + NEXT_ID.join(',')
@@ -207,7 +206,13 @@ $(() => {
                     } else {
                         location = "<%= url_for :action => 'index' %>"
                     }
-                }, 5000)
+                }
+
+                if (r.problem.x11_required) {
+                } else {
+                    $('#bullseye-result').click(finalize)
+                    setTimeout(finalize, 5000)
+                }
             })
     }
 
