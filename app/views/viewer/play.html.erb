@@ -32,7 +32,7 @@
         <div class="items problem">
             <div class="name">{{>problem_name}}</div>
             <div class="score">
-                <div class="count">{{>count}}</div> 
+                <div class="count">{{:count}}</div> 
                 <div class="point">+{{>score}}pt</div>
             </div>
         </div>
@@ -209,7 +209,7 @@ $(() => {
                     'team_id': r.team.team_id,
                     'problem_name': r.problem.name,
                     'round': r.problem.round_id,
-                    'count': perfect ? "Bull's Eye" : r.problem.succeeded + ' / ' + r.problem.ntrials,
+                    'count': (perfect ? "Bull's Eye<br>" : '') + r.problem.succeeded + ' / ' + r.problem.ntrials,
                     'score': r.problem.score,
                 }
                 $('#bullseye-result')
@@ -246,7 +246,7 @@ $(() => {
             'team_id': r.team.team_id,
             'problem_name': r.problem.name,
             'round': r.problem.round_id,
-            'count': perfect ? "Bull's Eye" : r.problem.succeeded + ' / ' + r.problem.ntrials,
+            'count': (perfect ? "Bull's Eye<br>" : '') + r.problem.succeeded + ' / ' + r.problem.ntrials,
             'score': r.problem.score,
         }
         $('#bullseye-result')
