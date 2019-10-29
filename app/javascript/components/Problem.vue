@@ -27,6 +27,9 @@ $ cat submit_flag # CBCTF{TEST_FLAG} will be shown if your exploit succeeded
 $ docker-compose down</code></pre>
 
     <dl class="row">
+      <dt class="col-sm-3">Flag Format</dt>
+      <dd class="col-sm-9">{{problem.flat_format}}</dd>
+
       <dt class="col-sm-3">Number of trials</dt>
       <dd class="col-sm-9">{{problem.ntrials}}</dd>
 
