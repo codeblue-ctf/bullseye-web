@@ -40,21 +40,19 @@
 </script>
 
 <script type="text/x-jsrender" id="bullseye-template-result-x11">
+    <div id="bullseye-x11-video" class="hide"><video controls></div>
+    <div id="bullseye-x11-menu" class="hide">
+        Play capture |
+        <span id="bullseye-x11-video-close">close</span>
+    </div>
     <div class="flex">
-        <div class="items team">
-            <div class="menu">
-                play capture
-                <a href="#">success</a>
-                <a href="#">failed</a>
-            </div>
-        </div>
         <div class="items team">
             <div class="name">{{>team_name}}</div>
         </div>
         <div class="items problem">
             <div class="name">{{>problem_name}}</div>
             <div class="score">
-                <div class="count">{{>count}}</div> 
+                <div class="count">{{:count}}</div> 
                 <div class="point">+{{>score}}pt</div>
             </div>
         </div>
@@ -136,6 +134,24 @@ $(() => {
         })
     }
 
+    let x11play = (type) => {
+        $.getJSON(`${CONFIG.API_BASE}/capture_id/${ID}/${type}.json`, (r) => {
+          if (r.id === null) {
+            alert('Not found caputre')
+          }
+          $('#bullseye-x11-video').removeClass('hide')
+          $('#bullseye-x11-video video').attr('src', `<%= url_for :action => 'capture' %>?id=${r.id}`)
+        })
+    }
+
+    let formatTime = (start_at) => {
+        let date = new Date(Date.parse(start_at))
+        //let day = date.getDate()
+        let hour = ('0' + date.getHours()).slice(-2)
+        let min = ('0' + date.getMinutes()).slice(-2)
+        return `${hour}:${min}`
+    }
+
     let action = (r) => {
         let rate = Math.floor(r.problem.succeeded / r.problem.ntrials * 100)
         let exploitCountId = 0
@@ -212,9 +228,10 @@ $(() => {
                     'count': (perfect ? "Bull's Eye<br>" : '') + r.problem.succeeded + ' / ' + r.problem.ntrials,
                     'score': r.problem.score,
                 }
+                let element = (r.problem.x11_required) ? '#bullseye-template-result-x11' : '#bullseye-template-result'
                 $('#bullseye-result')
                     .addClass(perfect ? 'perfect' : '')
-                    .append($('#bullseye-template-result').render(param))
+                    .append($(element).render(param))
                     .fadeIn(200)
                 $('#bullseye-problem-succeeded').text(r.problem.succeeded)
 
@@ -228,31 +245,28 @@ $(() => {
                     }
                 }
 
-                //if (r.problem.x11_required) {
-                //    $('#bullseye-result').click(finalize)
-                //} else {
-                //    $('#bullseye-result').click(finalize)
-                //    setTimeout(finalize, 5000)
-                //}
-                $('#bullseye-result').click(finalize)
-                setTimeout(finalize, 5000)
+                if (r.problem.x11_required) {
+                    // video
+                    $('#bullseye-x11-video-close').click(() => { $('#bullseye-x11-video').addClass('hide') })
+                    $('#bullseye-x11-video video').error(() => { alert('Broken video X(') })
+                    $.getJSON(`${CONFIG.API_BASE}/capture_type/${ID}.json`, (r) => {
+                      types = r['types']
+                      if (types.length > 0) {
+                        $('#bullseye-x11-menu').removeClass('hide')
+                      }
+                      $.each(types, (index, value) => {
+                        let menu = $(`<span>${value}</span>`).click(() => { x11play(value) })
+                        $('#bullseye-x11-menu').append(menu)
+                      })
+                    })
+                } else {
+                    setTimeout(finalize, 5000)
+                }
+                $('#bullseye-result .flex').click(finalize)
             })
     }
 
     let test = (r) => {
-        let perfect = r.problem.succeeded === r.problem.ntrials
-        let param = {
-            'team_name': r.team.name,
-            'team_id': r.team.team_id,
-            'problem_name': r.problem.name,
-            'round': r.problem.round_id,
-            'count': (perfect ? "Bull's Eye<br>" : '') + r.problem.succeeded + ' / ' + r.problem.ntrials,
-            'score': r.problem.score,
-        }
-        $('#bullseye-result')
-            .addClass(perfect ? 'perfect' : '')
-            .append($('#bullseye-template-result-x11').render(param))
-            .fadeIn(200)
     }
 
     // dispatch
@@ -261,7 +275,7 @@ $(() => {
             $('#bullseye-team').append($('#bullseye-template-team').render(r.team))
             $('#bullseye-problem').append($('#bullseye-template-problem').render(r.problem))
 
-            let round = {'round': parseInt(r.problem.round_id), 'time': viewer_formatRound(r.problem.problem_id, r.problem.round_id)}
+            let round = {'round': parseInt(r.problem.round_id), 'time': formatTime(r.problem.round_start_at)}
             $('#bullseye-problem-round').append($('#bullseye-template-problem-round').render(round))
 
             action(r)

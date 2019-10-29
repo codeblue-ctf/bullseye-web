@@ -20,8 +20,8 @@
 <div id="bullseye-teams"></div>
 <div id="bullseye-nowexploiting">
     <div class="message">
-        <input type="text" style="width:100%;"><br>
-        <input type="time">
+        <input type="text" value="Now evaluation" class="text">
+        <!--<input type="time">-->
     </div>
 </div>
 
@@ -77,6 +77,8 @@
 
 <script>
 $(() => {
+    let PROBLEMS = {}
+
     let setPlayed = (schedule_team_id, schedule_id, problem_id, current_round) => {
         let played = JSON.parse(localStorage.played || '{}')
 
@@ -99,11 +101,24 @@ $(() => {
     let selectRound = (problem_id, round) => {
         localStorage.currentRound = round
         $('#bullseye-problems-round-selected').data('round', round)
-        $('#bullseye-problems-round-selected').text(viewer_formatRound(problem_id, round))
+        $('#bullseye-problems-round-selected').text(formatRound(problem_id, round))
     }
 
     let getRound = () => {
         return $('#bullseye-problems-round-selected').data('round')
+    }
+
+    let formatRound = (problem_id, round_id) => {
+        if (PROBLEMS[problem_id]['round'][round_id] === undefined) {
+            return `R-`
+        }
+
+        let start_date = new Date(Date.parse(PROBLEMS[problem_id]['round'][1]['start_at']))
+        let date = new Date(Date.parse(PROBLEMS[problem_id]['round'][round_id]['start_at']))
+        let day = (date.getDate() - start_date.getDate() + 1)
+        let hour = ('0' + date.getHours()).slice(-2)
+        let min = ('0' + date.getMinutes()).slice(-2)
+        return `R${round_id} (${day}day ${hour}:${min})`
     }
 
     let selectProblem = (problem_id, current_round) => {
@@ -123,7 +138,10 @@ $(() => {
         // set round panel
         let _rounds = {}
         for (let i = PROBLEMS[problem_id]['min_round']; i <= PROBLEMS[problem_id]['max_round']; i++) {
-            _rounds[i] = viewer_formatRound(problem_id, i)
+            if (PROBLEMS[problem_id]['round'][i] === undefined) {
+                continue
+            }
+            _rounds[i] = formatRound(problem_id, i)
         }
         $('#bullseye-problems-round').html($('#bullseye-template-problems-round').render({'rounds': _rounds}))
         selectRound(problem_id, current_round || PROBLEMS[problem_id]['max_round'])
@@ -281,6 +299,15 @@ $(() => {
 
     $.getJSON(CONFIG.API_BASE + '/teams.json', (r) => {
         loadTeams(r)
+    })
+
+    $.getJSON(CONFIG.API_BASE + '/problems.json', (r) => {
+        PROBLEMS = r
+        for (let problem_id in r) {
+            let round = Object.keys(r[problem_id]['round'])
+            PROBLEMS[problem_id]['min_round'] = Math.min(...round)
+            PROBLEMS[problem_id]['max_round'] = Math.max(...round)
+        }
         loadProblems()
     })
 
