@@ -20,7 +20,7 @@
 <div id="bullseye-teams"></div>
 <div id="bullseye-nowexploiting">
     <div class="message">
-        Next deadline<br>
+        <input type="text" style="width:100%;"><br>
         <input type="time">
     </div>
 </div>
@@ -67,7 +67,7 @@
 
         {{for teams}}
             <tr class="teams" data-schedule-team-id="{{>schedule_team_id}}">
-                <td class="min">{{>#index+1}}</td>
+                <td>{{>#index+1}}</td>
                 <td>{{>name}}</td>
                 <td>{{>score}}</td>
             </tr>
