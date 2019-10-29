@@ -10,21 +10,21 @@
         <tr>
             <th>#</th>
             <th>Team</th>
+            <th>ALL</th>
             {{props problems}}
             <th>{{>prop}}</th>
             {{/props}}
             <th>Jeopardy</th>
-            <th>ALL</th>
         </tr>
         {{for teams}}
             <tr>
             <td class="min">{{>#index+1}}</td>
                 <td class="min">{{>name}}</td>
+                <td class="min">{{>score_sum}}</td>
                 {{props ~root.problems ~index=#index}}
                     <td>{{>~root.teams[~index].scores[key]}}</td>
                 {{/props}}
                 <td class="min"><input type="text" class="bullseye-jeopardy" data-team-id="{{>schedule_team_id}}" value="{{>jeopardy}}"></td>
-                <td class="min">{{>score_sum}}</td>
             </tr>
         {{/for}}
     </table>
