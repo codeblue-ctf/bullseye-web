@@ -51,6 +51,9 @@ h1, h1 a, #bullseye-logo a {
 .flex {
     display: flex;
 }
+.hide {
+    display: none;
+}
 
 #bullseye-menu a {
     display: inline-block;
@@ -191,22 +194,24 @@ h1, h1 a, #bullseye-logo a {
 #bullseye-nowexploiting .message {
     margin-top: 240px;
 }
-#bullseye-nowexploiting input {
-    background: none;
-    border: none;
-
-    font-size: 128px;
-    font-weight: bold;
-    color: #fff;
-    font-family: Orbitron;
-    text-shadow:
-        0px 0px 0.5em rgba(0,188,255,0.5),
-        0px 0px 0.3em rgba(0,188,255,0.5),
-        0px 0px 0.2em rgba(0,188,255,1);
-    letter-spacing: 2px;
-    text-align: center;
-}
-
+    #bullseye-nowexploiting .message input {
+        background: none;
+        border: none;
+    
+        font-size: 128px;
+        font-weight: bold;
+        color: #fff;
+        font-family: Orbitron;
+        text-shadow:
+            0px 0px 0.5em rgba(0,188,255,0.5),
+            0px 0px 0.3em rgba(0,188,255,0.5),
+            0px 0px 0.2em rgba(0,188,255,1);
+        letter-spacing: 2px;
+        text-align: center;
+    }
+    #bullseye-nowexploiting .message input.text {
+        width: 100%;
+    }
 
 /* play */
 .bullseye-status-panel {
@@ -306,29 +311,56 @@ h1, h1 a, #bullseye-logo a {
 #bullseye-result {
     background: rgba(0,64,128,0.5);
 }
-#bullseye-result.perfect {
-    background: rgba(12,180,12,0.3);
+    #bullseye-result.perfect {
+        background: rgba(12,180,12,0.3);
+    }
+    #bullseye-result .flex {
+        margin-top: 180px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    #bullseye-result .team .name {
+        font-size: 64px;
+    }
+    #bullseye-result .problem {
+        padding: 48px 0 0 48px;
+        font-size: 48px;
+    }
+    #bullseye-result .problem .name {
+        margin-bottom: 24px;
+    }
+    #bullseye-result .problem .count {
+        line-height: 64px;
+    }
+    #bullseye-result.perfect .problem .count {
+        font-size: 64px;
+        line-height: 96px;
+    }
+
+#bullseye-x11-menu {
+    font-size: 24px;
 }
-#bullseye-result .flex {
-    margin-top: 180px;
-    justify-content: center;
-    align-items: center;
+#bullseye-x11-menu span {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #fff;
 }
-#bullseye-result .problem {
-    padding: 48px 0 0 48px;
-    font-size: 48px;
+#bullseye-x11-video-close {
+    color: #ccc;
 }
-#bullseye-result .problem .name {
-    margin-bottom: 24px;
+#bullseye-x11-video {
+    position: absolute;
+    left: 50%;
+    margin-top: 120px;
+    margin-left: -400px;
+    width: 800px;
 }
-#bullseye-result .problem .count {
-    line-height: 64px;
-}
-#bullseye-result.perfect .problem .count {
-    font-size: 64px;
-    line-height: 96px;
+#bullseye-x11-video video {
+    width: 800px;
 }
 
+/*
 @media screen and (min-width: 1900px)  {
     #bullseye-team {
         padding: 18px;
@@ -373,6 +405,7 @@ h1, h1 a, #bullseye-logo a {
         line-height: 144px;
     }
 }
+*/
 
 /* table */
 table.table {
