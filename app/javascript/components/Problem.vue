@@ -28,7 +28,7 @@ $ docker-compose down</code></pre>
 
     <dl class="row">
       <dt class="col-sm-3">Flag Format</dt>
-      <dd class="col-sm-9">{{problem.flat_format}}</dd>
+      <dd class="col-sm-9">{{problem.flag_template}}</dd>
 
       <dt class="col-sm-3">Number of trials</dt>
       <dd class="col-sm-9">{{problem.ntrials}}</dd>
