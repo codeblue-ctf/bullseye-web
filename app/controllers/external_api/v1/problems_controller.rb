@@ -38,8 +38,7 @@ class ExternalApi::V1::ProblemsController < ExternalApiController
             team_id: score.team_login_name,
             runner_started_at: score.runner_started_at,
             created_at: score.created_at,
-            image_digest: score.image_digest,
-            flag_format: problem.flag_format
+            image_digest: score.image_digest
         }
       }
     }
