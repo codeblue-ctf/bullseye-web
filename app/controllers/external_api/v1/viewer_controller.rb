@@ -148,9 +148,21 @@ class ExternalApi::V1::ViewerController < ExternalApiController
 
   def capture_id
     round_captures = RunnerMaster::get_round_capture(params[:id])
-    capture_ids = round_captures[params[:type]] || [false]
+    capture_ids = round_captures[params[:type]] || []
     render json: {
       id: capture_ids.sample
+    }
+  end
+
+  def capture_type
+    round_captures = RunnerMaster::get_round_capture(params[:id])
+    types = []
+    round_captures.each do |type, values|
+      next if not values.length > 0
+      types.push(type)
+    end
+    render json: {
+      types: types
     }
   end
 
