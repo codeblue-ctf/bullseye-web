@@ -138,6 +138,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
         problem_id: problem.id,
         name: problem.title,
         round_id: round&.id,
+        round_start_at: round&.start_at,
         ntrials: problem.ntrials,
         succeeded: score.succeeded,
         x11_required: problem.x11_required,
