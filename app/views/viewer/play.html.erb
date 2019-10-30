@@ -19,7 +19,7 @@
 </script>
 
 <script type="text/x-jsrender" id="bullseye-template-problem-round">
-    <div class="round">Round {{>round}}</div>
+    <div class="round">{{>round}}</div>
     <div class="separate"></div> 
     <div class="time">{{>time}}</div>
 </script>
@@ -275,7 +275,7 @@ $(() => {
             $('#bullseye-team').append($('#bullseye-template-team').render(r.team))
             $('#bullseye-problem').append($('#bullseye-template-problem').render(r.problem))
 
-            let round = {'round': parseInt(r.problem.round_id), 'time': formatTime(r.problem.round_start_at)}
+            let round = {'round': r.problem.round_label, 'time': formatTime(r.problem.round_start_at)}
             $('#bullseye-problem-round').append($('#bullseye-template-problem-round').render(round))
 
             action(r)

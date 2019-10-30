@@ -20,10 +20,11 @@
 <div id="bullseye-teams"></div>
 <div id="bullseye-nowexploiting">
     <div class="message">
-        <input type="text" value="Now evaluation" class="text">
+        <input type="text" value="Evaluating..." class="text" id="bullseye-notice-input">
         <!--<input type="time">-->
     </div>
 </div>
+<div id="bullseye-loading"><div class="loader"></div></div>
 
 <script type="text/x-jsrender" id="bullseye-template-problems-list">
     <div id="bullseye-problems-selected" class="bullseye-btn" data-problem-id="0">Select problem</div>
@@ -34,7 +35,7 @@
             </div>
         {{/for}}
         <div class="problems bullseye-panel-items" data-problem-id="-1" id="bullseye-nowexploiting-trigger">
-            <div class="name">Now exploting...</div>
+            <div class="name">notice</div>
         </div>
     </div>
 </script>
@@ -110,15 +111,16 @@ $(() => {
 
     let formatRound = (problem_id, round_id) => {
         if (PROBLEMS[problem_id]['round'][round_id] === undefined) {
-            return `R-`
+            return `-`
         }
 
+        let label = PROBLEMS[problem_id]['round'][round_id]['label']
         let start_date = new Date(Date.parse(PROBLEMS[problem_id]['round'][1]['start_at']))
         let date = new Date(Date.parse(PROBLEMS[problem_id]['round'][round_id]['start_at']))
         let day = (date.getDate() - start_date.getDate() + 1)
         let hour = ('0' + date.getHours()).slice(-2)
         let min = ('0' + date.getMinutes()).slice(-2)
-        return `R${round_id} (${day}day ${hour}:${min})`
+        return `${label} (${day}day ${hour}:${min})`
     }
 
     let selectProblem = (problem_id, current_round) => {
@@ -297,11 +299,35 @@ $(() => {
         })
     }
 
-    $.getJSON(CONFIG.API_BASE + '/teams.json', (r) => {
-        loadTeams(r)
+    $('#bullseye-notice-input').change((e) => {
+        let self = $(e.currentTarget)
+        localStorage.notice = self.val()
+        self.blur()
     })
+    if (localStorage.notice) {
+        $('#bullseye-notice-input').val(localStorage.notice)
+    }
 
+    /**
+     * loading
+     */
+    let _loading = 2
+
+    let endLoading = () => {
+        _loading--
+        if (_loading <= 0) {
+          $('#bullseye-loading').hide()
+        }
+    }
+
+    $('#bullseye-loading').show()
+    $.getJSON(CONFIG.API_BASE + '/teams.json', (r) => {
+        localStorage.teams = JSON.stringify(r)
+        loadTeams(r)
+        endLoading()
+    })
     $.getJSON(CONFIG.API_BASE + '/problems.json', (r) => {
+        localStorage.problems = JSON.stringify(r)
         PROBLEMS = r
         for (let problem_id in r) {
             let round = Object.keys(r[problem_id]['round'])
@@ -309,7 +335,7 @@ $(() => {
             PROBLEMS[problem_id]['max_round'] = Math.max(...round)
         }
         loadProblems()
+        endLoading()
     })
-
 })
 </script>

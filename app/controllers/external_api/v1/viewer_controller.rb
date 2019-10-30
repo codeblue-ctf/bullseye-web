@@ -91,6 +91,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       rounds.each do |round|
         result[problem.id][:round][round.id] = {}
         result[problem.id][:round][round.id][:start_at] = round.start_at
+        result[problem.id][:round][round.id][:label] = round.label
         result[problem.id][:round][round.id][:team_result] = {}
         teams.each do |team|
           # get score from team login name, exploit container name which is before than round started
@@ -124,6 +125,7 @@ class ExternalApi::V1::ViewerController < ExternalApiController
         name: problem.title,
         round_id: round&.id,
         round_start_at: round&.start_at,
+        round_label: round&.label,
         ntrials: problem.ntrials,
         succeeded: score.succeeded,
         x11_required: problem.x11_required,
