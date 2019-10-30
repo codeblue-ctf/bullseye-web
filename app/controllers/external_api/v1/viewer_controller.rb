@@ -2,7 +2,6 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   before_action :authenticate_admin!
 
   def teams
-    images = RunnerMaster::get_images
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
@@ -13,12 +12,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       score_map[team.id] = {}
       rounds.each do |round|
         problems.each do |problem|
-          # search latest image on the current round
-          # TODO: this method can be faster
-          image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
-          next if image.nil?
-          # get score from image digest, team login name, exploit container name which is before than round started
-          score = find_score(scores, image['digest'], team.login_name, problem.exploit_container_name, round.start_at)
+          # get score from team login name, exploit container name which is before than round started
+          score = find_score(scores, team.login_name, problem.exploit_container_name, round.start_at)
           next if score.nil?
 
           # calc score
@@ -44,7 +39,6 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   end
 
   def table
-    images = RunnerMaster::get_images
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
@@ -58,12 +52,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
       problems.each do |problem|
         score_map[problem.id] = {}
         rounds.each do |round|
-          # search latest image on the current round
-          # TODO: this method can be faster
-          image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
-          next if image.nil?
-          # get score from image digest, team login name, exploit container name which is before than round started
-          score = find_score(scores, image['digest'], team.login_name, problem.exploit_container_name, round.start_at)
+          # get score from team login name, exploit container name which is before than round started
+          score = find_score(scores, team.login_name, problem.exploit_container_name, round.start_at)
           next if score.nil?
 
           # calc score
@@ -88,7 +78,6 @@ class ExternalApi::V1::ViewerController < ExternalApiController
   def problems
     result = {}
 
-    images = RunnerMaster::get_images
     teams = Team.where(account_type: :real)
     problems = Problem.where(hidden: [false, nil])
     rounds = Round.where(disabled: [false, nil])
@@ -104,12 +93,8 @@ class ExternalApi::V1::ViewerController < ExternalApiController
         result[problem.id][:round][round.id][:start_at] = round.start_at
         result[problem.id][:round][round.id][:team_result] = {}
         teams.each do |team|
-          # search latest image on the current round
-          # TODO: this method can be faster
-          image = find_image(images, team.login_name, problem.exploit_container_name, round.start_at)
-          next if image.nil?
-          # get score from image digest, team login name, exploit container name which is before than round started
-          score = find_score(scores, image['digest'], team.login_name, problem.exploit_container_name, round.start_at)
+          # get score from team login name, exploit container name which is before than round started
+          score = find_score(scores, team.login_name, problem.exploit_container_name, round.start_at)
           next if score.nil?
 
           result[problem.id][:round][round.id][:team_result][team.id] = score.runner_round_id
@@ -167,27 +152,11 @@ class ExternalApi::V1::ViewerController < ExternalApiController
     }
   end
 
-  private
-  def find_image(images, team, exploit_container_name, before_at)
-    # XXX: image['CreatedAt'] はUTCなのでJSTに変えておく
-    images = images.map{ |i|
-      new_i = i.dup
-      new_i['CreatedAt'] = Time.parse(new_i['CreatedAt'] + ' +00:00').in_time_zone('Tokyo')
-      new_i
-    }
-    images
-      .sort { |a, b| b['CreatedAt'] <=> a['CreatedAt'] } # find latest image
-      .find { |image|
-        (image['team'] == team && image['exploit_container'] == exploit_container_name &&
-          image['CreatedAt'].to_i <= before_at.to_i)
-      }
-  end
-
   # get a sore which has same image_digest, team_login_name and problem_name before before_at
   # scores are sorted by runner_started_at so that it returns latest score
-  def find_score(scores, image_digest, team_login_name, exploit_container_name, before_at)
+  def find_score(scores, team_login_name, exploit_container_name, before_at)
     scores.find { |score|
-      (score.image_digest == image_digest && score.team_login_name == team_login_name &&
+      (score.team_login_name == team_login_name &&
         score.problem_name == exploit_container_name && score.runner_started_at.to_i <= before_at.to_i)
     }
   end
